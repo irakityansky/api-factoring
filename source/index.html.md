@@ -2,7 +2,7 @@
 title: Документация Revo API Factoring
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - ruby: Ruby
+  - ruby--tab: Ruby
   - java: Java
 
 toc_footers:
@@ -50,7 +50,7 @@ BASE_URL = "https://demo.revoplus.ru/"
 
 ```javascript
 secret_key = "098f6bcd4621d373cade4e832627b4f6"
-store_id = 12
+STORE_ID = 12
 ```
 
 1. На стороне Рево формируются уникальный идентификатор магазина и секретный ключ, которые передаются партнеру:
@@ -63,14 +63,14 @@ store_id = 12
 
 > Алгоритм формирования цифровой подписи
 
-```ruby
+```ruby--tab
 require 'digest/sha1'
 secret_key = '098f6bcd4621d373cade4e832627b4f6'
 data = "{\"callback_url\":\"https://shop.ru/revo/decision\",
 \"redirect_url\":\"https://shop.ru/revo/redirect\",
 \"current_order\":{\"sum\":\"7500.00\",\"order_id\":\"R001233\"},
 \"primary_phone\":\"9268180621\"}"
-signature = Digest::SHA1.hexdigest(data + secret_key)
+SIGNATURE = Digest::SHA1.hexdigest(data + secret_key)
 ```
 
 ```java
@@ -126,9 +126,13 @@ public class Main {
 # Методы API
 
 ## Registration
-<font color="green"> POST </font> `BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=YOUR_GENERATED_SHA1`
+```ruby
+POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
+```
 
-Метод предназначен для оформления заказа клиента и возвращает адрес `iframe_url`, с помощью которого вызывается форма Рево. В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов:
+Метод предназначен для оформления заказа клиента и возвращает адрес `iframe_url`, с помощью которого вызывается форма Рево. По завершению оформления заказа на адрес указанный в `collback_url` отправляется <a href="#callback_url">json ответ</a> с результатом оформления и графиком платежей.
+
+В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов:
 
 * Если номер телефона клиента не найден в базе Рево (новый клиент), либо расчёт лимита ещё не производился, то форма будет состоять из 3 шагов: регистрации (расчёта лимита), аутентификации по смс и оформления заказа.
 * Если номер телефона клиента найден в базе Рево (повторный клиент) и клиенту уже расчитан лимит, то форма будет состоять из 2 шагов: аутентификации по смс и оформления заказа.
@@ -136,10 +140,6 @@ public class Main {
 <aside class="success">
 Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
 </aside>
-
-В случае успешного оформления заказа, в ответе будет содержаться информация о графике платежей клиента - `schedule`.
-
-??Как будет принято решение о выдаче лимита. ?? и что в ответе при этом ??
 
 ### Parameters
 
@@ -151,30 +151,29 @@ public class Main {
   "redirect_url": "https://shop.ru/revo/redirect",
   "primary_phone": "9268180621",
   "primary_email" : "ivan@gmail.com",
-  passport_series : "17 06",
-  passport_number : "654698",
+  "passport_series" : "1706",
+  "passport_number" : "654698",
   "current_order": {
-    order_id: "R001233",
-    valid_till: "21.04.2017 12:08:01+03:00",
-    term: 3,
-    amount: 6700.00,
-    person: {
-      first_name: "Петр",
-      surname: "Чернышев",
-      patronymic: "Александрович",
-      birth_date: "15.01.1975",
-    }                                                                                                      
-    cart_items: [                                                                                               
-      { sku: '1', name: 'prod9', price: '12', quantity: '1' },                                                  
-      { sku: '2', name: 'prod3', price: '7', sale_price: '5', quantity: '1' }                                                    
-    ]                                                                                                           
+    "order_id": "R001233",
+    "valid_till": "21.04.2017 12:08:01+03:00",
+    "term": 3,
+    "amount": 6700.00,
+    "person": {
+      "first_name": "Петр",
+      "surname": "Чернышев",
+      "patronymic": "Александрович",
+      "birth_date": "15.01.1975",
+    }
+    "cart_items": [{
+      sku: '1', name: 'prod9', price: '12', quantity: '1' },
+    { sku: '2', name: 'prod3', price: '7', sale_price: '5', quantity: '1' }]
   }
 }
 ```
 
  | |
 -:|:-
-**callback_url** <br> <font color="#939da3">string</font>	| URL для ответа от Рево по решению для клиента.
+**callback_url** <br> <font color="#939da3">string</font>   	| URL для ответа от Рево по решению для клиента.
 **redirect_url** <br> <font color="#939da3">string</font>	| URL для редиректа после нажатия на кнопку/ссылку в форме Рево "Вернуться в интернет магазин".
 **current_order** <br> <font color="#939da3">object</font> | Объект, содержащий информацию о заказе.
 **order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
@@ -182,7 +181,7 @@ public class Main {
 **term** <br> <font color="#939da3">integer, *optional*</font> | Срок рассрочки в месяцах.
 **amount** <br> <font color="#939da3">float</font> | Сумма заказа в рублях с копейками.
 **primary_phone** <br> <font color="#939da3">integer, *optional*</font> | Номер телефона клиента 10 цифр (без кода страны).
-**primaty_email** <br> <font color="#939da3">string, *optional*</font> | Email клиента.
+**primary_email** <br> <font color="#939da3">string, *optional*</font> | Email клиента.
 **passport_series** <br> <font color="#939da3">string, *optional*</font> | Серия паспорта клиента без пробелов.
 **passport_number** <br> <font color="#939da3">string, *optional*</font> | Номер паспорта клиента.
 **person** <br> <font color="#939da3">object, *optional*</font> | Объект, содержащий информацию о клиенте.
@@ -196,6 +195,38 @@ public class Main {
 **price** <br> <font color="#939da3">float</font> | Цена товара.
 **sale_price** <br> <font color="#939da3">float, *optional*</font> | Цена товара со скидкой (если есть).
 **quantity** <br> <font color="#939da3">integer</font> | Количество товара.
+
+<table border="0">
+<tr>
+  <td colspan="2" style="text-align:right"> <b>callback_url</b> <br> <font color="#939da3">string</font></td>
+  <td colspan="2" align="left">URL для ответа от Рево по решению для клиента.</td>
+</tr>
+<tr>
+  <td colspan="2" align="right"><b>redirect_url</b> <br> <font color="#939da3">string</font></td>
+  <td colspan="2" align="left">URL для редиректа после нажатия на кнопку/ссылку в форме Рево "Вернуться в интернет магазин".</td>
+</tr>
+<tr>
+  <td colspan="2" align="right"><b>current_order</b> <br> <font color="#939da3">object</font></td>
+  <td colspan="2" align="left">Объект, содержащий информацию о заказе.</td>
+</tr>
+  <tr>
+    <td> </td>
+    <td><b>order_id</b> <br> <font color="#939da3">string</font></td>
+    <td> </td>
+    <td>Уникальный номер заказа. Не более 255 символов.</td>
+    <tr>
+      <td colspan="2" align="right"><b>primary_phone</b> <br> <font color="#939da3">integer, *optional*</font></td>
+      <td colspan="2" align="left"> Номер телефона клиента 10 цифр (без кода страны).</td>
+    </tr>
+</table>
+
+ | | | |
+-:|-:|:-|:-
+**callback_url** <br> <font color="#939da3">string</font>	| | URL для ответа от Рево по решению для клиента. |
+**redirect_url** <br> <font color="#939da3">string</font>	| | URL для редиректа после нажатия на кнопку/ссылку в форме Рево "Вернуться в интернет магазин". |
+**current_order** <br> <font color="#939da3">object</font> | | Объект, содержащий информацию о заказе. |
+  **order_id** <br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов.
+ | **valid_till** <br> <font color="#939da3">String, *optional*</font> | |  Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после "+" указывается часовой пояс относительно GMT.
 
 В качестве `redirect_url` может выступать страница корзины. Можно вводить дополнительные проверки и перенаправлять пользователя на другие страницы в зависимости от ответа, полученного ранее на `callback_url`.
 
@@ -211,26 +242,24 @@ public class Main {
 }
 ```
 
-> Пример ответа при неуспешной аутентификации.
+<!-- > Пример ответа при неуспешной аутентификации.
 
 ```jsonnet
 {
   status: 20,
   message: "Order order_id missing",
 }
-```
+``` -->
 
  | |
 -:|:-
 **status** <br> <font color="#939da3">integer</font> | Код ответа.
 **message** <br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
 **iframe_url** <br> <font color="#939da3">string</font>	| Cсылка на сгенерированный iFrame.
+<a name="callback_url"></a>
+### callback parameters
 
-### callback_url parameters
-
-По завершению заказа на адрес, указанный в `collback_url`, Revo отправляет json с результатом оформления.
-
-> Пример json ответа при успешном оформлении товара:
+> Пример callback-а при успешном оформлении товара:
 
 ```jsonnet
 {
@@ -241,6 +270,7 @@ public class Main {
   client:
   {
     primary_phone: "8880010203"
+    full_name: "Иванов Иван Иванович"
   },
   schedule:
   [{
@@ -256,9 +286,22 @@ public class Main {
     amount: "2933.33"
   }]
 }
- ```
+```
 
+ | |
+-:|:-
+**order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+**decision** <br> <font color="#939da3">string</font> | Решение по выдаче рассрочки. При положительном решении - значение `approved`. При отрицательном решении - `declined`.
+**amount** <br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
+**term** <br> <font color="#939da3">integer</font> | Срок рассрочки в месяцах.
+**client** <br> <font color="#939da3">object</font> | Объект, содержащий информацию о клиенте.
+**primary_phone** <br> <font color="#939da3">integer</font> | Номер телефона клиента 10 цифр (без кода страны).
+**full_name**  <br> <font color="#939da3">string</font> | ФИО через пробел.
+**schedule** <br> <font color="#939da3">object</font> | Объект, содержащий информацию о графике платежей.
+**date** <br> <font color="#939da3">string</font> | Дата платежа в формате `dd.mm.yyyy`.
+**amount** <br> <font color="#939da3">float</font> | Сумма платежа в рублях с копейками.
 
+При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
 
 ## Precheck
 
