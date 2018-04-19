@@ -1,0 +1,1390 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Документация Revo API Factoring</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight .gh {
+  color: #999999;
+}
+.highlight .sr {
+  color: #f6aa11;
+}
+.highlight .go {
+  color: #888888;
+}
+.highlight .gp {
+  color: #555555;
+}
+.highlight .gs {
+}
+.highlight .gu {
+  color: #aaaaaa;
+}
+.highlight .nb {
+  color: #f6aa11;
+}
+.highlight .cm {
+  color: #75715e;
+}
+.highlight .cp {
+  color: #75715e;
+}
+.highlight .c1 {
+  color: #75715e;
+}
+.highlight .cs {
+  color: #75715e;
+}
+.highlight .c, .highlight .cd {
+  color: #75715e;
+}
+.highlight .err {
+  color: #960050;
+}
+.highlight .gr {
+  color: #960050;
+}
+.highlight .gt {
+  color: #960050;
+}
+.highlight .gd {
+  color: #49483e;
+}
+.highlight .gi {
+  color: #49483e;
+}
+.highlight .ge {
+  color: #49483e;
+}
+.highlight .kc {
+  color: #66d9ef;
+}
+.highlight .kd {
+  color: #66d9ef;
+}
+.highlight .kr {
+  color: #66d9ef;
+}
+.highlight .no {
+  color: #66d9ef;
+}
+.highlight .kt {
+  color: #66d9ef;
+}
+.highlight .mf {
+  color: #ae81ff;
+}
+.highlight .mh {
+  color: #ae81ff;
+}
+.highlight .il {
+  color: #ae81ff;
+}
+.highlight .mi {
+  color: #ae81ff;
+}
+.highlight .mo {
+  color: #ae81ff;
+}
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #ae81ff;
+}
+.highlight .sc {
+  color: #ae81ff;
+}
+.highlight .se {
+  color: #ae81ff;
+}
+.highlight .ss {
+  color: #ae81ff;
+}
+.highlight .sd {
+  color: #e6db74;
+}
+.highlight .s2 {
+  color: #e6db74;
+}
+.highlight .sb {
+  color: #e6db74;
+}
+.highlight .sh {
+  color: #e6db74;
+}
+.highlight .si {
+  color: #e6db74;
+}
+.highlight .sx {
+  color: #e6db74;
+}
+.highlight .s1 {
+  color: #e6db74;
+}
+.highlight .s {
+  color: #e6db74;
+}
+.highlight .na {
+  color: #a6e22e;
+}
+.highlight .nc {
+  color: #a6e22e;
+}
+.highlight .nd {
+  color: #a6e22e;
+}
+.highlight .ne {
+  color: #a6e22e;
+}
+.highlight .nf {
+  color: #a6e22e;
+}
+.highlight .vc {
+  color: #ffffff;
+}
+.highlight .nn {
+  color: #ffffff;
+}
+.highlight .nl {
+  color: #ffffff;
+}
+.highlight .ni {
+  color: #ffffff;
+}
+.highlight .bp {
+  color: #ffffff;
+}
+.highlight .vg {
+  color: #ffffff;
+}
+.highlight .vi {
+  color: #ffffff;
+}
+.highlight .nv {
+  color: #ffffff;
+}
+.highlight .w {
+  color: #ffffff;
+}
+.highlight {
+  color: #ffffff;
+}
+.highlight .n, .highlight .py, .highlight .nx {
+  color: #ffffff;
+}
+.highlight .ow {
+  color: #f92672;
+}
+.highlight .nt {
+  color: #f92672;
+}
+.highlight .k, .highlight .kv {
+  color: #f92672;
+}
+.highlight .kn {
+  color: #f92672;
+}
+.highlight .kp {
+  color: #f92672;
+}
+.highlight .o {
+  color: #f92672;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all.js"></script>
+  </head>
+
+  <body class="index" data-languages="[&quot;ruby--tab&quot;,&quot;java&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" alt="Navbar" />
+      </span>
+    </a>
+    <div class="toc-wrapper">
+      <img src="images/logo.png" class="logo" alt="Logo" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="ruby--tab">Ruby</a>
+              <a href="#" data-language-name="java">Java</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc" class="toc-list-h1">
+          <li>
+            <a href="#3394112aa9" class="toc-h1 toc-link" data-title="">Введение</a>
+          </li>
+          <li>
+            <a href="#93900fccba" class="toc-h1 toc-link" data-title="">Авторизация</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#url" class="toc-h2 toc-link" data-title="url">Базовые URL адреса</a>
+                  </li>
+                  <li>
+                    <a href="#3b61794258" class="toc-h2 toc-link" data-title="">Параметры авторизации</a>
+                  </li>
+                  <li>
+                    <a href="#1c37860b3b" class="toc-h2 toc-link" data-title="">Принцип формирования цифровой подписи</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#api" class="toc-h1 toc-link" data-title="api">Методы API</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#registration" class="toc-h2 toc-link" data-title="registration">Registration</a>
+                  </li>
+                  <li>
+                    <a href="#precheck" class="toc-h2 toc-link" data-title="precheck">Precheck</a>
+                  </li>
+                  <li>
+                    <a href="#status" class="toc-h2 toc-link" data-title="status">Status</a>
+                  </li>
+                  <li>
+                    <a href="#change" class="toc-h2 toc-link" data-title="change">Change</a>
+                  </li>
+                  <li>
+                    <a href="#finish" class="toc-h2 toc-link" data-title="finish">Finish</a>
+                  </li>
+                  <li>
+                    <a href="#cancel" class="toc-h2 toc-link" data-title="cancel">Cancel</a>
+                  </li>
+                  <li>
+                    <a href="#limit" class="toc-h2 toc-link" data-title="limit">Limit</a>
+                  </li>
+                  <li>
+                    <a href="#return" class="toc-h2 toc-link" data-title="return">Return</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#cb76858662" class="toc-h1 toc-link" data-title="">Коды ошибок</a>
+          </li>
+          <li>
+            <a href="#db947828e5" class="toc-h1 toc-link" data-title="">Тестирование и отладка</a>
+          </li>
+          <li>
+            <a href="#6961794a3c" class="toc-h1 toc-link" data-title="">Схемы взаимодействия</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#1" class="toc-h2 toc-link" data-title="1">Факторинг 1</a>
+                  </li>
+                  <li>
+                    <a href="#2" class="toc-h2 toc-link" data-title="2">Факторинг 2</a>
+                  </li>
+                  <li>
+                    <a href="#3" class="toc-h2 toc-link" data-title="3">Факторинг 3</a>
+                  </li>
+                  <li>
+                    <a href="#4" class="toc-h2 toc-link" data-title="4">Факторинг 4</a>
+                  </li>
+                  <li>
+                    <a href="#5" class="toc-h2 toc-link" data-title="5">Факторинг 5</a>
+                  </li>
+                  <li>
+                    <a href="#6" class="toc-h2 toc-link" data-title="6">Факторинг 6</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#guides" class="toc-h1 toc-link" data-title="guides">Guides</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#49b96e43de" class="toc-h2 toc-link" data-title="">Регистрация пользователя</a>
+                  </li>
+                  <li>
+                    <a href="#iframe" class="toc-h2 toc-link" data-title="iframe">Вызов iFrame</a>
+                  </li>
+              </ul>
+          </li>
+      </div>
+        <ul class="toc-footer">
+            <li><a href='https://revo.ru/'>Revo.ru</a></li>
+            <li><a href='https://revo.ru/API/en'>API Documentation in English</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id='3394112aa9'>Введение</h1>
+<p>API Factoring реализовано на протоколе HTTPS на основе JSON запросов.</p>
+
+<p>Документация состоит из 4 основных частей:</p>
+
+<ul>
+<li>Описание авторизации, методов API и кодов ошибок.</li>
+<li><a href="#db947828e5">Руководство по тестированию</a>.</li>
+<li><a href="#6961794a3c">Описание возможных схем взаимодействия</a>.</li>
+<li><a href="#guides">Руководство по реализации основных элементов</a>.</li>
+</ul>
+<h1 id='93900fccba'>Авторизация</h1><h2 id='url'>Базовые URL адреса</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://r.revoplus.ru/"</span>
+<span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://demo.revoplus.ru/"</span>
+</code></pre>
+<ol>
+<li>Для взаимодействия с сервисами Рево используются 2 базовых адреса:
+
+<ul>
+<li>https://r.revoplus.ru/ - адрес <code>production</code> сервиса.</li>
+<li>https://demo.revoup.ru/ - адрес <code>demo</code> сервиса.</li>
+</ul></li>
+<li><code>BASE_URL</code> - переменная обозначающая базовый адрес.</li>
+</ol>
+
+<aside class="notice">
+При попытке обращения к API по HTTP будет возникать 404 ошибка.
+</aside>
+<h2 id='3b61794258'>Параметры авторизации</h2>
+<blockquote>
+<p>Пример параметров</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">secret_key</span> <span class="o">=</span> <span class="s2">"098f6bcd4621d373cade4e832627b4f6"</span>
+<span class="nx">STORE_ID</span> <span class="o">=</span> <span class="mi">12</span>
+</code></pre>
+<ol>
+<li>На стороне Рево формируются уникальный идентификатор магазина и секретный ключ, которые передаются партнеру:
+
+<ul>
+<li><code>store_id</code> - уникальный идентификатор магазина. Для одного партнера может быть сформировано несколько уникальных идентификаторов.</li>
+<li><code>secret_key</code> - секретный ключ, который используется при формировании электронно-цифровой подписи для аутентификации (проверки подлинности) параметров запроса с целью защиты формы от запуска сторонними лицами. Длина ключа от 8 байт. Алгоритм шифрования SHA1.</li>
+</ul></li>
+<li>Для авторизации партнер отправляет <code>POST</code> запрос, используя <a href="#1c37860b3b">цифровую подпись</a> <code>signature</code> и уникальный идентификатор магазина <code>store_id</code>.</li>
+<li>Примеры URL запросов можно посмотреть в разделе <a href="#api"> Методы API</a>.</li>
+</ol>
+<h2 id='1c37860b3b'>Принцип формирования цифровой подписи</h2>
+<blockquote>
+<p>Алгоритм формирования цифровой подписи</p>
+</blockquote>
+<pre class="highlight ruby tab-ruby--tab"><code><span class="nb">require</span> <span class="s1">'digest/sha1'</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="s1">'098f6bcd4621d373cade4e832627b4f6'</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">callback_url</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">https://shop.ru/revo/decision</span><span class="se">\"</span><span class="s2">,
+</span><span class="se">\"</span><span class="s2">redirect_url</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">https://shop.ru/revo/redirect</span><span class="se">\"</span><span class="s2">,
+</span><span class="se">\"</span><span class="s2">current_order</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">sum</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">7500.00</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">order_id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">R001233</span><span class="se">\"</span><span class="s2">},
+</span><span class="se">\"</span><span class="s2">primary_phone</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">9268180621</span><span class="se">\"</span><span class="s2">}"</span>
+<span class="no">SIGNATURE</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">SHA1</span><span class="p">.</span><span class="nf">hexdigest</span><span class="p">(</span><span class="n">data</span> <span class="o">+</span> <span class="n">secret_key</span><span class="p">)</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">java.io.UnsupportedEncodingException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.security.MessageDigest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.security.NoSuchAlgorithmException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Formatter</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+    <span class="kd">static</span> <span class="n">String</span> <span class="n">secret_key</span> <span class="o">=</span> <span class="s">"098f6bcd4621d373cade4e832627b4f6"</span><span class="o">;</span> <span class="c1">// Это пример</span>
+    <span class="kd">static</span> <span class="n">String</span> <span class="n">data</span> <span class="o">=</span> <span class="s">"{\"callback_url\":\"https://shop.ru/revo/decision\",\"redirect_url\":\"https://shop.ru/revo/redirect\",\"current_order\":{\"sum\":\"7500.00\",\"order_id\":\"R001233\"},\"primary_phone\":\"9268180621\"}"</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="n">String</span> <span class="n">signature</span> <span class="o">=</span> <span class="n">encryptPassword</span><span class="o">(</span><span class="n">data</span> <span class="o">+</span> <span class="n">secret_key</span><span class="o">);</span> <span class="c1">// Тут всегда будет 40 символов по SHA1</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">signature</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">encryptPassword</span><span class="o">(</span><span class="n">String</span> <span class="n">password</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">sha1</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">MessageDigest</span> <span class="n">crypt</span> <span class="o">=</span> <span class="n">MessageDigest</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"SHA-1"</span><span class="o">);</span>
+            <span class="n">crypt</span><span class="o">.</span><span class="na">reset</span><span class="o">();</span>
+            <span class="n">crypt</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">password</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="s">"UTF-8"</span><span class="o">));</span>
+            <span class="n">sha1</span> <span class="o">=</span> <span class="n">byteToHex</span><span class="o">(</span><span class="n">crypt</span><span class="o">.</span><span class="na">digest</span><span class="o">());</span>
+        <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">NoSuchAlgorithmException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">sha1</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">byteToHex</span><span class="o">(</span><span class="kd">final</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">hash</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Formatter</span> <span class="n">formatter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Formatter</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">byte</span> <span class="n">b</span> <span class="o">:</span> <span class="n">hash</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">formatter</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"%02x"</span><span class="o">,</span> <span class="n">b</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">formatter</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">formatter</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+<p>К строке <code>data</code> в формате json добавляется секретный ключ <code>secret_key</code>. К получившейся строке применяется алгоритм SHA1, в результате формируется цифровая подпись <code>signature</code>.</p>
+
+<aside class="notice">
+Необходимо обратить внимание, что при формировании signature длина всегда будет 40 символов по SHA1.
+</aside>
+<h1 id='api'>Методы API</h1><h2 id='registration'>Registration</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+</code></pre>
+<p>Метод предназначен для оформления заказа клиента и возвращает адрес <code>iframe_url</code>, с помощью которого вызывается форма Рево. По завершению оформления заказа на адрес указанный в <code>collback_url</code> отправляется <a href="#callback_url">json ответ</a> с результатом оформления и графиком платежей.</p>
+
+<p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов:</p>
+
+<ul>
+<li>Если номер телефона клиента не найден в базе Рево (новый клиент), либо расчёт лимита ещё не производился, то форма будет состоять из 3 шагов: регистрации (расчёта лимита), аутентификации по смс и оформления заказа.</li>
+<li>Если номер телефона клиента найден в базе Рево (повторный клиент) и клиенту уже расчитан лимит, то форма будет состоять из 2 шагов: аутентификации по смс и оформления заказа.</li>
+</ul>
+
+<aside class="success">
+Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
+</aside>
+<h3 id='parameters'>Parameters</h3>
+<blockquote>
+<p>Пример запроса в формате json</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="s">"callback_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
+  <span class="s">"redirect_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
+  <span class="s">"primary_phone"</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
+  <span class="s">"primary_email"</span> <span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
+  <span class="s">"passport_series"</span> <span class="p">:</span> <span class="s">"1706"</span><span class="p">,</span>
+  <span class="s">"passport_number"</span> <span class="p">:</span> <span class="s">"654698"</span><span class="p">,</span>
+  <span class="s">"current_order"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
+    <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"21.04.2017 12:08:01+03:00"</span><span class="p">,</span>
+    <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">6700.00</span><span class="p">,</span>
+    <span class="s">"person"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s">"first_name"</span><span class="p">:</span> <span class="s">"Петр"</span><span class="p">,</span>
+      <span class="s">"surname"</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
+      <span class="s">"patronymic"</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
+      <span class="s">"birth_date"</span><span class="p">:</span> <span class="s">"15.01.1975"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="s">"cart_items"</span><span class="p">:</span> <span class="p">[{</span>
+      <span class="nx">sku</span><span class="p">:</span> <span class="s">'1'</span><span class="p">,</span> <span class="nx">name</span><span class="p">:</span> <span class="s">'prod9'</span><span class="p">,</span> <span class="nx">price</span><span class="p">:</span> <span class="s">'12'</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">:</span> <span class="s">'1'</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="nx">sku</span><span class="p">:</span> <span class="s">'2'</span><span class="p">,</span> <span class="nx">name</span><span class="p">:</span> <span class="s">'prod3'</span><span class="p">,</span> <span class="nx">price</span><span class="p">:</span> <span class="s">'7'</span><span class="p">,</span> <span class="nx">sale_price</span><span class="p">:</span> <span class="s">'5'</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">:</span> <span class="s">'1'</span> <span class="p">}]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>callback_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">URL для ответа от Рево по решению для клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>redirect_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">URL для редиректа после нажатия на кнопку/ссылку в форме Рево &quot;Вернуться в интернет магазин&quot;.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>current_order</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: left">Объект, содержащий информацию о заказе.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>valid_till</strong> <br> <font color="#939da3">String, <em>optional</em></font></td>
+<td style="text-align: left">Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: <code>dd.mm.yyyy hh:mm:ss+hh:mm</code>, где после &quot;+&quot; указывается часовой пояс относительно GMT.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>term</strong> <br> <font color="#939da3">integer, <em>optional</em></font></td>
+<td style="text-align: left">Срок рассрочки в месяцах.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Сумма заказа в рублях с копейками.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>primary_phone</strong> <br> <font color="#939da3">integer, <em>optional</em></font></td>
+<td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>primary_email</strong> <br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: left">Email клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>passport_series</strong> <br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: left">Серия паспорта клиента без пробелов.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>passport_number</strong> <br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: left">Номер паспорта клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>person</strong> <br> <font color="#939da3">object, <em>optional</em></font></td>
+<td style="text-align: left">Объект, содержащий информацию о клиенте.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>first_name</strong> <br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: left">Имя клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>surname</strong> <br> <font color="#939da3">sring, <em>optional</em></font></td>
+<td style="text-align: left">Фамилия клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>patronymic</strong> <br> <font color="#939da3">object, <em>optional</em></font></td>
+<td style="text-align: left">Отчество клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>birth_date</strong> <br> <font color="#939da3">object, <em>optional</em></font></td>
+<td style="text-align: left">Дата рождения клиента в формате <code>dd.mm.yyyy</code>.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>cart_items</strong> <br> <font color="#939da3">object, <em>optional</em></font></td>
+<td style="text-align: left">Объект, содержащий информацию о заказе.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>sku</strong> <br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: left">Складская учётная единица (stock keeping unit).</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>name</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Наименование товара.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>price</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Цена товара.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>sale_price</strong> <br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: left">Цена товара со скидкой (если есть).</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>quantity</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Количество товара.</td>
+</tr>
+</tbody></table>
+
+<table border="0">
+<tr>
+  <td colspan="2" style="text-align:right"> <b>callback_url</b> <br> <font color="#939da3">string</font></td>
+  <td colspan="2" align="left">URL для ответа от Рево по решению для клиента.</td>
+</tr>
+<tr>
+  <td colspan="2" align="right"><b>redirect_url</b> <br> <font color="#939da3">string</font></td>
+  <td colspan="2" align="left">URL для редиректа после нажатия на кнопку/ссылку в форме Рево "Вернуться в интернет магазин".</td>
+</tr>
+<tr>
+  <td colspan="2" align="right"><b>current_order</b> <br> <font color="#939da3">object</font></td>
+  <td colspan="2" align="left">Объект, содержащий информацию о заказе.</td>
+</tr>
+  <tr>
+    <td> </td>
+    <td><b>order_id</b> <br> <font color="#939da3">string</font></td>
+    <td> </td>
+    <td>Уникальный номер заказа. Не более 255 символов.</td>
+    <tr>
+      <td colspan="2" align="right"><b>primary_phone</b> <br> <font color="#939da3">integer, *optional*</font></td>
+      <td colspan="2" align="left"> Номер телефона клиента 10 цифр (без кода страны).</td>
+    </tr>
+</table>
+
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>callback_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">URL для ответа от Рево по решению для клиента.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>redirect_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">URL для редиректа после нажатия на кнопку/ссылку в форме Рево &quot;Вернуться в интернет магазин&quot;.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>current_order</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Объект, содержащий информацию о заказе.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>valid_till</strong> <br> <font color="#939da3">String, <em>optional</em></font></td>
+<td style="text-align: left"></td>
+<td style="text-align: left">Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: <code>dd.mm.yyyy hh:mm:ss+hh:mm</code>, где после &quot;+&quot; указывается часовой пояс относительно GMT.</td>
+</tr>
+</tbody></table>
+
+<p>В качестве <code>redirect_url</code> может выступать страница корзины. Можно вводить дополнительные проверки и перенаправлять пользователя на другие страницы в зависимости от ответа, полученного ранее на <code>callback_url</code>.</p>
+<h3 id='response-parameters'>Response Parameters</h3>
+<blockquote>
+<p>Пример ответа при успешной аутентификации.</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="nx">iframe_url</span><span class="p">:</span> <span class="s">"https://revo.ru/factoring/v1/form/6976174c5b6a1bb089d15b80e0a6afc62d4283fe"</span>
+<span class="p">}</span>
+</code></pre>
+<!-- > Пример ответа при неуспешной аутентификации.
+
+```jsonnet
+{
+  status: 20,
+  message: "Order order_id missing",
+}
+``` -->
+
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Код ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Короткое текстовое описание ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>iframe_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Cсылка на сгенерированный iFrame.</td>
+</tr>
+</tbody></table>
+
+<p><a name="callback_url"></a></p>
+<h3 id='callback-parameters'>callback parameters</h3>
+<blockquote>
+<p>Пример callback-а при успешном оформлении товара:</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+  <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
+  <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
+  <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="nx">client</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="nx">primary_phone</span><span class="p">:</span> <span class="s">"8880010203"</span>
+    <span class="nx">full_name</span><span class="p">:</span> <span class="s">"Иванов Иван Иванович"</span>
+  <span class="p">},</span>
+  <span class="nx">schedule</span><span class="p">:</span>
+  <span class="p">[{</span>
+    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.01.2018"</span><span class="p">,</span>
+    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.02.2018"</span><span class="p">,</span>
+    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.03.2018"</span><span class="p">,</span>
+    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+  <span class="p">}]</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>decision</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Решение по выдаче рассрочки. При положительном решении - значение <code>approved</code>. При отрицательном решении - <code>declined</code>.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Сумма в рублях с копейками.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>term</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Срок рассрочки в месяцах.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>client</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: left">Объект, содержащий информацию о клиенте.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>primary_phone</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>full_name</strong>  <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">ФИО через пробел.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>schedule</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: left">Объект, содержащий информацию о графике платежей.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>date</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Дата платежа в формате <code>dd.mm.yyyy</code>.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Сумма платежа в рублях с копейками.</td>
+</tr>
+</tbody></table>
+
+<p>При <code>decision</code> равном <code>declined</code> значение <code>amount</code> будет нулевое, а в <code>schedule</code> будет пустой массив.</p>
+<h2 id='precheck'>Precheck</h2>
+<p><font color="green"> POST </font> <code>BASE_URL/factoring/v1/limit/auth</code></p>
+
+<p>Метод возвращает ссылку на iFrame с процедурой аутентификации клиента для получения лимита.</p>
+
+<p><em>?? Разница заключается лишь в том, что при вызове сервиса &quot;Узнать лимит&quot; в качестве суммы в API Рево передается 1 рубль, а при вызове сервиса пред оформления передается реальная сумма заказа. Названия параметров и формат данных указаны в подробных описаниях соответствующих блоков на схеме ниже. Также, для удобства последующей аналитики, вызовы сервиса &quot;Узнать лимит&quot; и сервиса предварительного оформления необходимо делать указывая разные виртуальные торговые точки (store_id).
+API Рево позволяет сайту-партнеру Рево интегрировать на свой сайт iFrame (всплывающее окно), в котором открывается форма для взаимодействия с посетителем.
+Для сервиса &quot;Узнать лимит&quot; возможен также более простой (но менее функциональный) способ интеграции, не требующий серверного программирования. Подробнее об этом способе можно прочитать тут: Сервис &quot;Узнать лимит&quot;, упрощённая интеграция
+??</em></p>
+<h3 id='parameters-2'>Parameters</h3>
+<blockquote>
+<p>Пример запроса в формате json</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">callback_url</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
+  <span class="nx">redirect_url</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
+  <span class="nx">current_order</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
+    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+    <span class="nx">valid_till</span><span class="p">:</span> <span class="s">"21.04.2017 12:08:01+03:00"</span>
+  <span class="p">}</span>
+  <span class="nx">primary_phone</span><span class="p">:</span> <span class="s">"8880010203"</span><span class="p">,</span>
+  <span class="nx">skip_factoring_result</span><span class="p">:</span> <span class="s">"false"</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>callback_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">URL для ответа от Рево по решению для клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>redirect_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">URL для редиректа после нажатия на кнопку/ссылку в форме Рево &quot;Вернуться в интернет магазин&quot;.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>current_order</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: left">Объект, содержащий информацию о заказе.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Сумма в рублях с копейками.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>valid_till</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Срок, в течении которого заказ считается актуальным (срок холдирования). По истечении срока заказ отменяется. Формат: <code>dd.mm.yyyy hh:mm:ss+hh:mm</code>, где после &quot;+&quot; указывается часовой пояс относительно GMT.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>primary_phone</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>skip_factoring_result</strong> <br> <font color="#939da3">bool</font></td>
+<td style="text-align: left">Флаг для определения, была ли осуществлена предоплата клиентом до вызова iFrame.</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+Если корзина клиента пустая, в качестве order_id можно передать случайный уникальный guid (???).
+</aside>
+<h3 id='response-parameters-2'>Response Parameters</h3>
+<blockquote>
+<p>Пример ответа для успешной аутентификации.</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="nx">iframe_url</span><span class="p">:</span> <span class="s">"https://r.revoplus.ru/form/v1/af45ef12f4233f"</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Код ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Короткое текстовое описание ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>iframe_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Cсылка на сгенерированный iFrame.</td>
+</tr>
+</tbody></table>
+<h2 id='status'>Status</h2>
+<p><font color="green"> POST </font> <code>BASE_URL/factoring/v1/status</code></p>
+
+<p>Метод возвращает информацию по статусу заказа.</p>
+<h3 id='parameters-3'>Parameters</h3>
+<blockquote>
+<p>Пример запроса в формате json</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R107356"</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+</tr>
+</tbody></table>
+<h3 id='response-parameters-3'>Response Parameters</h3>
+<blockquote>
+<p>Пример ответа, когда срок актуальности заказа ещё не вышел, решение по заказу (approved или declined) уже есть</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="nx">current_order</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+    <span class="nx">expired</span><span class="p">:</span> <span class="s">"false"</span><span class="p">,</span>
+    <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
+    <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
+    <span class="nx">discount_amount</span><span class="p">:</span> <span class="s">"6100.00"</span><span class="p">,</span>
+    <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Пример ответа, когда срок актуальности заказа ещё не вышел, решения по займу нет (клиент не прошёл процесс до конца)</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="nx">current_order</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+    <span class="nx">expired</span><span class="p">:</span> <span class="s">"false"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Пример ответа, когда срок актуальности заказа истёк, решение по займу (Approve или declined) уже есть:</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="nx">current_order</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+    <span class="nx">expired</span><span class="p">:</span> <span class="s">"true"</span><span class="p">,</span>
+    <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
+    <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
+    <span class="nx">discount_amount</span><span class="p">:</span> <span class="s">"6100.00"</span><span class="p">,</span>
+    <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Пример ответа, когда срок актуальности заказа истёк, решения по займу нет (клиент не прошел процесс до конца)</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="nx">current_order</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+    <span class="nx">expired</span><span class="p">:</span> <span class="s">"true"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Код ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Короткое текстовое описание ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>current_order</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: left">Объект, содержащий информацию о заказе.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>expired</strong> <br> <font color="#939da3">bool</font></td>
+<td style="text-align: left">Флаг, отображающий статус актуальности заказа. Для актуальных заказов значение <code>true</code>.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>decision</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Решение по выдаче рассрочки. При положительном решении значение <code>approved</code>.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Сумма в рублях с копейками.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>discount_amount</strong> <br> <font color="#939da3">bool</font></td>
+<td style="text-align: left">???</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>term</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Срок рассрочки в месяцах.</td>
+</tr>
+</tbody></table>
+<h2 id='change'>Change</h2>
+<p><font color="green"> POST </font> <code>BASE_URL/factoring/v1/precheck/change</code></p>
+
+<p>Метод для изменения суммы уже созданного заказа.</p>
+<h2 id='finish'>Finish</h2>
+<p><font color="green"> POST </font> <code>BASE_URL/factoring/v1/precheck/finish</code></p>
+
+<p>Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево.</p>
+<h3 id='parameters-4'>Parameters</h3>
+<blockquote>
+<p>Пример запроса в формате json</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+  <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
+  <span class="nx">check_number</span><span class="p">:</span> <span class="s">'ZDDS3123F'</span>
+<span class="p">}</span>
+<span class="err">@</span><span class="nx">FILES</span><span class="s">'check'</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Сумма в рублях с копейками.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>check_number</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">???</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>FILES&#39;check&#39;</strong> <br> <font color="#939da3">path?</font></td>
+<td style="text-align: left">Фискальный документ ???</td>
+</tr>
+</tbody></table>
+<h3 id='response-parameters-4'>Response Parameters</h3>
+<p>???</p>
+<h2 id='cancel'>Cancel</h2>
+<p><font color="green"> POST </font> <code>BASE_URL/factoring/v1/precheck/cancel</code></p>
+
+<p>Метод для отмены заказа. При отмене у клиента разблокируются ранее захолдированные средства.</p>
+<h3 id='parameters-5'>Parameters</h3>
+<blockquote>
+<p>Пример запроса в формате json</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+</tr>
+</tbody></table>
+<h3 id='response-parameters-5'>Response Parameters</h3>
+<p>???</p>
+<h2 id='limit'>Limit</h2>
+<p><font color="green"> POST </font> <code>BASE_URL/api/external/v1/client/limit</code></p>
+
+<p>Метод для получения суммы лимита клиента по номеру его телефона. Метод работает для клиентов, оформивших хотя бы один займ в Рево или прошедших процедуру регистрации у партнера (?? а это какой метод ??).
+Для новых клиентов получить информацию о лимите только по номеру телефона нельзя.</p>
+<h3 id='parameters-6'>Parameters</h3>
+<blockquote>
+<p>Пример запроса в формате json</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">client</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>client</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: left">Объект, содержащий информацию о клиенте.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>mobile_phone</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
+</tr>
+</tbody></table>
+<h3 id='response-parameters-6'>Response Parameters</h3>
+<blockquote>
+<p>Пример ответа, когда клиент найден в базе</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+    <span class="nx">meta</span><span class="p">:</span>
+    <span class="p">{</span>
+      <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
+    <span class="p">}</span>
+    <span class="nx">client</span><span class="p">:</span>
+    <span class="p">{</span>
+      <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
+      <span class="nx">limit_amount</span><span class="p">:</span> <span class="s">"9500.00"</span><span class="p">,</span>
+      <span class="nx">status</span><span class="p">:</span> <span class="s">"active"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Пример ответа, когда клиент найден в базе, но выдача займа невозможна</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+    <span class="nx">meta</span><span class="p">:</span>
+    <span class="p">{</span>
+      <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
+    <span class="p">}</span>
+    <span class="nx">client</span><span class="p">:</span>
+    <span class="p">{</span>
+      <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
+      <span class="nx">limit_amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
+      <span class="nx">status</span><span class="p">:</span> <span class="s">"inactive"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Пример ответа, когда клиент не найден в базе</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+    <span class="nx">meta</span><span class="p">:</span>
+    <span class="p">{</span>
+      <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
+    <span class="p">}</span>
+    <span class="nx">client</span><span class="p">:</span>
+    <span class="p">{</span>
+      <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
+      <span class="nx">limit_amount</span><span class="p">:</span> <span class="s">"0.00"</span><span class="p">,</span>
+      <span class="nx">status</span><span class="p">:</span> <span class="s">"new"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Код ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Короткое текстовое описание ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>client</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: left">Объект, содержащий информацию о клиенте.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>mobile_phone</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>limit_amount</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">???</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">???</td>
+</tr>
+</tbody></table>
+<h2 id='return'>Return</h2>
+<p><font color="green"> POST </font> <code>BASE_URL/factoring/v1/return</code></p>
+
+<p>Метод для осуществления процедуры возврата заказа.</p>
+<h3 id='parameters-7'>Parameters</h3>
+<blockquote>
+<p>Пример запроса в формате json</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
+  <span class="nx">sum</span><span class="p">:</span> <span class="s">"2010.00"</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>sum</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Сумма возврата в рублях с копейками. Возврат может быть частичным. Определение полного или частичного возврата происходит по суме автоматически.</td>
+</tr>
+</tbody></table>
+<h3 id='response-parameters-7'>Response Parameters</h3>
+<blockquote>
+<p>Пример ответа при успешной обработке запроса на возврат</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">status</span><span class="p">:</span> <span class="s">"0"</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Пример ответа при неуспешной обработке запроса на возврат</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">status</span><span class="p">:</span> <span class="s">"10"</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"JSON decode error"</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Код ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Короткое текстовое описание ответа.</td>
+</tr>
+</tbody></table>
+<h1 id='cb76858662'>Коды ошибок</h1>
+<table><thead>
+<tr>
+<th style="text-align: right">Код</th>
+<th style="text-align: left">Описание</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>0</strong></td>
+<td style="text-align: left">Payload valid</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>10</strong></td>
+<td style="text-align: left">JSON decode error</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>20</strong></td>
+<td style="text-align: left">Order <code>order_id</code> missing</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>21</strong></td>
+<td style="text-align: left">Wrong order <code>order_id</code> format</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>22</strong></td>
+<td style="text-align: left">Order exists</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>24</strong></td>
+<td style="text-align: left">Order with specified id not found</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>30</strong></td>
+<td style="text-align: left">Wrong order <code>order_sum</code> format</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>40</strong></td>
+<td style="text-align: left">Order <code>callback_url</code> missing</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>32</strong></td>
+<td style="text-align: left">Order amount is different from the amount specified before</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>41</strong></td>
+<td style="text-align: left">Order <code>redirect_url</code> missing</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>50</strong></td>
+<td style="text-align: left">Store id is missing</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>51</strong></td>
+<td style="text-align: left">Store not found</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>60</strong></td>
+<td style="text-align: left"><code>Signature</code> missing</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>61</strong></td>
+<td style="text-align: left"><code>Signature</code> wrong</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>70</strong></td>
+<td style="text-align: left">Phone number is different</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>80</strong></td>
+<td style="text-align: left">Unable to finish - order is already finished/canceled</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>81</strong></td>
+<td style="text-align: left">Unable to cancel - order is already finished/canceled</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>100</strong></td>
+<td style="text-align: left">At the moment the server cannot process your request</td>
+</tr>
+</tbody></table>
+<h1 id='db947828e5'>Тестирование и отладка</h1>
+<p>Тестирование и отладка интеграции производятся на demo сервере (https://demo.revoplus.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.</p>
+
+<p>Все коды подтверждения и пин-коды <code>8888</code>.</p>
+<h1 id='6961794a3c'>Схемы взаимодействия</h1>
+<p>Возможны следующие схемы взаимодействия:</p>
+
+<table border="0" align="center">
+  <tr>
+    <th rowspan="2">Схема</th>
+    <th colspan="3" align="center">Предоплата</th>
+    <th rowspan="2">Изменение заказа</th>
+  </tr>
+  <tr>
+    <th>Партнёр</th>
+    <th>Рево</th>
+    <th>Отсутствует</th>
+  </tr>
+  <tr>
+    <td>Факторинг 1</td>
+    <td>х</td>
+    <td></td>
+    <td></td>
+    <td>х</td>
+  </tr>
+  <tr>
+    <td>Факторинг 2</td>
+    <td></td>
+    <td>x</td>
+    <td></td>
+    <td>х</td>
+  </tr>
+  <tr>
+    <td><a href="http://localhost:4567/#3">Факторинг 3</a></td>
+    <td></td>
+    <td></td>
+    <td>x</td>
+    <td>х</td>
+  </tr>
+  <tr>
+    <td>Факторинг 4</td>
+    <td>х</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Факторинг 5</td>
+    <td></td>
+    <td>x</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Факторинг 6</td>
+    <td></td>
+    <td></td>
+    <td>x</td>
+    <td></td>
+  </tr>
+</table>
+<h2 id='1'>Факторинг 1</h2><h2 id='2'>Факторинг 2</h2><h2 id='3'>Факторинг 3</h2>
+<ol>
+<li><p>Клиент оформляет покупку на сайте партнёра и выбирает способ оплаты &quot;оплата частями РЕВО&quot;. Дальнейшее оформление происходит в поп-апе, ссылка на который получается с помощью метода <a href="#registration"><code>Registration</code></a>.</p></li>
+<li><p>На стороне партнёра формируется предварительный заказ с тем же <code>order_id</code>, который использовался для вызова формы Рево.</p></li>
+<li><p>В системе Рево заявка переводится в статус hold (блокировка средств) на срок <code>valid_till</code>. Если заказ не будет финализирована с помощью метода <a href="#finish"><code>Finish</code></a> до этого срока, то заявка будет отменена. Информация о решении, сумме лимита и графике платежей.</p></li>
+<li><p>Колл-центр партнёра связывается с клиентом для подтверждения заказа.</p></li>
+<li><p>Если сумма заказа изменилась и превышает лимит, необходимо отменить заявку с помощью метода <a href="#cancel"><code>Cancel</code></a>.</p></li>
+<li><p>Если сумма заказа изменилась в пределах лимита, то необходимо передать обновить информацию о заказе с помощью метода .</p></li>
+</ol>
+
+<p>5.</p>
+
+<p><img src="images/F3.png"></p>
+<h2 id='4'>Факторинг 4</h2><h2 id='5'>Факторинг 5</h2><h2 id='6'>Факторинг 6</h2><h1 id='guides'>Guides</h1><h2 id='49b96e43de'>Регистрация пользователя</h2>
+<p>Регистрация нового пользователя осуществляется с помощью метода ....</p>
+<h2 id='iframe'>Вызов iFrame</h2>
+<p>Полученную с помощью метода ... ссылку на iFrame необходимо отдать в js метод плагина REVO:</p>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">iframe_url</span><span class="p">,</span> <span class="nx">target_selector</span><span class="p">);</span>
+</code></pre>
+<p><code>iframe_url</code> – адрес открываемого iFrame, обязательный параметр.
+<code>target_selector</code> – селектор элемента, внутрь которого должен быть вставлен iFrame.</p>
+
+<p>Далее работает предоставленный Рево плагин js (реализован в виде модуля REVO), который вставляет <code>&lt;iframe src= iframe_url /&gt;</code> и производит манипуляции с этим iFrame.</p>
+
+<p>Плагин доступен по адресу: <code>https://{BASE_URI}/javascripts/iframe/v2/revoiframe.js</code> и его можно добавить на страницу интернет магазина.</p>
+<pre class="highlight html tab-html"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://{BASE_URI}/javascripts/iframe/v2/revoiframe.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre>
+<p>Также данный плагин предоставляет возможность колбэков закрытия формы, загрузки формы и принятия решения по заявке:</p>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onClose</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="s1">'closed'</span><span class="p">);</span> <span class="p">});</span>
+<span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onLoad</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'frame loaded'</span><span class="p">);</span> <span class="p">});</span>
+<span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onResult</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'result'</span><span class="p">);</span> <span class="p">});</span>
+</code></pre>
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="ruby--tab">Ruby</a>
+                <a href="#" data-language-name="java">Java</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
