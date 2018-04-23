@@ -41,7 +41,7 @@ BASE_URL = "https://demo.revoplus.ru/"
 2. `BASE_URL` - переменная обозначающая базовый адрес.
 
 <aside class="notice">
-При попытке обращения к API по HTTP будет возникать 404 ошибка.
+Подключение должно производиться только по протоколу HTTPS  - при попытке подключения по HTTP будет возникать 404 ошибка.
 </aside>
 
 ## Параметры авторизации
@@ -131,7 +131,12 @@ public class Main {
 POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
 ```
 
-Метод возвращает ссылку на iFrame с процедурой регистрации или аутентификации клиента для получения лимита. По завершению формы на адрес указанный в `collback_url` отправляется <a href="#callback_url2">json ответ</a> с результатом оформления.
+Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в `callback_url` отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.
+
+В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать `primary_phone`):
+
+* Если номер телефона клиента не найден в базе Рево (новый клиент), либо расчёт лимита ещё не производился, то форма будет состоять из 2 шагов: регистрации (расчёта лимита) и аутентификации по смс.
+* Если номер телефона клиента найден в базе Рево (повторный клиент) и клиенту уже рассчитан лимит, то форма будет состоять из 1 шага: аутентификации по смс.
 
 <aside class="success">
 Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
@@ -143,20 +148,18 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
 
 ```jsonnet
 {
-  "callback_url": "https://shop.ru/revo/decision",
-  "redirect_url": "https://shop.ru/revo/redirect",
-  "primary_phone": "9268180621",
-  "primary_email" : "ivan@gmail.com",
-  "passport_series" : "1706",
-  "passport_number" : "654698",
-  "current_order": {
-    "order_id": "R001233"
+  callback_url: "https://shop.ru/revo/decision",
+  redirect_url: "https://shop.ru/revo/redirect",
+  primary_phone: "9268180621",
+  primary_email : "ivan@gmail.com",
+  current_order: {
+    order_id: "R001233"
   }
-  "person": {
-    "first_name": "Петр",
-    "surname": "Чернышев",
-    "patronymic": "Александрович",
-    "birth_date": "15.01.1975",
+  person: {
+    first_name: "Петр",
+    surname: "Чернышев",
+    patronymic: "Александрович",
+    birth_date: "15.01.1975",
   }
 }
 ```
@@ -169,14 +172,11 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
 <td colspan="2" style="text-align:right">**order_id**<br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов.
  |**primary_phone**<br> <font color="#939da3">integer, *optional*</font> | <td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).
  |**primary_email**<br> <font color="#939da3">string, *optional*</font> | <td colspan="2"> Email клиента.
- |**passport_series**<br> <font color="#939da3">string, *optional*</font> | <td colspan="2"> Серия паспорта клиента без пробелов.
- |**passport_number**<br> <font color="#939da3">string, *optional*</font> | <td colspan="2"> Номер паспорта клиента.
  |**person**<br> <font color="#939da3">object, *optional*</font> | <td colspan="2"> Объект, содержащий информацию о клиенте.
   <td colspan="2" style="text-align:right">**first_name**<br> <font color="#939da3">string, *optional*</font> | | Имя клиента.
   <td colspan="2" style="text-align:right">**surname**<br> <font color="#939da3">sring, *optional*</font> | | Фамилия клиента.
-  <td colspan="2" style="text-align:right">**patronymic**<br> <font color="#939da3">object, *optional*</font> | | Отчество клиента.
+  <td colspan="2" style="text-align:right">**patronymic**<br> <font color="#939da3">string, *optional*</font> | | Отчество клиента.
   <td colspan="2" style="text-align:right">**birth_date**<br> <font color="#939da3">object, *optional*</font> | | Дата рождения клиента в формате `dd.mm.yyyy`.
-редирект по `redirect_url`. Если его значение `false`, то по успешному заверешению оформления будет окно с результатом. По умолчанию `false`.
 
 ### Response Parameters
 
@@ -209,7 +209,7 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
   overlimit: "true",
   mobile_phone: '89262341793',
   email: 'ivan@gmail.com',
-  loan_id: '???'
+  loan_id: 3216964
 }
 ```
 
@@ -219,15 +219,19 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
 **decision** <br> <font color="#939da3">string</font> | Решение по выдаче рассрочки. При положительном решении - значение `approved`. При отрицательном решении - `declined`.
 **amount** <br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
 **overlimit** <br> <font color="#939da3">integer</font> | Срок рассрочки в месяцах.
-**mobile_phone** <br> <font color="#939da3">object</font> | Объект, содержащий информацию о клиенте.
+**mobile_phone** <br> <font color="#939da3">integer</font> | Номер телефона клиента 10 цифр (без кода страны).
 **email** <br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
-**loan_id**  <br> <font color="#939da3">string</font> | Передаётся guid.
+**loan_id**  <br> <font color="#939da3">integer</font> | Уникальный номер заказа в системе Рево.
 
+<aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое.
+</aside>
 
 ## Limit
 
-<font color="green"> POST </font> `BASE_URL/api/external/v1/client/limit`
+```ruby
+POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID&signature=SIGNATURE
+```
 
 Метод для получения суммы лимита клиента по номеру его телефона. Для новых клиентов получить информацию о лимите только по номеру телефона нельзя.
 
@@ -312,14 +316,14 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
  |**client**<br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о клиенте.
  <td colspan="2" style="text-align:right">**mobile_phone**<br> <font color="#939da3">integer</font> | | Номер телефона клиента 10 цифр (без кода страны).
  <td colspan="2" style="text-align:right">**limit_amount**<br> <font color="#939da3">float</font> | | Лимит средств, доступных клиенту, в рублях с копейками.
- <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Статус пользователя. Возможные значения:<br>`active` - пользователь, у которого уже есть оформленные рассрочки в магазине партнёра;<br>`inactive` - пользователь заблокирован, либо для него недоступны продукты Рево;<br>`new` - пользователь, у которого нет оформленных рассрочек в магазине партнёра.
+ <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Статус пользователя. Возможные значения:<br>`active` - пользователю доступна услуга оплаты частями на сумму `limit_amount`;<br>`inactive` - пользователю не доступна услуга оплаты частями;<br>`new` - новый пользователь, которому доступна услуга оплаты частями на сумму `limit_amount`. ???????схуяли???
 
 ## Checkout
 ```ruby
 POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
 ```
 
-Метод предназначен для оформления заказа клиента и возвращает адрес `iframe_url`, с помощью которого вызывается форма Рево. По завершению оформления заказа на адрес указанный в `collback_url` отправляется <a href="#callback_url">json ответ</a> с результатом оформления и графиком платежей.
+Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в `callback_url` отправляется <a href="#callback_url">json ответ</a> с результатом оформления.
 
 В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать `primary_phone`):
 
@@ -336,28 +340,26 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
 
 ```jsonnet
 {
-  "callback_url": "https://shop.ru/revo/decision",
-  "redirect_url": "https://shop.ru/revo/redirect",
-  "primary_phone": "9268180621",
-  "primary_email" : "ivan@gmail.com",
-  "passport_series" : "1706",
-  "passport_number" : "654698",
-  "current_order": {
-    "order_id": "R001233",
-    "valid_till": "21.04.2017 12:08:01+03:00",
-    "term": 3,
-    "amount": 6700.00,
+  callback_url: "https://shop.ru/revo/decision",
+  redirect_url: "https://shop.ru/revo/redirect",
+  primary_phone: "9268180621",
+  primary_email : "ivan@gmail.com",
+  current_order: {
+    order_id: "R001233",
+    valid_till: "21.04.2017 12:08:01+03:00",
+    term: 3,
+    amount: 6700.00,
   }
-  "person": {
-    "first_name": "Петр",
-    "surname": "Чернышев",
-    "patronymic": "Александрович",
-    "birth_date": "15.01.1975",
+  person: {
+    first_name: "Петр",
+    surname: "Чернышев",
+    patronymic: "Александрович",
+    birth_date: "15.01.1975",
   }
-  "cart_items": [{
+  cart_items: [{
     sku: '1', name: 'prod9', price: '12', quantity: '1' },
-  { sku: '2', name: 'prod3', price: '7', sale_price: '5', quantity: '1' }]
-  "skip_result_page" : true,
+  { sku: '2', name: 'prod3', price: '7', sale_price: '5', quantity: '1' }],
+  skip_result_page: true,
 }
 ```
 
@@ -367,27 +369,27 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
  |**redirect_url** <br> <font color="#939da3">string</font>	|<td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Рево "Вернуться в интернет магазин".
  |**current_order** <br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о заказе.
 <td colspan="2" style="text-align:right"> **order_id**<br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов.
-<td colspan="2" style="text-align:right"> **valid_till**<br> <font color="#939da3">String, *optional*</font> | | Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после  "+" указывается часовой пояс относительно GMT.
+<td colspan="2" style="text-align:right"> **valid_till**<br> <font color="#939da3">String, *optional*</font> | | Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после  "+" указывается часовой пояс относительно GMT. По умолчанию - 24 часа.
  <td colspan="2" style="text-align:right"> **term**<br> <font color="#939da3">integer, *optional*</font> | | Срок рассрочки в месяцах.
  <td colspan="2" style="text-align:right"> **amount**<br> <font color="#939da3">float</font> | | Сумма заказа в рублях с копейками.
  |**primary_phone**<br> <font color="#939da3">integer, *optional*</font> |<td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).
  |**primary_email**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Email клиента.
- |**passport_series**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Серия паспорта клиента без пробелов.
- |**passport_number**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Номер паспорта клиента.
  |**person**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
  <td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string, *optional*</font> | | Имя клиента.
  <td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring, *optional*</font> | | Фамилия клиента.
- <td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">object, *optional*</font> | | Отчество клиента.
- <td colspan="2" style="text-align:right"> **birth_date**<br> <font color="#939da3">object, *optional*</font> | | Дата рождения клиента в формате `dd.mm.yyyy`.
+ <td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">string, *optional*</font> | | Отчество клиента.
+ <td colspan="2" style="text-align:right"> **birth_date**<br> <font color="#939da3">string, *optional*</font> | | Дата рождения клиента в формате `dd.mm.yyyy`.
  |**cart_items**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект, содержащий информацию о заказе.
  <td colspan="2" style="text-align:right"> **sku**<br> <font color="#939da3">string, *optional*</font> | | Складская учётная единица (stock keeping unit).
- <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string</font> | | Наименование товара.
- <td colspan="2" style="text-align:right"> **price**<br> <font color="#939da3">float</font> | | Цена товара.
+ <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Наименование товара.
+ <td colspan="2" style="text-align:right"> **price**<br> <font color="#939da3">float, *optional*</font> | | Цена товара.
  <td colspan="2" style="text-align:right"> **sale_price**<br> <font color="#939da3">float, *optional*</font> | | Цена товара со скидкой (если есть).
  <td colspan="2" style="text-align:right"> **quantity**<br> <font color="#939da3">integer</font> | | Количество товара.
- |**skip_result_page**<br> <font color="#939da3">bool, *optional*</font> |<td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления. Если его значение `true`, то по успешному завершению оформления происходит сразу редирект по `redirect_url`. Если его значение `false`, то по успешному заверешению оформления будет окно с результатом. По умолчанию `false`.
+ |**skip_result_page**<br> <font color="#939da3">bool, *optional*</font> |<td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления в iFrame: `true` - по успешному завершению оформления сразу происходит редирект по `redirect_url`; `false` - по успешному завершению оформления будет отображено окно с результатом. По умолчанию - `false`.
 
-В качестве `redirect_url` может выступать страница корзины. Можно вводить дополнительные проверки и перенаправлять пользователя на другие страницы в зависимости от ответа, полученного ранее на `callback_url`.
+ <aside class="success">
+ При передаче информации о предоплате клиента следует также использовать `skip_result_page`: выставлять `true` при необходимости клиентом совершить предоплату и передавать в `callback_url` адрес страницы предоплаты; выставлять `false` при наличии предоплаты.
+ </aside>
 
 ### Response Parameters
 
@@ -417,7 +419,7 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
 **iframe_url** <br> <font color="#939da3">string</font>	| Cсылка на сгенерированный iFrame.
 
 <a name="callback_url"></a>
-### callback parameters
+### Callback parameters
 
 > Пример callback-а при успешном оформлении товара:
 
@@ -461,7 +463,9 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
 <td colspan="2" style="text-align:right">**date** <br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
 <td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
 
+<aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
+</aside>
 
 ## Status
 
@@ -642,8 +646,8 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID&signature=SIGNATURE
 -:|:-
 **order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
 **amount** <br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
-**check_number** <br> <font color="#939da3">string</font> | **?????**
-**FILES'check'** <br> <font color="#939da3">path?</font> | Фискальный документ ???
+**check_number** <br> <font color="#939da3">string</font> | Номер фискального документа (например, номер чека).
+**FILES'check'** <br> <font color="#939da3">path?</font> | Фискальный документ ??? типы файлов?
 
 ### Response Parameters
 
@@ -846,11 +850,11 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID&signature=SIGNATURE
 
 ## Вызов iFrame
 
-Полученную с помощью метода ... ссылку на iFrame необходимо отдать в js метод плагина REVO:
-
 ```javascript
 REVO.Form.show(iframe_url, target_selector);
 ```
+
+Полученную с помощью метода <a href="#Registration">`Registration`</a> или <a href="#Checkout">`Checkout`</a> ссылку на iFrame необходимо передать в js метод плагина REVO.
 
 `iframe_url` – адрес открываемого iFrame, обязательный параметр.
 `target_selector` – селектор элемента, внутрь которого должен быть вставлен iFrame.
