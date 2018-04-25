@@ -275,34 +275,8 @@
             <a href="#iframe-revo" class="toc-h1 toc-link" data-title="iframe-revo">Описание iFrame REVO</a>
           </li>
           <li>
-            <a href="#6961794a3c" class="toc-h1 toc-link" data-title="">Схемы взаимодействия</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#1" class="toc-h2 toc-link" data-title="1">Факторинг 1</a>
-                  </li>
-                  <li>
-                    <a href="#2" class="toc-h2 toc-link" data-title="2">Факторинг 2</a>
-                  </li>
-                  <li>
-                    <a href="#3" class="toc-h2 toc-link" data-title="3">Факторинг 3</a>
-                  </li>
-                  <li>
-                    <a href="#4" class="toc-h2 toc-link" data-title="4">Факторинг 4</a>
-                  </li>
-                  <li>
-                    <a href="#5" class="toc-h2 toc-link" data-title="5">Факторинг 5</a>
-                  </li>
-                  <li>
-                    <a href="#6" class="toc-h2 toc-link" data-title="6">Факторинг 6</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
             <a href="#guides" class="toc-h1 toc-link" data-title="guides">Guides</a>
               <ul class="toc-list-h2">
-                  <li>
-                    <a href="#49b96e43de" class="toc-h2 toc-link" data-title="">Регистрация пользователя</a>
-                  </li>
                   <li>
                     <a href="#iframe" class="toc-h2 toc-link" data-title="iframe">Вызов iFrame</a>
                   </li>
@@ -320,12 +294,11 @@
         <h1 id='3394112aa9'>Введение</h1>
 <p>API Factoring реализовано на протоколе HTTPS на основе JSON запросов.</p>
 
-<p>Документация состоит из 4 основных частей:</p>
+<p>Документация состоит из 3 основных частей:</p>
 
 <ul>
 <li>Описание авторизации, методов API и кодов ошибок.</li>
 <li><a href="#db947828e5">Руководство по тестированию</a>.</li>
-<li><a href="#6961794a3c">Описание возможных схем взаимодействия</a>.</li>
 <li><a href="#guides">Руководство по реализации основных элементов</a>.</li>
 </ul>
 <h1 id='93900fccba'>Авторизация</h1><h2 id='url'>Базовые URL адреса</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://r.revoplus.ru/"</span>
@@ -342,7 +315,7 @@
 </ol>
 
 <aside class="notice">
-При попытке обращения к API по HTTP будет возникать 404 ошибка.
+Подключение должно производиться только по протоколу HTTPS  - при попытке подключения по HTTP будет возникать 404 ошибка.
 </aside>
 <h2 id='3b61794258'>Параметры авторизации</h2>
 <blockquote>
@@ -421,7 +394,14 @@
 </aside>
 <h1 id='api'>Методы API</h1><h2 id='registration'>Registration</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">limit</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод возвращает ссылку на iFrame с процедурой регистрации или аутентификации клиента для получения лимита. По завершению формы на адрес указанный в <code>collback_url</code> отправляется <a href="#callback_url2">json ответ</a> с результатом оформления.</p>
+<p>Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.</p>
+
+<p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>):</p>
+
+<ul>
+<li>Если номер телефона клиента не найден в базе Рево (новый клиент), либо расчёт лимита ещё не производился, то форма будет состоять из 2 шагов: регистрации (расчёта лимита) и аутентификации по смс.</li>
+<li>Если номер телефона клиента найден в базе Рево (повторный клиент) и клиенту уже рассчитан лимит, то форма будет состоять из 1 шага: аутентификации по смс.</li>
+</ul>
 
 <aside class="success">
 Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
@@ -431,20 +411,18 @@
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="s">"callback_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
-  <span class="s">"redirect_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
-  <span class="s">"primary_phone"</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
-  <span class="s">"primary_email"</span> <span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
-  <span class="s">"passport_series"</span> <span class="p">:</span> <span class="s">"1706"</span><span class="p">,</span>
-  <span class="s">"passport_number"</span> <span class="p">:</span> <span class="s">"654698"</span><span class="p">,</span>
-  <span class="s">"current_order"</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span>
-  <span class="p">}</span>
-  <span class="s">"person"</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s">"first_name"</span><span class="p">:</span> <span class="s">"Петр"</span><span class="p">,</span>
-    <span class="s">"surname"</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
-    <span class="s">"patronymic"</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
-    <span class="s">"birth_date"</span><span class="p">:</span> <span class="s">"15.01.1975"</span><span class="p">,</span>
+  <span class="nx">callback_url</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
+  <span class="nx">redirect_url</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
+  <span class="nx">primary_phone</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
+  <span class="nx">primary_email</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
+  <span class="nx">current_order</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R001233"</span>
+  <span class="p">},</span>
+  <span class="nx">person</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">first_name</span><span class="p">:</span> <span class="s">"Петр"</span><span class="p">,</span>
+    <span class="nx">surname</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
+    <span class="nx">patronymic</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
+    <span class="nx">birth_date</span><span class="p">:</span> <span class="s">"15.01.1975"</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -487,16 +465,6 @@
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>passport_series</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Серия паспорта клиента без пробелов.</td>
-</tr>
-<tr>
-<td style="text-align: right"></td>
-<td style="text-align: right"><strong>passport_number</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Номер паспорта клиента.</td>
-</tr>
-<tr>
-<td style="text-align: right"></td>
 <td style="text-align: right"><strong>person</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о клиенте.</td>
 </tr>
@@ -511,7 +479,7 @@
 <td style="text-align: left">Фамилия клиента.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>patronymic</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>patronymic</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Отчество клиента.</td>
 </tr>
@@ -521,8 +489,6 @@
 <td style="text-align: left">Дата рождения клиента в формате <code>dd.mm.yyyy</code>.</td>
 </tr>
 </tbody></table>
-
-<p>редирект по <code>redirect_url</code>. Если его значение <code>false</code>, то по успешному заверешению оформления будет окно с результатом. По умолчанию <code>false</code>.</p>
 <h3 id='response-parameters'>Response Parameters</h3>
 <blockquote>
 <p>Пример ответа для успешной аутентификации.</p>
@@ -563,9 +529,9 @@
   <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
   <span class="nx">amount</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
   <span class="nx">overlimit</span><span class="p">:</span> <span class="s">"true"</span><span class="p">,</span>
-  <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">'89262341793'</span><span class="p">,</span>
-  <span class="nx">email</span><span class="p">:</span> <span class="s">'ivan@gmail.com'</span><span class="p">,</span>
-  <span class="nx">loan_id</span><span class="p">:</span> <span class="s">'???'</span>
+  <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"89262341793"</span><span class="p">,</span>
+  <span class="nx">email</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
+  <span class="nx">loan_id</span><span class="p">:</span> <span class="mi">3216964</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -580,7 +546,7 @@
 </tr>
 <tr>
 <td style="text-align: right"><strong>decision</strong> <br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Решение по выдаче рассрочки. При положительном решении - значение <code>approved</code>. При отрицательном решении - <code>declined</code>.</td>
+<td style="text-align: left">Решение по выдаче рассрочки. При положительном решении - значение <code>approved</code> (заявка ожидает финализации). При отрицательном решении - <code>declined</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
@@ -591,23 +557,24 @@
 <td style="text-align: left">Срок рассрочки в месяцах.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>mobile_phone</strong> <br> <font color="#939da3">object</font></td>
-<td style="text-align: left">Объект, содержащий информацию о клиенте.</td>
+<td style="text-align: right"><strong>mobile_phone</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>email</strong> <br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>loan_id</strong>  <br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Передаётся guid.</td>
+<td style="text-align: right"><strong>loan_id</strong>  <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left">Уникальный номер заказа в системе Рево.</td>
 </tr>
 </tbody></table>
 
-<p>При <code>decision</code> равном <code>declined</code> значение <code>amount</code> будет нулевое.</p>
-<h2 id='limit'>Limit</h2>
-<p><font color="green"> POST </font> <code>BASE_URL/api/external/v1/client/limit</code></p>
-
+<aside class="success">
+При `decision` равном `declined` значение `amount` будет нулевое.
+</aside>
+<h2 id='limit'>Limit</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">limit?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+</code></pre>
 <p>Метод для получения суммы лимита клиента по номеру его телефона. Для новых клиентов получить информацию о лимите только по номеру телефона нельзя.</p>
 <h3 id='parameters-2'>Parameters</h3>
 <blockquote>
@@ -644,7 +611,7 @@
     <span class="p">{</span>
       <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
-    <span class="p">}</span>
+    <span class="p">},</span>
     <span class="nx">client</span><span class="p">:</span>
     <span class="p">{</span>
       <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
@@ -661,7 +628,7 @@
     <span class="p">{</span>
       <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
-    <span class="p">}</span>
+    <span class="p">},</span>
     <span class="nx">client</span><span class="p">:</span>
     <span class="p">{</span>
       <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
@@ -678,7 +645,7 @@
     <span class="p">{</span>
       <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
-    <span class="p">}</span>
+    <span class="p">},</span>
     <span class="nx">client</span><span class="p">:</span>
     <span class="p">{</span>
       <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
@@ -722,12 +689,12 @@
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>status</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Статус пользователя. Возможные значения:<br><code>active</code> - пользователь, у которого уже есть оформленные рассрочки в магазине партнёра;<br><code>inactive</code> - пользователь заблокирован, либо для него недоступны продукты Рево;<br><code>new</code> - пользователь, у которого нет оформленных рассрочек в магазине партнёра.</td>
+<td style="text-align: left">Статус пользователя. Возможные значения:<br><code>active</code> - пользователю доступна услуга оплаты частями на сумму <code>limit_amount</code>;<br><code>inactive</code> - пользователю не доступна услуга оплаты частями;<br><code>new</code> - новый пользователь, которому доступна услуга оплаты частями на сумму <code>limit_amount</code>.</td>
 </tr>
 </tbody></table>
 <h2 id='checkout'>Checkout</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод предназначен для оформления заказа клиента и возвращает адрес <code>iframe_url</code>, с помощью которого вызывается форма Рево. По завершению оформления заказа на адрес указанный в <code>collback_url</code> отправляется <a href="#callback_url">json ответ</a> с результатом оформления и графиком платежей.</p>
+<p>Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url">json ответ</a> с результатом оформления.</p>
 
 <p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>):</p>
 
@@ -744,28 +711,26 @@
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="s">"callback_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
-  <span class="s">"redirect_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
-  <span class="s">"primary_phone"</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
-  <span class="s">"primary_email"</span> <span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
-  <span class="s">"passport_series"</span> <span class="p">:</span> <span class="s">"1706"</span><span class="p">,</span>
-  <span class="s">"passport_number"</span> <span class="p">:</span> <span class="s">"654698"</span><span class="p">,</span>
-  <span class="s">"current_order"</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
-    <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"21.04.2017 12:08:01+03:00"</span><span class="p">,</span>
-    <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">6700.00</span><span class="p">,</span>
-  <span class="p">}</span>
-  <span class="s">"person"</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s">"first_name"</span><span class="p">:</span> <span class="s">"Петр"</span><span class="p">,</span>
-    <span class="s">"surname"</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
-    <span class="s">"patronymic"</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
-    <span class="s">"birth_date"</span><span class="p">:</span> <span class="s">"15.01.1975"</span><span class="p">,</span>
-  <span class="p">}</span>
-  <span class="s">"cart_items"</span><span class="p">:</span> <span class="p">[{</span>
-    <span class="nx">sku</span><span class="p">:</span> <span class="s">'1'</span><span class="p">,</span> <span class="nx">name</span><span class="p">:</span> <span class="s">'prod9'</span><span class="p">,</span> <span class="nx">price</span><span class="p">:</span> <span class="s">'12'</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">:</span> <span class="s">'1'</span> <span class="p">},</span>
-  <span class="p">{</span> <span class="nx">sku</span><span class="p">:</span> <span class="s">'2'</span><span class="p">,</span> <span class="nx">name</span><span class="p">:</span> <span class="s">'prod3'</span><span class="p">,</span> <span class="nx">price</span><span class="p">:</span> <span class="s">'7'</span><span class="p">,</span> <span class="nx">sale_price</span><span class="p">:</span> <span class="s">'5'</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">:</span> <span class="s">'1'</span> <span class="p">}]</span>
-  <span class="s">"skip_result_page"</span> <span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">callback_url</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
+  <span class="nx">redirect_url</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
+  <span class="nx">primary_phone</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
+  <span class="nx">primary_email</span> <span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
+  <span class="nx">current_order</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
+    <span class="nx">valid_till</span><span class="p">:</span> <span class="s">"21.04.2017 12:08:01+03:00"</span><span class="p">,</span>
+    <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="nx">amount</span><span class="p">:</span> <span class="mf">6700.00</span>
+  <span class="p">},</span>
+  <span class="nx">person</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">first_name</span><span class="p">:</span> <span class="s">"Петр"</span><span class="p">,</span>
+    <span class="nx">surname</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
+    <span class="nx">patronymic</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
+    <span class="nx">birth_date</span><span class="p">:</span> <span class="s">"15.01.1975"</span>
+  <span class="p">},</span>
+  <span class="nx">cart_items</span><span class="p">:</span> <span class="p">[{</span>
+    <span class="nx">sku</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span> <span class="nx">name</span><span class="p">:</span> <span class="s">"prod9"</span><span class="p">,</span> <span class="nx">price</span><span class="p">:</span> <span class="s">"12"</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">:</span> <span class="s">"1"</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="nx">sku</span><span class="p">:</span> <span class="s">"2"</span><span class="p">,</span> <span class="nx">name</span><span class="p">:</span> <span class="s">"prod3"</span><span class="p">,</span> <span class="nx">price</span><span class="p">:</span> <span class="s">"7"</span><span class="p">,</span> <span class="nx">sale_price</span><span class="p">:</span> <span class="s">"5"</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">:</span> <span class="s">"1"</span> <span class="p">}],</span>
+  <span class="nx">skip_result_page</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -798,7 +763,7 @@
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>valid_till</strong><br> <font color="#939da3">String, <em>optional</em></font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: <code>dd.mm.yyyy hh:mm:ss+hh:mm</code>, где после  &quot;+&quot; указывается часовой пояс относительно GMT.</td>
+<td style="text-align: left">Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: <code>dd.mm.yyyy hh:mm:ss+hh:mm</code>, где после  &quot;+&quot; указывается часовой пояс относительно GMT. По умолчанию - 24 часа.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>term</strong><br> <font color="#939da3">integer, <em>optional</em></font></td>
@@ -822,16 +787,6 @@
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>passport_series</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Серия паспорта клиента без пробелов.</td>
-</tr>
-<tr>
-<td style="text-align: right"></td>
-<td style="text-align: right"><strong>passport_number</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Номер паспорта клиента.</td>
-</tr>
-<tr>
-<td style="text-align: right"></td>
 <td style="text-align: right"><strong>person</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о клиенте.</td>
 </tr>
@@ -846,12 +801,12 @@
 <td style="text-align: left">Фамилия клиента.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>patronymic</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>patronymic</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Отчество клиента.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>birth_date</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>birth_date</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Дата рождения клиента в формате <code>dd.mm.yyyy</code>.</td>
 </tr>
@@ -866,12 +821,12 @@
 <td style="text-align: left">Складская учётная единица (stock keeping unit).</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>name</strong><br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>name</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Наименование товара.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>price</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>price</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Цена товара.</td>
 </tr>
@@ -888,11 +843,13 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>skip_result_page</strong><br> <font color="#939da3">bool, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления. Если его значение <code>true</code>, то по успешному завершению оформления происходит сразу редирект по <code>redirect_url</code>. Если его значение <code>false</code>, то по успешному заверешению оформления будет окно с результатом. По умолчанию <code>false</code>.</td>
+<td style="text-align: left"><td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления в iFrame: <code>true</code> - по успешному завершению оформления сразу происходит редирект по <code>redirect_url</code>; <code>false</code> - по успешному завершению оформления будет отображено окно с результатом. По умолчанию - <code>false</code>.</td>
 </tr>
 </tbody></table>
 
-<p>В качестве <code>redirect_url</code> может выступать страница корзины. Можно вводить дополнительные проверки и перенаправлять пользователя на другие страницы в зависимости от ответа, полученного ранее на <code>callback_url</code>.</p>
+<p><aside class="success">
+ При передаче информации о предоплате клиента следует также использовать <code>skip_result_page</code>: выставлять <code>true</code> при необходимости клиентом совершить предоплату и передавать в <code>callback_url</code> адрес страницы предоплаты; выставлять <code>false</code> при наличии предоплаты.
+ </aside></p>
 <h3 id='response-parameters-3'>Response Parameters</h3>
 <blockquote>
 <p>Пример ответа при успешной аутентификации.</p>
@@ -933,7 +890,7 @@
 </tbody></table>
 
 <p><a name="callback_url"></a></p>
-<h3 id='callback-parameters-2'>callback parameters</h3>
+<h3 id='callback-parameters-2'>Callback parameters</h3>
 <blockquote>
 <p>Пример callback-а при успешном оформлении товара:</p>
 </blockquote>
@@ -1021,7 +978,9 @@
 </tr>
 </tbody></table>
 
-<p>При <code>decision</code> равном <code>declined</code> значение <code>amount</code> будет нулевое, а в <code>schedule</code> будет пустой массив.</p>
+<aside class="success">
+При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
+</aside>
 <h2 id='status'>Status</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">status?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод возвращает информацию по статусу заказа.</p>
@@ -1057,7 +1016,6 @@
     <span class="nx">expired</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
     <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
     <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
-    <span class="nx">discount_amount</span><span class="p">:</span> <span class="s">"6100.00"</span><span class="p">,</span>
     <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span>
   <span class="p">}</span>
 <span class="p">}</span>
@@ -1087,7 +1045,6 @@
     <span class="nx">expired</span><span class="p">:</span> <span class="s">"true"</span><span class="p">,</span>
     <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
     <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
-    <span class="nx">discount_amount</span><span class="p">:</span> <span class="s">"6100.00"</span><span class="p">,</span>
     <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span>
   <span class="p">}</span>
 <span class="p">}</span>
@@ -1140,17 +1097,12 @@
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>decision</strong> <br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Решение по выдаче рассрочки. При положительном решении значение <code>approved</code>. При отрицательном решении - <code>declined</code>.</td>
+<td style="text-align: left">Информация по статусу заказа. Если заказ уже финализирован - <code>approved</code>. Если заказ ожидает финализации - <code>pending</code>. Если заказ отменили - <code>declined</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Сумма в рублях с копейками. (СТРОКА!!! сейчас)</td>
-</tr>
-<tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>discount_amount</strong> <br> <font color="#939da3">bool</font></td>
-<td style="text-align: right"></td>
-<td style="text-align: left">???</td>
+<td style="text-align: left">Сумма в рублях с копейками.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>term</strong> <br> <font color="#939da3">integer</font></td>
@@ -1161,19 +1113,94 @@
 <h2 id='change'>Change</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">change?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для изменения суммы уже созданного заказа.</p>
-
-<aside class="warning">
-Находится в разработке.
-</aside>
-<h2 id='cancel'>Cancel</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">cancel?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
-</code></pre>
-<p>Метод для отмены заказа. При отмене у клиента разблокируются ранее захолдированные средства.</p>
 <h3 id='parameters-5'>Parameters</h3>
 <blockquote>
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+  <span class="nx">amount</span><span class="p">:</span> <span class="s">"5600.00"</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Сумма в рублях с копейками.</td>
+</tr>
+</tbody></table>
+<h3 id='response-parameters-5'>Response parameters</h3>
+<blockquote>
+<p>Пример ответа при успешном изменении заказа:</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="nx">schedule</span><span class="p">:</span>
+  <span class="p">[{</span>
+    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.01.2018"</span><span class="p">,</span>
+    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.02.2018"</span><span class="p">,</span>
+    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.03.2018"</span><span class="p">,</span>
+    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+  <span class="p">}]</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: left"><td colspan="2"> Код ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: left"><td colspan="2"> Короткое текстовое описание ответа.</td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>schedule</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о графике платежей.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>date</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Дата платежа в формате <code>dd.mm.yyyy</code>.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Сумма платежа в рублях с копейками.</td>
+</tr>
+</tbody></table>
+<h2 id='cancel'>Cancel</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">cancel?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+</code></pre>
+<p>Метод для отмены заказа. При отмене у клиента разблокируются ранее захолдированные средства.</p>
+<h3 id='parameters-6'>Parameters</h3>
+<blockquote>
+<p>Пример запроса в формате json</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1187,13 +1214,13 @@
 <td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
 </tr>
 </tbody></table>
-<h3 id='response-parameters-5'>Response Parameters</h3>
+<h3 id='response-parameters-6'>Response Parameters</h3>
 <blockquote>
 <p>Пример ответа, когда файл успешно подгружен</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1213,21 +1240,20 @@
 </tbody></table>
 <h2 id='finish'>Finish</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">finish?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево.</p>
+<p>Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Фискальный документ должен быть передан по HTTP с названием <code>check</code>.</p>
 
 <aside class="notice">
 При попытке финализации заявки с истекшим сроком `valid_till`, будет вызван метод `cancel`.
 </aside>
-<h3 id='parameters-6'>Parameters</h3>
+<h3 id='parameters-7'>Parameters</h3>
 <blockquote>
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
   <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
-  <span class="nx">check_number</span><span class="p">:</span> <span class="s">'ZDDS3123F'</span>
+  <span class="nx">check_number</span><span class="p">:</span> <span class="s">"ZDDS3123F"</span>
 <span class="p">}</span>
-<span class="err">@</span><span class="nx">FILES</span><span class="s">'check'</span>
 </code></pre>
 <table><thead>
 <tr>
@@ -1245,20 +1271,16 @@
 </tr>
 <tr>
 <td style="text-align: right"><strong>check_number</strong> <br> <font color="#939da3">string</font></td>
-<td style="text-align: left"><strong>?????</strong></td>
-</tr>
-<tr>
-<td style="text-align: right"><strong>FILES&#39;check&#39;</strong> <br> <font color="#939da3">path?</font></td>
-<td style="text-align: left">Фискальный документ ???</td>
+<td style="text-align: left">Номер фискального документа (например, номер чека).</td>
 </tr>
 </tbody></table>
-<h3 id='response-parameters-6'>Response Parameters</h3>
+<h3 id='response-parameters-7'>Response Parameters</h3>
 <blockquote>
 <p>Пример ответа, когда файл успешно подгружен</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1279,7 +1301,7 @@
 <h2 id='return'>Return</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="k">return</span><span class="p">?</span><span class="n">store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для осуществления процедуры возврата заказа.</p>
-<h3 id='parameters-7'>Parameters</h3>
+<h3 id='parameters-8'>Parameters</h3>
 <blockquote>
 <p>Пример запроса в формате json</p>
 </blockquote>
@@ -1303,7 +1325,7 @@
 <td style="text-align: left">Сумма возврата в рублях с копейками. Возврат может быть как полным, так и частичным.</td>
 </tr>
 </tbody></table>
-<h3 id='response-parameters-7'>Response Parameters</h3>
+<h3 id='response-parameters-8'>Response Parameters</h3>
 <blockquote>
 <p>Пример ответа при успешной обработке запроса на возврат</p>
 </blockquote>
@@ -1403,8 +1425,16 @@
 <td style="text-align: left">Phone number is different</td>
 </tr>
 <tr>
+<td style="text-align: right"><strong>71</strong></td>
+<td style="text-align: left">Client has not enough limit</td>
+</tr>
+<tr>
 <td style="text-align: right"><strong>80</strong></td>
 <td style="text-align: left">Unable to finish - order is already finished/canceled</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>82</strong></td>
+<td style="text-align: left">Unable to change - order is already finished/canceled</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>81</strong></td>
@@ -1420,93 +1450,26 @@
 
 <p>Все коды подтверждения и пин-коды <code>8888</code>.</p>
 
-<p>1) префиксы для отказных клиентов</p>
-
-<p>2) для тестирования на проде - код задается персонаяльно магазину (не всегда 8888)</p>
-
-<p>3) в анкете идет проверка по ФИО+ДР или номер паспорта на совпадение с существующим клиентом, поэтому при тестировании необходимо вводить различные данные</p>
+<ul>
+<li><p>Для получения отказ при использовании <a href="#Registration"><code>Registration</code></a> необходимо указать телефон, начинающийся с 88821.</p></li>
+<li><p>Для получения одобрения при использовании <a href="#Registration"><code>Registration</code></a> необходимо указать телефон, начинающийся с 888, кроме 88821.</p></li>
+<li><p>Для тестирования на production сервере код задаётся в настройках магазина партнёра. Например, это может быть 7777, вместо 8888.</p></li>
+<li><p>В анкете идет проверка по ФИО + дате рождения или номеру паспорта на совпадение с существующим клиентом, поэтому при тестировании необходимо вводить различные данные в эти поля.</p></li>
+</ul>
 <h1 id='iframe-revo'>Описание iFrame REVO</h1>
-<p>ФИО - кириллица</p>
+<ul>
+<li>ФИО - заполняется кириллицей</li>
+<li>возраст - не менее 18 лет</li>
+<li>серия паспорта -</li>
+</ul>
 
-<p>возраст - не менее 18 лет</p>
-
-<p>серия паспорта - ????</p>
-<h1 id='6961794a3c'>Схемы взаимодействия</h1>
-<p>Возможны следующие схемы взаимодействия:</p>
-
-<table border="0" align="center">
-  <tr>
-    <th rowspan="2">Схема</th>
-    <th colspan="3" align="center">Предоплата</th>
-    <th rowspan="2">Изменение заказа</th>
-  </tr>
-  <tr>
-    <th>Партнёр</th>
-    <th>Рево</th>
-    <th>Отсутствует</th>
-  </tr>
-  <tr>
-    <td>Факторинг 1</td>
-    <td>х</td>
-    <td></td>
-    <td></td>
-    <td>х</td>
-  </tr>
-  <tr>
-    <td>Факторинг 2</td>
-    <td></td>
-    <td>x</td>
-    <td></td>
-    <td>х</td>
-  </tr>
-  <tr>
-    <td><a href="http://localhost:4567/#3">Факторинг 3</a></td>
-    <td></td>
-    <td></td>
-    <td>x</td>
-    <td>х</td>
-  </tr>
-  <tr>
-    <td>Факторинг 4</td>
-    <td>х</td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Факторинг 5</td>
-    <td></td>
-    <td>x</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Факторинг 6</td>
-    <td></td>
-    <td></td>
-    <td>x</td>
-    <td></td>
-  </tr>
-</table>
-<h2 id='1'>Факторинг 1</h2><h2 id='2'>Факторинг 2</h2><h2 id='3'>Факторинг 3</h2>
-<ol>
-<li><p>Клиент оформляет покупку на сайте партнёра и выбирает способ оплаты &quot;оплата частями РЕВО&quot;. Дальнейшее оформление происходит в поп-апе, ссылка на который получается с помощью метода <a href="#registration"><code>Registration</code></a>.</p></li>
-<li><p>На стороне партнёра формируется предварительный заказ с тем же <code>order_id</code>, который использовался для вызова формы Рево.</p></li>
-<li><p>В системе Рево заявка переводится в статус hold (блокировка средств) на срок <code>valid_till</code>. Если заказ не будет финализирована с помощью метода <a href="#finish"><code>Finish</code></a> до этого срока, то заявка будет отменена. Информация о решении, сумме лимита и графике платежей.</p></li>
-<li><p>Колл-центр партнёра связывается с клиентом для подтверждения заказа.</p></li>
-<li><p>Если сумма заказа изменилась и превышает лимит, необходимо отменить заявку с помощью метода <a href="#cancel"><code>Cancel</code></a>.</p></li>
-<li><p>Если сумма заказа изменилась в пределах лимита, то необходимо передать обновить информацию о заказе с помощью метода .</p></li>
-</ol>
-
-<p>5.</p>
-
-<p><img src="images/F3.png"></p>
-<h2 id='4'>Факторинг 4</h2><h2 id='5'>Факторинг 5</h2><h2 id='6'>Факторинг 6</h2><h1 id='guides'>Guides</h1><h2 id='49b96e43de'>Регистрация пользователя</h2>
-<p>Регистрация нового пользователя осуществляется с помощью метода ....</p>
-<h2 id='iframe'>Вызов iFrame</h2>
-<p>Полученную с помощью метода ... ссылку на iFrame необходимо отдать в js метод плагина REVO:</p>
-<pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">iframe_url</span><span class="p">,</span> <span class="nx">target_selector</span><span class="p">);</span>
+<aside class="warning">
+Данный раздел находится в стадии разработки.
+</aside>
+<h1 id='guides'>Guides</h1><h2 id='iframe'>Вызов iFrame</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">iframe_url</span><span class="p">,</span> <span class="nx">target_selector</span><span class="p">);</span>
 </code></pre>
+<p>Полученную с помощью метода <a href="#Registration"><code>Registration</code></a> или <a href="#Checkout"><code>Checkout</code></a> ссылку на iFrame необходимо передать в js метод плагина REVO.</p>
+
 <p><code>iframe_url</code> – адрес открываемого iFrame, обязательный параметр.
 <code>target_selector</code> – селектор элемента, внутрь которого должен быть вставлен iFrame.</p>
 
@@ -1515,7 +1478,7 @@
 <p>Плагин доступен по адресу: <code>https://{BASE_URI}/javascripts/iframe/v2/revoiframe.js</code> и его можно добавить на страницу интернет магазина.</p>
 <pre class="highlight html tab-html"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://{BASE_URI}/javascripts/iframe/v2/revoiframe.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 </code></pre>
-<p>Также данный плагин предоставляет возможность колбэков закрытия формы, загрузки формы и принятия решения по заявке:</p>
+<p>Также данный плагин предоставляет возможность получения событий: закрытия формы - <code>onClose</code>, загрузки формы - <code>onLoad</code> и принятия решения по заявке - <code>onResult</code>.</p>
 <pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onClose</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="s1">'closed'</span><span class="p">);</span> <span class="p">});</span>
 <span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onLoad</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'frame loaded'</span><span class="p">);</span> <span class="p">});</span>
 <span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onResult</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'result'</span><span class="p">);</span> <span class="p">});</span>
