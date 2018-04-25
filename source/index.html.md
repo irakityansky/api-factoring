@@ -10,7 +10,7 @@ toc_footers:
 - <a href='https://revo.ru/API/en'>API Documentation in English</a>
 
 #includes:
-#  - errors
+#- business
 
 search: true
 ---
@@ -19,11 +19,10 @@ search: true
 
 API Factoring реализовано на протоколе HTTPS на основе JSON запросов.
 
-Документация состоит из 4 основных частей:
+Документация состоит из 3 основных частей:
 
 * Описание авторизации, методов API и кодов ошибок.
 * <a href="#db947828e5">Руководство по тестированию</a>.
-* <a href="#6961794a3c">Описание возможных схем взаимодействия</a>.
 * <a href="#guides">Руководство по реализации основных элементов</a>.
 
 # Авторизация
@@ -151,15 +150,15 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
   callback_url: "https://shop.ru/revo/decision",
   redirect_url: "https://shop.ru/revo/redirect",
   primary_phone: "9268180621",
-  primary_email : "ivan@gmail.com",
+  primary_email: "ivan@gmail.com",
   current_order: {
     order_id: "R001233"
-  }
+  },
   person: {
     first_name: "Петр",
     surname: "Чернышев",
     patronymic: "Александрович",
-    birth_date: "15.01.1975",
+    birth_date: "15.01.1975"
   }
 }
 ```
@@ -207,8 +206,8 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
   decision: "approved",
   amount: 5000,
   overlimit: "true",
-  mobile_phone: '89262341793',
-  email: 'ivan@gmail.com',
+  mobile_phone: "89262341793",
+  email: "ivan@gmail.com",
   loan_id: 3216964
 }
 ```
@@ -216,7 +215,7 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
  | |
 -:|:-
 **order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**decision** <br> <font color="#939da3">string</font> | Решение по выдаче рассрочки. При положительном решении - значение `approved`. При отрицательном решении - `declined`.
+**decision** <br> <font color="#939da3">string</font> | Решение по выдаче рассрочки. При положительном решении - значение `approved` (заявка ожидает финализации). При отрицательном решении - `declined`.
 **amount** <br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
 **overlimit** <br> <font color="#939da3">integer</font> | Срок рассрочки в месяцах.
 **mobile_phone** <br> <font color="#939da3">integer</font> | Номер телефона клиента 10 цифр (без кода страны).
@@ -263,7 +262,7 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID&signature=SIGNATURE
     {
       status: 0,
       message: "Payload valid"
-    }
+    },
     client:
     {
       mobile_phone: "9031234567",
@@ -281,7 +280,7 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID&signature=SIGNATURE
     {
       status: 0,
       message: "Payload valid"
-    }
+    },
     client:
     {
       mobile_phone: "9031234567",
@@ -299,7 +298,7 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID&signature=SIGNATURE
     {
       status: 0,
       message: "Payload valid"
-    }
+    },
     client:
     {
       mobile_phone: "9031234567",
@@ -316,7 +315,7 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID&signature=SIGNATURE
  |**client**<br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о клиенте.
  <td colspan="2" style="text-align:right">**mobile_phone**<br> <font color="#939da3">integer</font> | | Номер телефона клиента 10 цифр (без кода страны).
  <td colspan="2" style="text-align:right">**limit_amount**<br> <font color="#939da3">float</font> | | Лимит средств, доступных клиенту, в рублях с копейками.
- <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Статус пользователя. Возможные значения:<br>`active` - пользователю доступна услуга оплаты частями на сумму `limit_amount`;<br>`inactive` - пользователю не доступна услуга оплаты частями;<br>`new` - новый пользователь, которому доступна услуга оплаты частями на сумму `limit_amount`. ???????схуяли???
+ <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Статус пользователя. Возможные значения:<br>`active` - пользователю доступна услуга оплаты частями на сумму `limit_amount`;<br>`inactive` - пользователю не доступна услуга оплаты частями;<br>`new` - новый пользователь, которому доступна услуга оплаты частями на сумму `limit_amount`.
 
 ## Checkout
 ```ruby
@@ -348,18 +347,18 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
     order_id: "R001233",
     valid_till: "21.04.2017 12:08:01+03:00",
     term: 3,
-    amount: 6700.00,
-  }
+    amount: 6700.00
+  },
   person: {
     first_name: "Петр",
     surname: "Чернышев",
     patronymic: "Александрович",
-    birth_date: "15.01.1975",
-  }
+    birth_date: "15.01.1975"
+  },
   cart_items: [{
-    sku: '1', name: 'prod9', price: '12', quantity: '1' },
-  { sku: '2', name: 'prod3', price: '7', sale_price: '5', quantity: '1' }],
-  skip_result_page: true,
+    sku: "1", name: "prod9", price: "12", quantity: "1" },
+  { sku: "2", name: "prod3", price: "7", sale_price: "5", quantity: "1" }],
+  skip_result_page: true
 }
 ```
 
@@ -503,7 +502,6 @@ POST BASE_URL/factoring/v1/status?store_id=STORE_ID&signature=SIGNATURE
     expired: false,
     decision: "approved",
     amount: "6700.00",
-    discount_amount: "6100.00",
     term: 3
   }
 }
@@ -535,7 +533,6 @@ POST BASE_URL/factoring/v1/status?store_id=STORE_ID&signature=SIGNATURE
     expired: "true",
     decision: "approved",
     amount: "6700.00",
-    discount_amount: "6100.00",
     term: 3
   }
 }
@@ -562,9 +559,8 @@ POST BASE_URL/factoring/v1/status?store_id=STORE_ID&signature=SIGNATURE
  |**current_order** <br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о заказе.
  <td colspan="2" style="text-align:right">**order_id** <br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов.
  <td colspan="2" style="text-align:right">**expired** <br> <font color="#939da3">bool</font> | | Флаг, отображающий статус актуальности заказа. Для актуальных заказов значение `true`.
- <td colspan="2" style="text-align:right">**decision** <br> <font color="#939da3">string</font> | | Решение по выдаче рассрочки. При положительном решении значение `approved`. При отрицательном решении - `declined`.
- <td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма в рублях с копейками. (СТРОКА!!! сейчас)
- <td colspan="2" style="text-align:right">**discount_amount** <br> <font color="#939da3">bool</font> | | ???
+ <td colspan="2" style="text-align:right">**decision** <br> <font color="#939da3">string</font> | | Информация по статусу заказа. Если заказ уже финализирован - `approved`. Если заказ ожидает финализации - `pending`. Если заказ отменили - `declined`.
+ <td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма в рублях с копейками.
  <td colspan="2" style="text-align:right">**term** <br> <font color="#939da3">integer</font> | | Срок рассрочки в месяцах.
 
 ## Change
@@ -575,9 +571,53 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID&signature=SIGNATURE
 
 Метод для изменения суммы уже созданного заказа.
 
-<aside class="warning">
-Находится в разработке.
-</aside>
+### Parameters
+
+> Пример запроса в формате json
+
+```jsonnet
+{
+  order_id: "R107356",
+  amount: "5600.00"
+}
+```
+
+ | |
+-:|:-
+**order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+**amount** <br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
+
+### Response parameters
+
+> Пример ответа при успешном изменении заказа:
+
+```jsonnet
+{
+  status: 0,
+  message: "Payload valid",
+  schedule:
+  [{
+    date: "01.01.2018",
+    amount: "2933.33"
+  },
+  {
+    date: "01.02.2018",
+    amount: "2933.33"
+  },
+  {
+    date: "01.03.2018",
+    amount: "2933.33"
+  }]
+}
+```
+
+| | | |
+-:|-:|:-|:-
+ |**status** <br> <font color="#939da3">integer</font> |<td colspan="2"> Код ответа.
+ |**message** <br> <font color="#939da3">string</font> |<td colspan="2"> Короткое текстовое описание ответа.
+ |**schedule** <br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
+<td colspan="2" style="text-align:right">**date** <br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
+<td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
 
 ## Cancel
 
@@ -593,7 +633,7 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID&signature=SIGNATURE
 
 ```jsonnet
 {
-  order_id: "R107356",
+  order_id: "R107356"
 }
 ```
 
@@ -608,7 +648,7 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID&signature=SIGNATURE
 ```jsonnet
 {
   status: 0,
-  message: "Payload valid",
+  message: "Payload valid"
 }
 ```
 
@@ -623,7 +663,7 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID&signature=SIGNATURE
 POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID&signature=SIGNATURE
 ```
 
-Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево.
+Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Фискальный документ должен быть передан по HTTP с названием `check`.
 
 <aside class="notice">
 При попытке финализации заявки с истекшим сроком `valid_till`, будет вызван метод `cancel`.
@@ -637,9 +677,8 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID&signature=SIGNATURE
 {
   order_id: "R107356",
   amount: "6700.00",
-  check_number: 'ZDDS3123F'
+  check_number: "ZDDS3123F"
 }
-@FILES'check'
 ```
 
  | |
@@ -647,7 +686,6 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID&signature=SIGNATURE
 **order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
 **amount** <br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
 **check_number** <br> <font color="#939da3">string</font> | Номер фискального документа (например, номер чека).
-**FILES'check'** <br> <font color="#939da3">path?</font> | Фискальный документ ??? типы файлов?
 
 ### Response Parameters
 
@@ -656,7 +694,7 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID&signature=SIGNATURE
 ```jsonnet
 {
   status: 0,
-  message: "Payload valid",
+  message: "Payload valid"
 }
 ```
 
@@ -733,7 +771,9 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID&signature=SIGNATURE
 **60**  | `Signature` missing
 **61**  | `Signature` wrong
 **70**  | Phone number is different
+**71**  | Client has not enough limit
 **80**  | Unable to finish - order is already finished/canceled
+**82**  | Unable to change - order is already finished/canceled
 **81**  | Unable to cancel - order is already finished/canceled
 **100** | At the moment the server cannot process your request
 
@@ -743,110 +783,25 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID&signature=SIGNATURE
 
 Все коды подтверждения и пин-коды `8888`.
 
-1) префиксы для отказных клиентов
+* Для получения отказ при использовании <a href="#Registration">`Registration`</a> необходимо указать телефон, начинающийся с 88821.
 
-2) для тестирования на проде - код задается персонаяльно магазину (не всегда 8888)
+* Для получения одобрения при использовании <a href="#Registration">`Registration`</a> необходимо указать телефон, начинающийся с 888, кроме 88821.
 
-3) в анкете идет проверка по ФИО+ДР или номер паспорта на совпадение с существующим клиентом, поэтому при тестировании необходимо вводить различные данные
+* Для тестирования на production сервере код задаётся в настройках магазина партнёра. Например, это может быть 7777, вместо 8888.
+
+* В анкете идет проверка по ФИО + дате рождения или номеру паспорта на совпадение с существующим клиентом, поэтому при тестировании необходимо вводить различные данные в эти поля.
 
 # Описание iFrame REVO
 
-ФИО - кириллица
+* ФИО - заполняется кириллицей
+* возраст - не менее 18 лет
+* серия паспорта -
 
-возраст - не менее 18 лет
-
-серия паспорта - ????
-
-# Схемы взаимодействия
-
-Возможны следующие схемы взаимодействия:
-
-<table border="0" align="center">
-  <tr>
-    <th rowspan="2">Схема</th>
-    <th colspan="3" align="center">Предоплата</th>
-    <th rowspan="2">Изменение заказа</th>
-  </tr>
-  <tr>
-    <th>Партнёр</th>
-    <th>Рево</th>
-    <th>Отсутствует</th>
-  </tr>
-  <tr>
-    <td>Факторинг 1</td>
-    <td>х</td>
-    <td></td>
-    <td></td>
-    <td>х</td>
-  </tr>
-  <tr>
-    <td>Факторинг 2</td>
-    <td></td>
-    <td>x</td>
-    <td></td>
-    <td>х</td>
-  </tr>
-  <tr>
-    <td><a href="http://localhost:4567/#3">Факторинг 3</a></td>
-    <td></td>
-    <td></td>
-    <td>x</td>
-    <td>х</td>
-  </tr>
-  <tr>
-    <td>Факторинг 4</td>
-    <td>х</td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Факторинг 5</td>
-    <td></td>
-    <td>x</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Факторинг 6</td>
-    <td></td>
-    <td></td>
-    <td>x</td>
-    <td></td>
-  </tr>
-</table>
-
-## Факторинг 1
-
-## Факторинг 2
-
-## Факторинг 3
-
-1. Клиент оформляет покупку на сайте партнёра и выбирает способ оплаты "оплата частями РЕВО". Дальнейшее оформление происходит в поп-апе, ссылка на который получается с помощью метода <a href="#registration">`Registration`</a>.
-
-2. На стороне партнёра формируется предварительный заказ с тем же `order_id`, который использовался для вызова формы Рево.
-
-3. В системе Рево заявка переводится в статус hold (блокировка средств) на срок `valid_till`. Если заказ не будет финализирована с помощью метода <a href="#finish">`Finish`</a> до этого срока, то заявка будет отменена. Информация о решении, сумме лимита и графике платежей.
-
-4. Колл-центр партнёра связывается с клиентом для подтверждения заказа.
-* Если сумма заказа изменилась и превышает лимит, необходимо отменить заявку с помощью метода <a href="#cancel">`Cancel`</a>.
-* Если сумма заказа изменилась в пределах лимита, то необходимо передать обновить информацию о заказе с помощью метода .
-
-5.
-
-<img src="images/F3.png">
-
-## Факторинг 4
-
-## Факторинг 5
-
-## Факторинг 6
+<aside class="warning">
+Данный раздел находится в стадии разработки.
+</aside>
 
 # Guides
-
-## Регистрация пользователя
-
-Регистрация нового пользователя осуществляется с помощью метода ....
 
 ## Вызов iFrame
 
@@ -867,7 +822,7 @@ REVO.Form.show(iframe_url, target_selector);
 <script src="https://{BASE_URI}/javascripts/iframe/v2/revoiframe.js"></script>
 ```
 
-Также данный плагин предоставляет возможность колбэков закрытия формы, загрузки формы и принятия решения по заявке:
+Также данный плагин предоставляет возможность получения событий: закрытия формы - `onClose`, загрузки формы - `onLoad` и принятия решения по заявке - `onResult`.
 
 ```javascript
 REVO.Form.onClose(function () { alert('closed'); });
