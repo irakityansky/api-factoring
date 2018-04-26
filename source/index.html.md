@@ -834,5 +834,5 @@ REVO.Form.onLoad(function () { console.log('frame loaded'); });
 REVO.Form.onResult(function() { console.log('result'); });
 ```
 <aside class="success">
-Если необходимо открыть iFrame на отдельной странице, то можно напрямую вызывать `iframe_url`.
+При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой странице производится на стороне Рево.
 </aside>
