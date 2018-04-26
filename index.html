@@ -322,13 +322,14 @@
 <p>Пример параметров</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="nx">secret_key</span> <span class="o">=</span> <span class="s2">"098f6bcd4621d373cade4e832627b4f6"</span>
-<span class="nx">STORE_ID</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="nx">STORE_ID1</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="nx">STORE_ID2</span> <span class="o">=</span> <span class="mi">13</span>
 </code></pre>
 <ol>
 <li>На стороне Рево формируются уникальный идентификатор магазина и секретный ключ, которые передаются партнеру:
 
 <ul>
-<li><code>store_id</code> - уникальный идентификатор магазина. Для одного партнера может быть сформировано несколько уникальных идентификаторов.</li>
+<li><code>store_id</code> - уникальный идентификатор магазина. Для одного партнера может быть сформировано несколько уникальных идентификаторов, чаще всего, не менее 2. <code>STORE_ID1</code> используется для методов <code>Registration</code> и <code>Limit</code>. <code>STORE_ID2</code> - для всех остальных методов.</li>
 <li><code>secret_key</code> - секретный ключ, который используется при формировании электронно-цифровой подписи для аутентификации (проверки подлинности) параметров запроса с целью защиты формы от запуска сторонними лицами. Длина ключа от 8 байт. Алгоритм шифрования SHA1.</li>
 </ul></li>
 <li>Для авторизации партнер отправляет <code>POST</code> запрос, используя <a href="#1c37860b3b">цифровую подпись</a> <code>signature</code> и уникальный идентификатор магазина <code>store_id</code>.</li>
@@ -392,7 +393,7 @@
 <aside class="notice">
 Необходимо обратить внимание, что при формировании signature длина всегда будет 40 символов по SHA1.
 </aside>
-<h1 id='api'>Методы API</h1><h2 id='registration'>Registration</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">limit</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h1 id='api'>Методы API</h1><h2 id='registration'>Registration</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">limit</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID1</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.</p>
 
@@ -573,7 +574,7 @@
 <aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое.
 </aside>
-<h2 id='limit'>Limit</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">limit?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='limit'>Limit</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">limit?store_id</span><span class="o">=</span><span class="no">STORE_ID1</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для получения суммы лимита клиента по номеру его телефона. Для новых клиентов получить информацию о лимите только по номеру телефона нельзя.</p>
 <h3 id='parameters-2'>Parameters</h3>
@@ -692,7 +693,7 @@
 <td style="text-align: left">Статус пользователя. Возможные значения:<br><code>active</code> - пользователю доступна услуга оплаты частями на сумму <code>limit_amount</code>;<br><code>inactive</code> - пользователю не доступна услуга оплаты частями;<br><code>new</code> - новый пользователь, которому доступна услуга оплаты частями на сумму <code>limit_amount</code>.</td>
 </tr>
 </tbody></table>
-<h2 id='checkout'>Checkout</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='checkout'>Checkout</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url">json ответ</a> с результатом оформления.</p>
 
@@ -981,7 +982,7 @@
 <aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
 </aside>
-<h2 id='status'>Status</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">status?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='status'>Status</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">status?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод возвращает информацию по статусу заказа.</p>
 <h3 id='parameters-4'>Parameters</h3>
@@ -989,7 +990,7 @@
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R107356"</span>
+  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1110,7 +1111,7 @@
 <td style="text-align: left">Срок рассрочки в месяцах.</td>
 </tr>
 </tbody></table>
-<h2 id='change'>Change</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">change?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='change'>Change</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">change?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для изменения суммы уже созданного заказа.</p>
 <h3 id='parameters-5'>Parameters</h3>
@@ -1192,7 +1193,7 @@
 <td style="text-align: left">Сумма платежа в рублях с копейками.</td>
 </tr>
 </tbody></table>
-<h2 id='cancel'>Cancel</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">cancel?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='cancel'>Cancel</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">cancel?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для отмены заказа. При отмене у клиента разблокируются ранее захолдированные средства.</p>
 <h3 id='parameters-6'>Parameters</h3>
@@ -1238,9 +1239,9 @@
 <td style="text-align: left">Короткое текстовое описание ответа.</td>
 </tr>
 </tbody></table>
-<h2 id='finish'>Finish</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">finish?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='finish'>Finish</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">finish?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Фискальный документ должен быть передан по HTTP с названием <code>check</code>.</p>
+<p>Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Фискальный документ должен быть передан по HTTP через multipart с названием <code>check</code>.</p>
 
 <aside class="notice">
 При попытке финализации заявки с истекшим сроком `valid_till`, будет вызван метод `cancel`.
@@ -1271,7 +1272,7 @@
 </tr>
 <tr>
 <td style="text-align: right"><strong>check_number</strong> <br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Номер фискального документа (например, номер чека).</td>
+<td style="text-align: left">Номер фискального документа в системе партнёра (например, номер чека).</td>
 </tr>
 </tbody></table>
 <h3 id='response-parameters-7'>Response Parameters</h3>
@@ -1298,7 +1299,7 @@
 <td style="text-align: left">Короткое текстовое описание ответа.</td>
 </tr>
 </tbody></table>
-<h2 id='return'>Return</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="k">return</span><span class="p">?</span><span class="n">store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='return'>Return</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="k">return</span><span class="p">?</span><span class="n">store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для осуществления процедуры возврата заказа.</p>
 <h3 id='parameters-8'>Parameters</h3>
@@ -1460,7 +1461,6 @@
 <ul>
 <li>ФИО - заполняется кириллицей</li>
 <li>возраст - не менее 18 лет</li>
-<li>серия паспорта -</li>
 </ul>
 
 <aside class="warning">
@@ -1483,6 +1483,10 @@
 <span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onLoad</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'frame loaded'</span><span class="p">);</span> <span class="p">});</span>
 <span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onResult</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'result'</span><span class="p">);</span> <span class="p">});</span>
 </code></pre>
+<aside class="success">
+Если необходимо открыть iFrame на отдельной странице, то можно напрямую вызывать `iframe_url`.
+</aside>
+
       </div>
       <div class="dark-box">
           <div class="lang-selector">
