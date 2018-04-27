@@ -292,7 +292,7 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='3394112aa9'>Введение</h1>
-<p>API Factoring реализовано на протоколе HTTPS на основе JSON запросов.</p>
+<p>API Factoring реализовано на протоколе HTTPS на основе JSON запросов (content-type application/json).</p>
 
 <p>Документация состоит из 3 основных частей:</p>
 
@@ -452,7 +452,7 @@
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов. Можно использовать уникальную случайную строку.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
@@ -695,7 +695,7 @@
 </tbody></table>
 <h2 id='checkout'>Checkout</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url">json ответ</a> с результатом оформления.</p>
+<p>Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url">json ответ</a> с результатом оформления. В случае успешного оформления, средства в размере <code>amount</code> холдируются на счёте клиента в системе Рево.</p>
 
 <p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>):</p>
 
@@ -759,7 +759,7 @@
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>order_id</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов. Например, можно использовать нумерацию заказов в системе партнёра.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>valid_till</strong><br> <font color="#939da3">String, <em>optional</em></font></td>
@@ -844,7 +844,7 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>skip_result_page</strong><br> <font color="#939da3">bool, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления в iFrame: <code>true</code> - по успешному завершению оформления сразу происходит редирект по <code>redirect_url</code>; <code>false</code> - по успешному завершению оформления будет отображено окно с результатом. По умолчанию - <code>false</code>.</td>
+<td style="text-align: left"><td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления в iFrame. По умолчанию - <code>false</code>.<br><code>true</code> - по успешному завершению оформления сразу происходит редирект по <code>redirect_url</code>.<br><code>false</code> - по успешному завершению оформления будет отображено окно с результатом.</td>
 </tr>
 </tbody></table>
 
@@ -899,6 +899,8 @@
   <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
   <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
   <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
+  <span class="nx">prepayment_amount</span><span class="p">:</span> <span class="s">"1000.00"</span><span class="p">,</span>
+  <span class="nx">total_amount</span><span class="p">:</span> <span class="s">"7700.00"</span><span class="p">,</span>
   <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
   <span class="nx">client</span><span class="p">:</span>
   <span class="p">{</span>
@@ -940,7 +942,17 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
-<td style="text-align: left"><td colspan="2"> Сумма в рублях с копейками.</td>
+<td style="text-align: left"><td colspan="2"> Сумма к оплате частями в рублях с копейками.</td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>prepayment_amount</strong> <br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: left"><td colspan="2"> Сумма предоплаты в рублях с копейками.</td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>total_amount</strong> <br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: left"><td colspan="2"> Общая сумма заказа в рублях с копейками.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
@@ -1484,7 +1496,7 @@
 <span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onResult</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'result'</span><span class="p">);</span> <span class="p">});</span>
 </code></pre>
 <aside class="success">
-Если необходимо открыть iFrame на отдельной странице, то можно напрямую вызывать `iframe_url`.
+При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой странице производится на стороне Рево.
 </aside>
 
       </div>
