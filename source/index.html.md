@@ -17,7 +17,7 @@ search: true
 
 # Введение
 
-API Factoring реализовано на протоколе HTTPS на основе JSON запросов.
+API Factoring реализовано на протоколе HTTPS на основе JSON запросов (content-type application/json).
 
 Документация состоит из 3 основных частей:
 
