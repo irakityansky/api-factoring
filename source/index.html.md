@@ -17,7 +17,7 @@ search: true
 
 # Введение
 
-API Factoring реализовано на протоколе HTTPS на основе JSON запросов (content-type application/json).
+API Factoring реализовано на протоколе HTTPS на основе JSON запросов (application/x-www-form-urlencoded).
 
 Документация состоит из 3 основных частей:
 
@@ -203,13 +203,13 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 
 ```jsonnet
 {
-  order_id: 32423,
-  decision: "approved",
-  amount: 5000,
-  overlimit: "true",
-  mobile_phone: "89262341793",
-  email: "ivan@gmail.com",
-  loan_id: 3216964
+  "order_id": 32423,
+  "decision": "approved",
+  "amount": 5000,
+  "overlimit": "true",
+  "mobile_phone": "89262341793",
+  "email": "ivan@gmail.com",
+  "loan_id": 3216964
 }
 ```
 
@@ -359,7 +359,10 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
   cart_items: [{
     sku: "1", name: "prod9", price: "12", quantity: "1" },
   { sku: "2", name: "prod3", price: "7", sale_price: "5", quantity: "1" }],
-  skip_result_page: true
+  skip_result_page: true,
+  additional_data: [{
+    name: "Color", value: "Black"},
+  { name: "Size", value: "Large"}]
 }
 ```
 
@@ -379,13 +382,16 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  <td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring, *optional*</font> | | Фамилия клиента.
  <td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">string, *optional*</font> | | Отчество клиента.
  <td colspan="2" style="text-align:right"> **birth_date**<br> <font color="#939da3">string, *optional*</font> | | Дата рождения клиента в формате `dd.mm.yyyy`.
- |**cart_items**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект, содержащий информацию о заказе.
+ |**cart_items**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект, содержащий массив с информацией о заказе.
  <td colspan="2" style="text-align:right"> **sku**<br> <font color="#939da3">string, *optional*</font> | | Складская учётная единица (stock keeping unit).
  <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Наименование товара.
  <td colspan="2" style="text-align:right"> **price**<br> <font color="#939da3">float, *optional*</font> | | Цена товара.
  <td colspan="2" style="text-align:right"> **sale_price**<br> <font color="#939da3">float, *optional*</font> | | Цена товара со скидкой (если есть).
  <td colspan="2" style="text-align:right"> **quantity**<br> <font color="#939da3">integer</font> | | Количество товара.
  |**skip_result_page**<br> <font color="#939da3">bool, *optional*</font> |<td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления в iFrame. По умолчанию - `false`.<br>`true` - по успешному завершению оформления сразу происходит редирект по `redirect_url`.<br>`false` - по успешному завершению оформления будет отображено окно с результатом.
+ |**additional_data**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.
+ <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Название поля.
+ <td colspan="2" style="text-align:right"> **value**<br> <font color="#939da3">string, *optional*</font> | | Значение поля.
 
  <aside class="success">
  При передаче информации о предоплате клиента следует также использовать `skip_result_page`: выставлять `true` при необходимости клиентом совершить предоплату и передавать в `callback_url` адрес страницы предоплаты; выставлять `false` при наличии предоплаты.
@@ -563,9 +569,9 @@ POST BASE_URL/factoring/v1/status?store_id=STORE_ID2&signature=SIGNATURE
  |**message** <br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа.
  |**current_order** <br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о заказе.
  <td colspan="2" style="text-align:right">**order_id** <br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов.
- <td colspan="2" style="text-align:right">**expired** <br> <font color="#939da3">bool</font> | | Флаг, отображающий статус актуальности заказа. Для актуальных заказов значение `true`.
+ <td colspan="2" style="text-align:right">**expired** <br> <font color="#939da3">bool</font> | | Флаг, отображающий статус актуальности заказа. Для актуальных заказов - `false`.
  <td colspan="2" style="text-align:right">**decision** <br> <font color="#939da3">string</font> | | Информация по статусу заказа. Если заказ уже финализирован - `approved`. Если заказ ожидает финализации - `pending`. Если заказ отменили - `declined`.
- <td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма в рублях с копейками.
+ <td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма, оформленная клиентом для оплаты частями, в рублях с копейками.
  <td colspan="2" style="text-align:right">**term** <br> <font color="#939da3">integer</font> | | Срок рассрочки в месяцах.
 
 ## Change
@@ -798,12 +804,59 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 # Описание iFrame REVO
 
-* ФИО - заполняется кириллицей
-* возраст - не менее 18 лет
+## Регистрация
 
-<aside class="warning">
-Данный раздел находится в стадии разработки.
-</aside>
+> 1. Заполнение анкеты
+ 2. Переход на экран подтверждения номера телефона кодом из смс-сообщения
+ 3. Отображение экрана результата:
+ 3.1. Отображение окна с результатом "Оформление прошло успешно" и информацией о доступном лимите.
+ 3.2. Отображение окна с результатом "К сожалению, сегодня мы не можем одобрить Вашу заявку"
+
+> При вызове iframe Рево на первом экране отображены поля для ввода персональных данных:
+
+>  4. Фамилия
+  5. Имя
+  6. Отчество
+  7. Дата Рождения
+  8. Выбор пола
+  9. Номер мобильного телефона
+10. Email
+11. Серия и Номер паспорта
+
+>Валидация:
+
+>12. Фимилия, Имя, Отвество - Принимаются данные только в кириллице. Тип данных string.
+13. Дата рождения - Задаётся в формате dd.mm.yyyy. Тип данных Date.
+14. Выбор пола - Мужской или Женский. Тип данных boolean
+15. Номер мобильного телефона - необходимо вводить в 10-значном формате. Например (888)1231212. Тип данных string.
+16. Email - Поле для ввода email. Тип данных string
+17. Серия и номер паспорта - Длина должна быть ровно 10 символов. Тип данных string.
+
+>Автозаполнение формы:
+18. При вызове iframe формы поддерживается возможность автозаполнения полей через тело json запроса.
+
+>Описание процесса Авторизация клиента
+Кейс авторизации клиента:
+19. Нажатие кнопки Войти на первой странице iframe
+20. Ввод мобильного номера
+21. Нажатие кнопки "Отправить СМС"
+22. Если мобильный номер не существует в базе Рево, клиент переходит на окно с информационным сообщением "С указанным номером телефона мы Вас не нашли"
+23. Если мобильный номер существует в базе Рево, клиент переходит на экран Подтверждение мобильного номера кодом из смс-сообщения.
+24. Если клиент ввел не свой номер телефона, то на экране "Подтверждения мобильного номера кодом из смс-сообщения", клиент может изменить номер телефона нажав на него ниже.
+24.1 Клиент переходит на экран с вводом другого номера телефона и нажимает кнопку "Отправить СМС"
+24.2 Клиент переходит на экран с "Подтверждением мобильного номера кодом из смс-сообщения", вводит смс и нажимает кнопку "Подтвердить"
+25. Отображение окна результата в iframe Клиенту
+25.1 Отображение окна результата с информацией "К сожалению, Ваша заявка отклонена".
+25.2 Отображение окна результата с информацией, что клиенту доступна сумма лимита для покупок у Партнера.
+26. Авторизация может быть произведена вводом номера телефона в поле с Анкетой данных "Ваш телефон" и нажатием кнопки Оформить.
+26.1 Если клиент существует в базе Рево, то будет переведен на экран с подтверждением кода из смс-сообщения.
+26.2 Если клиент не существует в базе Рево, то будет выдаваться текст сообщение ниже полей "не может быть пустым"
+
+
+>Раздел FAQ
+27.Раздел с ответами на часто задаваемые вопросы находится в правом верхнем углу первой страница iframe.
+
+<a href="Registration_client.png" target="new"> <img src="Registration_client.png"></a>
 
 # Guides
 
