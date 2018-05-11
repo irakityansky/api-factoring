@@ -855,6 +855,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 >Раздел FAQ
 8. Раздел с ответами на часто задаваемые вопросы находится в правом верхнем углу первой страница iframe.
+
 <a href="Registration_client.png" target="new"> <img src="Registration_client.png"></a>
 
 # Guides
