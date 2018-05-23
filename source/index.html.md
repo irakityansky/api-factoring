@@ -133,10 +133,7 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 
 Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в `callback_url` отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.
 
-В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать `primary_phone`):
-
-* Если номер телефона клиента не найден в базе Рево (новый клиент), либо расчёт лимита ещё не производился, то форма будет состоять из 2 шагов: регистрации (расчёта лимита) и аутентификации по смс.
-* Если номер телефона клиента найден в базе Рево (повторный клиент) и клиенту уже рассчитан лимит, то форма будет состоять из 1 шага: аутентификации по смс.
+В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать `primary_phone`) - см. подробнее <a href="#iframe-revo">Описание iFrame REVO</a>.
 
 <aside class="success">
 Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
@@ -148,18 +145,20 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 
 ```jsonnet
 {
-  callback_url: "https://shop.ru/revo/decision",
-  redirect_url: "https://shop.ru/revo/redirect",
-  primary_phone: "9268180621",
-  primary_email: "ivan@gmail.com",
-  current_order: {
-    order_id: "R001233"
+  "callback_url": "https://shop.ru/revo/decision",
+  "redirect_url": "https://shop.ru/revo/redirect",
+  "primary_phone": "9268180621",
+  "primary_email": "ivan@gmail.com",
+  "current_order":
+  {
+    "order_id": "R001233"
   },
-  person: {
-    first_name: "Петр",
-    surname: "Чернышев",
-    patronymic: "Александрович",
-    birth_date: "15.01.1975"
+  "person":
+  {
+    "first_name": "Петр",
+    "surname": "Чернышев",
+    "patronymic": "Александрович",
+    "birth_date": "15.01.1975"
   }
 }
 ```
@@ -170,7 +169,7 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
  |**redirect_url**<br> <font color="#939da3">string</font>	| <td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Рево "Вернуться в интернет магазин".
  |**current_order**<br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о заказе.
 <td colspan="2" style="text-align:right">**order_id**<br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов. Можно использовать уникальную случайную строку.
- |**primary_phone**<br> <font color="#939da3">integer, *optional*</font> | <td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).
+ |**primary_phone**<br> <font color="#939da3">string, *optional*</font> | <td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).
  |**primary_email**<br> <font color="#939da3">string, *optional*</font> | <td colspan="2"> Email клиента.
  |**person**<br> <font color="#939da3">object, *optional*</font> | <td colspan="2"> Объект, содержащий информацию о клиенте.
   <td colspan="2" style="text-align:right">**first_name**<br> <font color="#939da3">string, *optional*</font> | | Имя клиента.
@@ -184,17 +183,17 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 
 ```jsonnet
 {
-  status: 0,
-  message: "Payload valid",
-  iframe_url: "https://r.revoplus.ru/form/v1/af45ef12f4233f"
+  "status": 0,
+  "message": "Payload valid",
+  "iframe_url": "https://r.revoplus.ru/form/v1/af45ef12f4233f"
 }
 ```
 
  | |
 -:|:-
-**status** <br> <font color="#939da3">integer</font> | Код ответа.
-**message** <br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
-**iframe_url** <br> <font color="#939da3">string</font>	| Cсылка на сгенерированный iFrame.
+**status**<br> <font color="#939da3">integer</font> | Код ответа.
+**message**<br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
+**iframe_url**<br> <font color="#939da3">string</font>	| Cсылка на сгенерированный iFrame.
 
 <a name="callback_url"></a>
 ### callback parameters
@@ -203,24 +202,21 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 
 ```jsonnet
 {
-  "order_id": 32423,
+  "order_id": "32423",
   "decision": "approved",
-  "amount": 5000,
-  "overlimit": "true",
+  "amount": 5000.00,
   "mobile_phone": "89262341793",
-  "email": "ivan@gmail.com",
-  "loan_id": 3216964
+  "email": "ivan@gmail.com"
 }
 ```
 
  | |
 -:|:-
-**order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**decision** <br> <font color="#939da3">string</font> | Решение по выдаче рассрочки. При положительном решении - значение `approved` (заявка ожидает финализации). При отрицательном решении - `declined`.
-**amount** <br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
-**overlimit** <br> <font color="#939da3">integer</font> | Срок рассрочки в месяцах.
-**mobile_phone** <br> <font color="#939da3">integer</font> | Номер телефона клиента 10 цифр (без кода страны).
-**email** <br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
+**order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+**decision**<br> <font color="#939da3">string</font> | Решение по выдаче рассрочки. При положительном решении - значение `approved` (заявка ожидает финализации). При отрицательном решении - `declined`.
+**amount**<br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
+**mobile_phone**<br> <font color="#939da3">integer</font> | Номер телефона клиента 10 цифр (без кода страны).
+**email**<br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
 **loan_id**  <br> <font color="#939da3">integer</font> | Уникальный номер заказа в системе Рево.
 
 <aside class="success">
@@ -241,17 +237,17 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 
 ```jsonnet
 {
-  client:
+  "client":
   {
-    mobile_phone: "9031234567"
+    "mobile_phone": "9031234567"
   }
 }
 ```
 
  | |
 -:|:-
-**client** <br> <font color="#939da3">object</font> | Объект, содержащий информацию о клиенте.
-**mobile_phone** <br> <font color="#939da3">integer</font> | Номер телефона клиента 10 цифр (без кода страны).
+**client**<br> <font color="#939da3">object</font> | Объект, содержащий информацию о клиенте.
+**mobile_phone**<br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
 
 ### Response Parameters
 
@@ -259,17 +255,17 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 
 ```jsonnet
 {
-    meta:
-    {
-      status: 0,
-      message: "Payload valid"
-    },
-    client:
-    {
-      mobile_phone: "9031234567",
-      limit_amount: "9500.00",
-      status: "active"
-    }
+  "meta":
+  {
+    "status": 0,
+    "message": "Payload valid"
+  },
+  "client":
+  {
+    "mobile_phone": "9031234567",
+    "limit_amount": "9500.00",
+    "status": "active"
+  }
 }
 ```
 
@@ -277,17 +273,17 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 
 ```jsonnet
 {
-    meta:
-    {
-      status: 0,
-      message: "Payload valid"
-    },
-    client:
-    {
-      mobile_phone: "9031234567",
-      limit_amount: "6700.00",
-      status: "inactive"
-    }
+  "meta":
+  {
+    "status": 0,
+    "message": "Payload valid"
+  },
+  "client":
+  {
+    "mobile_phone": "9031234567",
+    "limit_amount": "6700.00",
+    "status": "inactive"
+  }
 }
 ```
 
@@ -295,17 +291,17 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 
 ```jsonnet
 {
-    meta:
-    {
-      status: 0,
-      message: "Payload valid"
-    },
-    client:
-    {
-      mobile_phone: "9031234567",
-      limit_amount: "0.00",
-      status: "new"
-    }
+  "meta":
+  {
+    "status": 0,
+    "message": "Payload valid"
+  },
+  "client":
+  {
+    "mobile_phone": "9031234567",
+    "limit_amount": "0.00",
+    "status": "new"
+  }
 }
 ```
 
@@ -314,8 +310,8 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
  |**status**<br> <font color="#939da3">integer</font> | <td colspan="2"> Код ответа.
  |**message**<br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа.
  |**client**<br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о клиенте.
- <td colspan="2" style="text-align:right">**mobile_phone**<br> <font color="#939da3">integer</font> | | Номер телефона клиента 10 цифр (без кода страны).
- <td colspan="2" style="text-align:right">**limit_amount**<br> <font color="#939da3">float</font> | | Лимит средств, доступных клиенту, в рублях с копейками.
+ <td colspan="2" style="text-align:right">**mobile_phone**<br> <font color="#939da3">string</font> | | Номер телефона клиента 10 цифр (без кода страны).
+ <td colspan="2" style="text-align:right">**limit_amount**<br> <font color="#939da3">string</font> | | Лимит средств, доступных клиенту, в рублях с копейками.
  <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Статус пользователя. Возможные значения:<br>`active` - пользователю доступна услуга оплаты частями на сумму `limit_amount`;<br>`inactive` - пользователю не доступна услуга оплаты частями;<br>`new` - новый пользователь, которому доступна услуга оплаты частями на сумму `limit_amount`.
 
 ## Checkout
@@ -325,10 +321,7 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 
 Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в `callback_url` отправляется <a href="#callback_url">json ответ</a> с результатом оформления. В случае успешного оформления, средства в размере `amount` холдируются на счёте клиента в системе Рево.
 
-В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать `primary_phone`):
-
-* Если номер телефона клиента не найден в базе Рево (новый клиент), либо расчёт лимита ещё не производился, то форма будет состоять из 3 шагов: регистрации (расчёта лимита), аутентификации по смс и оформления заказа.
-* Если номер телефона клиента найден в базе Рево (повторный клиент) и клиенту уже расчитан лимит, то форма будет состоять из 2 шагов: аутентификации по смс и оформления заказа.
+В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать `primary_phone`) - см. <a href="#iframe-revo">Описание iFrame REVO</a>.
 
 <aside class="success">
 Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
@@ -340,43 +333,64 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 
 ```jsonnet
 {
-  callback_url: "https://shop.ru/revo/decision",
-  redirect_url: "https://shop.ru/revo/redirect",
-  primary_phone: "9268180621",
-  primary_email : "ivan@gmail.com",
-  current_order: {
-    order_id: "R001233",
-    valid_till: "21.04.2017 12:08:01+03:00",
-    term: 3,
-    amount: 6700.00
+  "callback_url": "https://shop.ru/revo/decision",
+  "redirect_url": "https://shop.ru/revo/redirect",
+  "primary_phone": "9268180621",
+  "primary_email": "ivan@gmail.com",
+  "prepayment_amount": 0.00,
+  "current_order":
+  {
+    "order_id": "R001233",
+    "valid_till": "21.04.2017 12:08:01+03:00",
+    "term": 3,
+    "amount": 6700.00
   },
-  person: {
-    first_name: "Петр",
-    surname: "Чернышев",
-    patronymic: "Александрович",
-    birth_date: "15.01.1975"
+  "person":
+  {
+    "first_name": "Петр",
+    "surname": "Чернышев",
+    "patronymic": "Александрович",
+    "birth_date": "15.01.1975"
   },
-  cart_items: [{
-    sku: "1", name: "prod9", price: "12", quantity: "1" },
-  { sku: "2", name: "prod3", price: "7", sale_price: "5", quantity: "1" }],
-  skip_result_page: true,
-  additional_data: [{
-    name: "Color", value: "Black"},
-  { name: "Size", value: "Large"}]
+  "cart_items":
+  [{
+    "sku": "1",
+    "name": "prod9",
+    "price": 12,
+    "quantity": 1
+  },
+  {
+    "sku": "2",
+    "name": "prod3",
+    "price": 7,
+    "sale_price": 5,
+    "quantity": 1
+  }],
+  "skip_result_page": true,
+  "additional_data":
+  [{
+    "name": "Color",
+    "value": "Black"
+  },
+  {
+    "name": "Size",
+    "value": "Large"
+  }]
 }
 ```
 
 | | | |
 -:|-:|:-|:-
- |**callback_url** <br> <font color="#939da3">string</font> |<td colspan="2"> URL для ответа от Рево по решению для клиента.
- |**redirect_url** <br> <font color="#939da3">string</font>	|<td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Рево "Вернуться в интернет магазин".
- |**current_order** <br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о заказе.
+ |**callback_url**<br> <font color="#939da3">string</font> |<td colspan="2"> URL для ответа от Рево по решению для клиента.
+ |**redirect_url**<br> <font color="#939da3">string</font>	|<td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Рево "Вернуться в интернет магазин".
+ |**current_order**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о заказе.
 <td colspan="2" style="text-align:right"> **order_id**<br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов. Например, можно использовать нумерацию заказов в системе партнёра.
 <td colspan="2" style="text-align:right"> **valid_till**<br> <font color="#939da3">String, *optional*</font> | | Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после  "+" указывается часовой пояс относительно GMT. По умолчанию - 24 часа.
  <td colspan="2" style="text-align:right"> **term**<br> <font color="#939da3">integer, *optional*</font> | | Срок рассрочки в месяцах.
  <td colspan="2" style="text-align:right"> **amount**<br> <font color="#939da3">float</font> | | Сумма заказа в рублях с копейками.
- |**primary_phone**<br> <font color="#939da3">integer, *optional*</font> |<td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).
+ |**primary_phone**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).
  |**primary_email**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Email клиента.
+ |**prepayment_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Сумма предоплаты в рублях с копейками, которую клиент уже внёс.
  |**person**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
  <td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string, *optional*</font> | | Имя клиента.
  <td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring, *optional*</font> | | Фамилия клиента.
@@ -403,9 +417,9 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 
 ```jsonnet
 {
-  status: 0,
-  message: "Payload valid",
-  iframe_url: "https://revo.ru/factoring/v1/form/6976174c5b6a1bb089d15b80e0a6afc62d4283fe"
+  "status": 0,
+  "message": "Payload valid",
+  "iframe_url": "https://revo.ru/factoring/v1/form/6976174c5b6a1bb089d15b80e0a6afc62d4283fe"
 }
 ```
 
@@ -420,9 +434,9 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 
  | |
 -:|:-
-**status** <br> <font color="#939da3">integer</font> | Код ответа.
-**message** <br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
-**iframe_url** <br> <font color="#939da3">string</font>	| Cсылка на сгенерированный iFrame.
+**status**<br> <font color="#939da3">integer</font> | Код ответа.
+**message**<br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
+**iframe_url**<br> <font color="#939da3">string</font> | Cсылка на сгенерированный iFrame.
 
 <a name="callback_url"></a>
 ### Callback parameters
@@ -431,47 +445,54 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 
 ```jsonnet
 {
-  order_id: "R107356",
-  decision: "approved",
-  amount: "6700.00",
-  prepayment_amount: "1000.00",
-  total_amount: "7700.00",
-  term: 3,
-  client:
+  "order_id": "R107356",
+  "decision": "approved",
+  "amount": 6700.00,
+  "prepayment_amount": 1000.00,
+  "total_amount": 7700.00,
+  "term": 3,
+  "client":
   {
-    primary_phone: "8880010203"
-    full_name: "Иванов Иван Иванович"
+    "primary_phone": "8880010203"
+    "email": "ivan@gmail.com",
+    "full_name": "Иванов Иван Иванович",
+    "first_name": "Иван",
+    "surname": "Иванов",
+    "patronymic": "Иванович"
   },
-  schedule:
+  "schedule":
   [{
-    date: "01.01.2018",
-    amount: "2933.33"
+    "date": "01.01.2018",
+    "amount": 2933.33
   },
   {
-    date: "01.02.2018",
-    amount: "2933.33"
+    "date": "01.02.2018",
+    "amount": 2933.33
   },
   {
-    date: "01.03.2018",
-    amount: "2933.33"
+    "date": "01.03.2018",
+    "amount": 2933.33
   }]
 }
 ```
 
 | | | |
 -:|-:|:-|:-
- |**order_id** <br> <font color="#939da3">string</font> |<td colspan="2"> Уникальный номер заказа. Не более 255 символов.
- |**decision** <br> <font color="#939da3">string</font> |<td colspan="2"> Решение по выдаче рассрочки. При положительном решении - значение `approved`. При отрицательном решении - `declined`.
- |**amount** <br> <font color="#939da3">float</font> |<td colspan="2"> Сумма к оплате частями в рублях с копейками.
- |**prepayment_amount** <br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Сумма предоплаты в рублях с копейками.
- |**total_amount** <br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Общая сумма заказа в рублях с копейками.
- |**term** <br> <font color="#939da3">integer</font> |<td colspan="2"> Срок рассрочки в месяцах.
- |**client** <br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
-<td colspan="2" style="text-align:right">**primary_phone** <br> <font color="#939da3">integer</font> | | Номер телефона клиента 10 цифр (без кода страны).
-<td colspan="2" style="text-align:right">**full_name**  <br> <font color="#939da3">string</font> | | ФИО через пробел.
- |**schedule** <br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
-<td colspan="2" style="text-align:right">**date** <br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
-<td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
+ |**order_id**<br> <font color="#939da3">string</font> |<td colspan="2"> Уникальный номер заказа. Не более 255 символов.
+ |**decision**<br> <font color="#939da3">string</font> |<td colspan="2"> Решение по выдаче рассрочки. При положительном решении - значение `approved`. При отрицательном решении - `declined`.
+ |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма к оплате частями в рублях с копейками.
+ |**monthly_overpayment**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма .
+ |**term**<br> <font color="#939da3">integer</font> |<td colspan="2"> Срок рассрочки в месяцах.
+ |**client**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
+<td colspan="2" style="text-align:right">**primary_phone**<br> <font color="#939da3">string</font> | | Номер телефона клиента 10 цифр (без кода страны).
+<td colspan="2" style="text-align:right">**primary_email**<br> <font color="#939da3">string, *optional*</font> | | Email клиента.
+<td colspan="2" style="text-align:right">**full_name**<br> <font color="#939da3">string</font> | | ФИО через пробел.
+<td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string</font> | | Имя клиента.
+<td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring</font> | | Фамилия клиента.
+<td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">string</font> | | Отчество клиента.
+ |**schedule**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
+<td colspan="2" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
+<td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
 
 <aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
@@ -491,13 +512,13 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 
 ```jsonnet
 {
-  "amount": "5000.00"
+  "amount": 5000.00
 }
 ```
 
  | |
 -:|:-
-|**amount** <br> <font color="#939da3">float</font> |<td colspan="2"> Сумма к оплате частями в рублях с копейками.
+**amount**<br> <font color="#939da3">float</font> | Сумма к оплате частями в рублях с копейками.
 
 ### Response Parameters
 
@@ -505,75 +526,73 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 
 ```jsonnet
 {
-    "status": 0,
-    "message": "Payload valid",
-    "payment_schedule": [
-        {
-            "total": 7000.01,
-            "monthly_payment": 2334,
-            "monthly_overpayment": 666.67,
-            "term": 3,
-            "payment_dates": [
-                {
-                    "date": "11.06.2018",
-                    "amount": "2334.00"
-                },
-                {
-                    "date": "09.07.2018",
-                    "amount": "2334.00"
-                },
-                {
-                    "date": "09.08.2018",
-                    "amount": "2332.01"
-                }
-            ]
-        },
-        {
-            "total": 6500,
-            "monthly_payment": 1100,
-            "monthly_overpayment": 250,
-            "term": 6,
-            "payment_dates": [
-                {
-                    "date": "11.06.2018",
-                    "amount": "1100.00"
-                },
-                {
-                    "date": "09.07.2018",
-                    "amount": "1100.00"
-                },
-                {
-                    "date": "09.08.2018",
-                    "amount": "1100.00"
-                },
-                {
-                    "date": "10.09.2018",
-                    "amount": "1100.00"
-                },
-                {
-                    "date": "09.10.2018",
-                    "amount": "1100.00"
-                },
-                {
-                    "date": "09.11.2018",
-                    "amount": "1000.00"
-                }
-            ]
-        }
-    ]
+  "status": 0,
+  "message": "Payload valid",
+  "payment_schedule":
+  [{
+    "total": 7000.01,
+    "monthly_payment": 2334,
+    "monthly_overpayment": 666.67,
+    "term": 3,
+    "payment_dates":
+    [{
+      "date": "11.06.2018",
+      "amount": 2334.00
+    },
+    {
+      "date": "09.07.2018",
+      "amount": 2334.00
+    },
+    {
+      "date": "09.08.2018",
+      "amount": 2332.01
+    }]
+  },
+  {
+    "total": 6500,
+    "monthly_payment": 1100,
+    "monthly_overpayment": 250,
+    "term": 6,
+    "payment_dates":
+    [{
+      "date": "11.06.2018",
+      "amount": 1100.00
+    },
+    {
+      "date": "09.07.2018",
+      "amount": 1100.00
+    },
+    {
+      "date": "09.08.2018",
+      "amount": 1100.00
+    },
+    {
+      "date": "10.09.2018",
+      "amount": 1100.00
+    },
+    {
+      "date": "09.10.2018",
+      "amount": 1100.00
+    },
+    {
+      "date": "09.11.2018",
+      "amount": 1000.00
+    }]
+  }]
 }
 ```
 
-| | | |
--:|-:|:-|:-
- |**status** <br> <font color="#939da3">integer</font> | <td colspan="2"> Код ответа.
- |**message** <br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа.
- |**payment_schedule** <br> <font color="#939da3">object</font> | <td colspan="2"> Массив объектов, содержащий информацию о предварительных графиках платежей.
- <td colspan="2" style="text-align:right">**total** <br> <font color="#939da3">float</font> | | Полная сумма рассрочки с учётом переплаты.
- <td colspan="2" style="text-align:right">**monthly_payment** <br> <font color="#939da3">float</font> | | Приблизительная величина ежемесячного платежа с учётом переплаты.
- <td colspan="2" style="text-align:right">**monthly_overpayment** <br> <font color="#939da3">float</font> | | Величина ежемесячной переплаты в рублях с копейками.
- <td colspan="2" style="text-align:right">**term** <br> <font color="#939da3">int</font> | | Срок рассрочки в месяцах.
- <td colspan="2" style="text-align:right">**payment_dates** <br> <font color="#939da3">object</font> | | Объект, содержащий информацию о графике платежей.
+| | | | | |
+-:|-:|-:|:-|:-|:-
+ | **message**<br> <font color="#939da3">string</font> | | <td colspan="3"> Короткое текстовое описание ответа.
+ | **payment_schedule**<br> <font color="#939da3">object</font> | | <td colspan="3"> Массив объектов, содержащий информацию о предварительных графиках платежей.
+ <td colspan="2" style="text-align:right">**total**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Полная сумма рассрочки с учётом переплаты.
+ <td colspan="2" style="text-align:right">**monthly_payment**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Приблизительная величина ежемесячного платежа с учётом переплаты.
+ <td colspan="2" style="text-align:right">**monthly_overpayment**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Величина ежемесячной переплаты в рублях с копейками.
+ <td colspan="2" style="text-align:right">**term**<br> <font color="#939da3">int</font> | | <td colspan="2" style="text-align:left"> Срок рассрочки в месяцах.
+ <td colspan="2" style="text-align:right">**payment_dates**<br> <font color="#939da3">object</font> | | <td colspan="2" style="text-align:left"> Объект, содержащий информацию о графике платежей.
+ <td colspan="3" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | | Дата платежа в формате `dd.mm.yyyy`.
+ <td colspan="3" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | | Сумма платежа в рублях с копейками.
 
 ## Status
 
@@ -583,94 +602,155 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 
  Метод возвращает информацию по статусу заказа.
 
- ### Parameters
+### Parameters
 
  > Пример запроса в формате json
 
  ```jsonnet
  {
-   order_id: "R107356"
+   "order_id": "R107356"
  }
  ```
 
   | |
  -:|:-
- **order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+ **order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
 
- ### Response Parameters
+### Response Parameters
 
- > Пример ответа, когда срок актуальности заказа ещё не вышел, решение по заказу (approved или declined) уже есть
-
- ```jsonnet
- {
-   status: 0,
-   message: "Payload valid",
-   current_order:
-   {
-     order_id: "R107356",
-     expired: false,
-     decision: "approved",
-     amount: "6700.00",
-     term: 3
-   }
- }
- ```
-
- > Пример ответа, когда срок актуальности заказа ещё не вышел, решения по займу нет (клиент не прошёл процесс до конца)
+ > Пример ответа, когда клиент прошел до конца оформление в Iframe и ожидает ответа по заказу от Партнера
 
  ```jsonnet
- {
-   status: 0,
-   message: "Payload valid",
-   current_order:
-   {
-     order_id: "R107356",
-     expired: "false"
-   }
- }
- ```
+{
+  "status": 0,
+  "message": "Payload valid",
+  "current_order":
+  {
+    "order_id": "FACTPRECHR00004768",
+    "expired": false,
+    "status": "hold",
+    "decision": "approved",
+    "amount": 4999.0,
+    "term": 3
+  }
+}
+```
 
- > Пример ответа, когда срок актуальности заказа истёк, решение по займу (Approve или declined) уже есть:
+> Пример ответа, когда клиент прошел до конца оформления в Iframe, но партнер отменил заказ
 
- ```jsonnet
- {
-   status: 0,
-   message: "Payload valid",
-   current_order:
-   {
-     order_id: "R107356",
-     expired: "true",
-     decision: "approved",
-     amount: "6700.00",
-     term: 3
-   }
- }
- ```
+```jsonnet
+{
+  "status": 0,
+  "message": "Payload valid",
+  "current_order":
+  {
+    "order_id": "FACTPRECHR00004768",
+    "expired": true,
+    "status": "canceled",
+    "decision": "approved",
+    "amount": 4999,
+    "term": 3
+  }
+}
+```
 
- > Пример ответа, когда срок актуальности заказа истёк, решения по займу нет (клиент не прошел процесс до конца)
+> Пример ответа, когда клиент прошел до конца оформления в Iframe, партнер подтвердил заказ.
 
- ```jsonnet
- {
-   status: 0,
-   message: "Payload valid",
-   current_order:
-   {
-     order_id: "R107356",
-     expired: "true"
-   }
- }
- ```
+```jsonnet
+{
+  "status": 0,
+  "message": "Payload valid",
+  "current_order":
+  {
+    "order_id": "FACTR00004755",
+    "expired": false,
+    "status": "finished",
+    "decision": "approved",
+    "amount": 1000,
+    "term": 3
+  }
+}
+```
+
+> Пример ответа, когда произошел отказ по политикам Рево
+
+```jsonnet
+{
+  "status": 0,
+  "message": "Payload valid",
+  "current_order":
+  {
+    "order_id": "FACTPRECHR00004721",
+    "expired": true,
+    "status": "declined",
+    "decision": "declined",
+    "amount": 6498,
+    "term": null
+  }
+}
+```
+
+> Пример ответа, когда срок холдирования по заявке истёк. Заявка отменена.
+
+```jsonnet
+{
+  "status": 0,
+  "message": "Payload valid",
+  "current_order":
+  {
+    "order_id": "FACTPRECHR141531",
+    "expired": true,
+    "status": "expired",
+    "decision": "approved",
+    "amount": 9000,
+    "term": 3
+  }
+}
+```
+
+> Пример ответа, когда клиент успешно прошел оформление в iframe, партнер подтвердил заказ. Был произведен полный возврат.
+
+```jsonnet
+{
+  "status": 0,
+  "message": "Payload valid",
+  "current_order":
+  {
+    "order_id": "FACTPRECHR00004714",
+    "expired": true,
+    "status": "refunded",
+    "decision": "approved",
+    "amount": 734.51,
+    "term": 3
+  }
+}
+```
 
  | | | |
  -:|-:|:-|:-
-  |**status** <br> <font color="#939da3">integer</font> | <td colspan="2"> Код ответа.
-  |**message** <br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа.
-  |**current_order** <br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о заказе.
-  <td colspan="2" style="text-align:right">**order_id** <br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов.
-  <td colspan="2" style="text-align:right">**expired** <br> <font color="#939da3">bool</font> | | Флаг, отображающий статус актуальности заказа. Для актуальных заказов - `false`.
-  <td colspan="2" style="text-align:right">**decision** <br> <font color="#939da3">string</font> | | Информация по статусу заказа. Если заказ уже финализирован - `approved`. Если заказ ожидает финализации - `pending`. Если заказ отменили - `declined`.
-  <td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма, оформленная клиентом для оплаты частями, в рублях с копейками.
-  <td colspan="2" style="text-align:right">**term** <br> <font color="#939da3">integer</font> | | Срок рассрочки в месяцах.
+  |**status**<br> <font color="#939da3">integer</font> | <td colspan="2"> Код ответа. |
+  |**message**<br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа. |
+  |**current_order**<br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о заказе. |
+  <td colspan="2" style="text-align:right">**order_id**<br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов. |
+  <td colspan="2" style="text-align:right">**expired**<br> <font color="#939da3">bool</font> | | Флаг, отображающий статус актуальности заказа (холдирования средств). Для актуальных заказов - `false`. Становится `true` при наступлении срока `valid_till`. |
+  <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Информация по статусу заказа. Возможные значения:<br> `pending`, `hold`, `finished`, `canceled`, `declined`, `refunded`. |
+  <td colspan="2" style="text-align:right">**decision**<br> <font color="#939da3">string</font> | | Информация по статусу лимита. Если лимит одобрен - `approved`. Если в лимите отказано - `declined`.|
+  <td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма, оформленная клиентом для оплаты частями, в рублях с копейками. |
+  <td colspan="2" style="text-align:right">**term**<br> <font color="#939da3">integer</font> | | Срок рассрочки в месяцах. |
+
+### Status and Decision values
+
+ | | |
+ :-|:-|:-
+ **Decision** | **Status** | **Description** |
+ `null` | `pending` | Клиент не дошёл до конца оформления в форме. Решения о лимите не принято. |
+ `approved` | `hold` | Лимит одобрен, средства захолдированы, ожидается финализация заказа. |
+ `approved` | `finished` | Заказ финализирован. При последующем изменении `expired`, либо при частичном возврате значение `status` не поменяется. |
+ `approved` | `canceled` | Заказ отменен. При последующем изменении `expired` значение `status` не поменяется. |
+ `approved` | `expired` | Лимит одобрен, срок холдирования по заказу истёк. |
+ `approved` | `refunded` | Был произведен полный возврат средств по заказу. При частичном возврате `status` останется `finished`. |
+ `approved` | `declined` | Лимит одобрен, услуга оплаты частями не доступна клиенту (например, сумма заказа превышает лимит). |
+ `declined` | `declined` | В лимите отказано по политикам Рево. |
 
 
 ## Change
@@ -688,14 +768,14 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATUR
 ```jsonnet
 {
   order_id: "R107356",
-  amount: "5600.00"
+  amount: 5600.00
 }
 ```
 
  | |
 -:|:-
-**order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**amount** <br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
+**order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+**amount**<br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
 
 ### Response parameters
 
@@ -703,31 +783,31 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATUR
 
 ```jsonnet
 {
-  status: 0,
-  message: "Payload valid",
-  schedule:
+  "status": 0,
+  "message": "Payload valid",
+  "schedule":
   [{
-    date: "01.01.2018",
-    amount: "2933.33"
+    "date": "01.01.2018",
+    "amount": 2933.33
   },
   {
-    date: "01.02.2018",
-    amount: "2933.33"
+    "date": "01.02.2018",
+    "amount": 2933.33
   },
   {
-    date: "01.03.2018",
-    amount: "2933.33"
+    "date": "01.03.2018",
+    "amount": 2933.33
   }]
 }
 ```
 
 | | | |
 -:|-:|:-|:-
- |**status** <br> <font color="#939da3">integer</font> |<td colspan="2"> Код ответа.
- |**message** <br> <font color="#939da3">string</font> |<td colspan="2"> Короткое текстовое описание ответа.
- |**schedule** <br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
-<td colspan="2" style="text-align:right">**date** <br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
-<td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
+ |**status**<br> <font color="#939da3">integer</font> |<td colspan="2"> Код ответа.
+ |**message**<br> <font color="#939da3">string</font> |<td colspan="2"> Короткое текстовое описание ответа.
+ |**schedule**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
+<td colspan="2" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
+<td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
 
 ## Cancel
 
@@ -743,13 +823,13 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID2&signature=SIGNATUR
 
 ```jsonnet
 {
-  order_id: "R107356"
+  "order_id": "R107356"
 }
 ```
 
  | |
 -:|:-
-**order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+**order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
 
 ### Response Parameters
 
@@ -757,15 +837,15 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID2&signature=SIGNATUR
 
 ```jsonnet
 {
-  status: 0,
-  message: "Payload valid"
+  "status": 0,
+  "message": "Payload valid"
 }
 ```
 
  | |
 -:|:-
-**status** <br> <font color="#939da3">integer</font> | Код ответа.
-**message** <br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
+**status**<br> <font color="#939da3">integer</font> | Код ответа.
+**message**<br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
 
 ## Finish
 
@@ -785,17 +865,17 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID2&signature=SIGNATUR
 
 ```jsonnet
 {
-  order_id: "R107356",
-  amount: "6700.00",
-  check_number: "ZDDS3123F"
+  "order_id": "R107356",
+  "amount": 6700.00,
+  "check_number": "ZDDS3123F"
 }
 ```
 
  | |
 -:|:-
-**order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**amount** <br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
-**check_number** <br> <font color="#939da3">string</font> | Номер фискального документа в системе партнёра (например, номер чека).
+**order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+**amount**<br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
+**check_number**<br> <font color="#939da3">string</font> | Номер фискального документа в системе партнёра (например, номер чека).
 
 ### Response Parameters
 
@@ -803,15 +883,15 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID2&signature=SIGNATUR
 
 ```jsonnet
 {
-  status: 0,
-  message: "Payload valid"
+  "status": 0,
+  "message": "Payload valid"
 }
 ```
 
  | |
 -:|:-
-**status** <br> <font color="#939da3">integer</font> | Код ответа.
-**message** <br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
+**status**<br> <font color="#939da3">integer</font> | Код ответа.
+**message**<br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
 
 ## Return
 
@@ -827,15 +907,15 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 ```jsonnet
 {
-  order_id: "R001233",
-  sum: "2010.00"
+  "order_id": "R001233",
+  "amount": 2010.00
 }
 ```
 
  | |
 -:|:-
-**order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**sum** <br> <font color="#939da3">float</font> | Сумма возврата в рублях с копейками. Возврат может быть как полным, так и частичным.
+**order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+**amount**<br> <font color="#939da3">float</font> | Сумма возврата в рублях с копейками. Возврат может быть как полным, так и частичным.
 
 ### Response Parameters
 
@@ -843,8 +923,8 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 ```jsonnet
 {
-  status: "0",
-  message: "Payload valid"
+  "status": 0,
+  "message": "Payload valid"
 }
 ```
 
@@ -852,15 +932,15 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 ```jsonnet
 {
-  status: "10",
-  message: "JSON decode error"
+  "status": 10,
+  "message": "JSON decode error"
 }
 ```
 
  | |
 -:|:-
-**status** <br> <font color="#939da3">integer</font> | Код ответа.
-**message** <br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
+**status**<br> <font color="#939da3">integer</font> | Код ответа.
+**message**<br> <font color="#939da3">string</font> | Короткое текстовое описание ответа.
 
 # Коды ошибок
 
