@@ -477,13 +477,13 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
 </aside>
 
-## Status
+## Schedule
 
 ```ruby
-POST BASE_URL/factoring/v1/status?store_id=STORE_ID2&signature=SIGNATURE
+POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 ```
 
-Метод возвращает информацию по статусу заказа.
+Метод возвращает информацию о доступных предварительных графиках платежей для заданной суммы корзины.
 
 ### Parameters
 
@@ -491,75 +491,76 @@ POST BASE_URL/factoring/v1/status?store_id=STORE_ID2&signature=SIGNATURE
 
 ```jsonnet
 {
-  order_id: "R107356"
+  "amount": "5000.00"
 }
 ```
 
  | |
 -:|:-
-**order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+|**amount** <br> <font color="#939da3">float</font> |<td colspan="2"> Сумма к оплате частями в рублях с копейками.
 
 ### Response Parameters
 
-> Пример ответа, когда срок актуальности заказа ещё не вышел, решение по заказу (approved или declined) уже есть
+> Пример ответа, когда доступны два графика платежей: на 3 и 6 месяцев.
 
 ```jsonnet
 {
-  status: 0,
-  message: "Payload valid",
-  current_order:
-  {
-    order_id: "R107356",
-    expired: false,
-    decision: "approved",
-    amount: "6700.00",
-    term: 3
-  }
-}
-```
-
-> Пример ответа, когда срок актуальности заказа ещё не вышел, решения по займу нет (клиент не прошёл процесс до конца)
-
-```jsonnet
-{
-  status: 0,
-  message: "Payload valid",
-  current_order:
-  {
-    order_id: "R107356",
-    expired: "false"
-  }
-}
-```
-
-> Пример ответа, когда срок актуальности заказа истёк, решение по займу (Approve или declined) уже есть:
-
-```jsonnet
-{
-  status: 0,
-  message: "Payload valid",
-  current_order:
-  {
-    order_id: "R107356",
-    expired: "true",
-    decision: "approved",
-    amount: "6700.00",
-    term: 3
-  }
-}
-```
-
-> Пример ответа, когда срок актуальности заказа истёк, решения по займу нет (клиент не прошел процесс до конца)
-
-```jsonnet
-{
-  status: 0,
-  message: "Payload valid",
-  current_order:
-  {
-    order_id: "R107356",
-    expired: "true"
-  }
+    "status": 0,
+    "message": "Payload valid",
+    "payment_schedule": [
+        {
+            "total": 7000.01,
+            "monthly_payment": 2334,
+            "monthly_overpayment": 666.67,
+            "term": 3,
+            "payment_dates": [
+                {
+                    "date": "11.06.2018",
+                    "amount": "2334.00"
+                },
+                {
+                    "date": "09.07.2018",
+                    "amount": "2334.00"
+                },
+                {
+                    "date": "09.08.2018",
+                    "amount": "2332.01"
+                }
+            ]
+        },
+        {
+            "total": 6500,
+            "monthly_payment": 1100,
+            "monthly_overpayment": 250,
+            "term": 6,
+            "payment_dates": [
+                {
+                    "date": "11.06.2018",
+                    "amount": "1100.00"
+                },
+                {
+                    "date": "09.07.2018",
+                    "amount": "1100.00"
+                },
+                {
+                    "date": "09.08.2018",
+                    "amount": "1100.00"
+                },
+                {
+                    "date": "10.09.2018",
+                    "amount": "1100.00"
+                },
+                {
+                    "date": "09.10.2018",
+                    "amount": "1100.00"
+                },
+                {
+                    "date": "09.11.2018",
+                    "amount": "1000.00"
+                }
+            ]
+        }
+    ]
 }
 ```
 
@@ -567,12 +568,110 @@ POST BASE_URL/factoring/v1/status?store_id=STORE_ID2&signature=SIGNATURE
 -:|-:|:-|:-
  |**status** <br> <font color="#939da3">integer</font> | <td colspan="2"> Код ответа.
  |**message** <br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа.
- |**current_order** <br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о заказе.
- <td colspan="2" style="text-align:right">**order_id** <br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов.
- <td colspan="2" style="text-align:right">**expired** <br> <font color="#939da3">bool</font> | | Флаг, отображающий статус актуальности заказа. Для актуальных заказов - `false`.
- <td colspan="2" style="text-align:right">**decision** <br> <font color="#939da3">string</font> | | Информация по статусу заказа. Если заказ уже финализирован - `approved`. Если заказ ожидает финализации - `pending`. Если заказ отменили - `declined`.
- <td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма, оформленная клиентом для оплаты частями, в рублях с копейками.
- <td colspan="2" style="text-align:right">**term** <br> <font color="#939da3">integer</font> | | Срок рассрочки в месяцах.
+ |**payment_schedule** <br> <font color="#939da3">object</font> | <td colspan="2"> Массив объектов, содержащий информацию о предварительных графиках платежей.
+ <td colspan="2" style="text-align:right">**total** <br> <font color="#939da3">float</font> | | Полная сумма рассрочки с учётом переплаты.
+ <td colspan="2" style="text-align:right">**monthly_payment** <br> <font color="#939da3">float</font> | | Приблизительная величина ежемесячного платежа с учётом переплаты.
+ <td colspan="2" style="text-align:right">**monthly_overpayment** <br> <font color="#939da3">float</font> | | Величина ежемесячной переплаты в рублях с копейками.
+ <td colspan="2" style="text-align:right">**term** <br> <font color="#939da3">int</font> | | Срок рассрочки в месяцах.
+ <td colspan="2" style="text-align:right">**payment_dates** <br> <font color="#939da3">object</font> | | Объект, содержащий информацию о графике платежей.
+
+## Status
+
+ ```ruby
+ POST BASE_URL/factoring/v1/status?store_id=STORE_ID2&signature=SIGNATURE
+ ```
+
+ Метод возвращает информацию по статусу заказа.
+
+ ### Parameters
+
+ > Пример запроса в формате json
+
+ ```jsonnet
+ {
+   order_id: "R107356"
+ }
+ ```
+
+  | |
+ -:|:-
+ **order_id** <br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
+
+ ### Response Parameters
+
+ > Пример ответа, когда срок актуальности заказа ещё не вышел, решение по заказу (approved или declined) уже есть
+
+ ```jsonnet
+ {
+   status: 0,
+   message: "Payload valid",
+   current_order:
+   {
+     order_id: "R107356",
+     expired: false,
+     decision: "approved",
+     amount: "6700.00",
+     term: 3
+   }
+ }
+ ```
+
+ > Пример ответа, когда срок актуальности заказа ещё не вышел, решения по займу нет (клиент не прошёл процесс до конца)
+
+ ```jsonnet
+ {
+   status: 0,
+   message: "Payload valid",
+   current_order:
+   {
+     order_id: "R107356",
+     expired: "false"
+   }
+ }
+ ```
+
+ > Пример ответа, когда срок актуальности заказа истёк, решение по займу (Approve или declined) уже есть:
+
+ ```jsonnet
+ {
+   status: 0,
+   message: "Payload valid",
+   current_order:
+   {
+     order_id: "R107356",
+     expired: "true",
+     decision: "approved",
+     amount: "6700.00",
+     term: 3
+   }
+ }
+ ```
+
+ > Пример ответа, когда срок актуальности заказа истёк, решения по займу нет (клиент не прошел процесс до конца)
+
+ ```jsonnet
+ {
+   status: 0,
+   message: "Payload valid",
+   current_order:
+   {
+     order_id: "R107356",
+     expired: "true"
+   }
+ }
+ ```
+
+ | | | |
+ -:|-:|:-|:-
+  |**status** <br> <font color="#939da3">integer</font> | <td colspan="2"> Код ответа.
+  |**message** <br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа.
+  |**current_order** <br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о заказе.
+  <td colspan="2" style="text-align:right">**order_id** <br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов.
+  <td colspan="2" style="text-align:right">**expired** <br> <font color="#939da3">bool</font> | | Флаг, отображающий статус актуальности заказа. Для актуальных заказов - `false`.
+  <td colspan="2" style="text-align:right">**decision** <br> <font color="#939da3">string</font> | | Информация по статусу заказа. Если заказ уже финализирован - `approved`. Если заказ ожидает финализации - `pending`. Если заказ отменили - `declined`.
+  <td colspan="2" style="text-align:right">**amount** <br> <font color="#939da3">float</font> | | Сумма, оформленная клиентом для оплаты частями, в рублях с копейками.
+  <td colspan="2" style="text-align:right">**term** <br> <font color="#939da3">integer</font> | | Срок рассрочки в месяцах.
+
 
 ## Change
 
@@ -855,6 +954,10 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 <!-- ><a href="FAQ.png" target="new"> <img src="FAQ.png" size="50%"></a> -->
 
 По нажатию на кнопку FAQ в правом верхнем углу формы открывается список с ответами на часто задаваемые вопросы.
+
+<aside class="notice">
+При авторизации клиента создаётся 30-минутная сессия, в течении которой при повторных обращениях клиенту сразу открывается финальный экран любой формы.
+</aside>
 
 # Guides
 
