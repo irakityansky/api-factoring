@@ -249,6 +249,9 @@
                     <a href="#checkout" class="toc-h2 toc-link" data-title="checkout">Checkout</a>
                   </li>
                   <li>
+                    <a href="#schedule" class="toc-h2 toc-link" data-title="schedule">Schedule</a>
+                  </li>
+                  <li>
                     <a href="#status" class="toc-h2 toc-link" data-title="status">Status</a>
                   </li>
                   <li>
@@ -273,6 +276,11 @@
           </li>
           <li>
             <a href="#iframe-revo" class="toc-h1 toc-link" data-title="iframe-revo">Описание iFrame REVO</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#001a097ed9" class="toc-h2 toc-link" data-title="">Регистрация и Авторизация</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#guides" class="toc-h1 toc-link" data-title="guides">Guides</a>
@@ -292,7 +300,7 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='3394112aa9'>Введение</h1>
-<p>API Factoring реализовано на протоколе HTTPS на основе JSON запросов (content-type application/json).</p>
+<p>API Factoring реализовано на протоколе HTTPS на основе JSON запросов (application/x-www-form-urlencoded).</p>
 
 <p>Документация состоит из 3 основных частей:</p>
 
@@ -397,12 +405,7 @@
 </code></pre>
 <p>Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.</p>
 
-<p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>):</p>
-
-<ul>
-<li>Если номер телефона клиента не найден в базе Рево (новый клиент), либо расчёт лимита ещё не производился, то форма будет состоять из 2 шагов: регистрации (расчёта лимита) и аутентификации по смс.</li>
-<li>Если номер телефона клиента найден в базе Рево (повторный клиент) и клиенту уже рассчитан лимит, то форма будет состоять из 1 шага: аутентификации по смс.</li>
-</ul>
+<p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>) - см. подробнее <a href="#iframe-revo">Описание iFrame REVO</a>.</p>
 
 <aside class="success">
 Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
@@ -412,18 +415,20 @@
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">callback_url</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
-  <span class="nx">redirect_url</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
-  <span class="nx">primary_phone</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
-  <span class="nx">primary_email</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
-  <span class="nx">current_order</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R001233"</span>
+  <span class="s">"callback_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
+  <span class="s">"redirect_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
+  <span class="s">"primary_phone"</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
+  <span class="s">"primary_email"</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
+  <span class="s">"current_order"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span>
   <span class="p">},</span>
-  <span class="nx">person</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nx">first_name</span><span class="p">:</span> <span class="s">"Петр"</span><span class="p">,</span>
-    <span class="nx">surname</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
-    <span class="nx">patronymic</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
-    <span class="nx">birth_date</span><span class="p">:</span> <span class="s">"15.01.1975"</span>
+  <span class="s">"person"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"first_name"</span><span class="p">:</span> <span class="s">"Петр"</span><span class="p">,</span>
+    <span class="s">"surname"</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
+    <span class="s">"patronymic"</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
+    <span class="s">"birth_date"</span><span class="p">:</span> <span class="s">"15.01.1975"</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -456,7 +461,7 @@
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>primary_phone</strong><br> <font color="#939da3">integer, <em>optional</em></font></td>
+<td style="text-align: right"><strong>primary_phone</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).</td>
 </tr>
 <tr>
@@ -495,9 +500,9 @@
 <p>Пример ответа для успешной аутентификации.</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
-  <span class="nx">iframe_url</span><span class="p">:</span> <span class="s">"https://r.revoplus.ru/form/v1/af45ef12f4233f"</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="s">"iframe_url"</span><span class="p">:</span> <span class="s">"https://r.revoplus.ru/form/v1/af45ef12f4233f"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -507,15 +512,15 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>status</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: left">Код ответа.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>message</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Короткое текстовое описание ответа.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>iframe_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>iframe_url</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Cсылка на сгенерированный iFrame.</td>
 </tr>
 </tbody></table>
@@ -526,13 +531,11 @@
 <p>Пример callback-а при успешном завершении формы:</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">order_id</span><span class="p">:</span> <span class="mi">32423</span><span class="p">,</span>
-  <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
-  <span class="nx">amount</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
-  <span class="nx">overlimit</span><span class="p">:</span> <span class="s">"true"</span><span class="p">,</span>
-  <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"89262341793"</span><span class="p">,</span>
-  <span class="nx">email</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
-  <span class="nx">loan_id</span><span class="p">:</span> <span class="mi">3216964</span>
+  <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"32423"</span><span class="p">,</span>
+  <span class="s">"decision"</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
+  <span class="s">"amount"</span><span class="p">:</span> <span class="mf">5000.00</span><span class="p">,</span>
+  <span class="s">"mobile_phone"</span><span class="p">:</span> <span class="s">"89262341793"</span><span class="p">,</span>
+  <span class="s">"email"</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -542,27 +545,23 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>decision</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>decision</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Решение по выдаче рассрочки. При положительном решении - значение <code>approved</code> (заявка ожидает финализации). При отрицательном решении - <code>declined</code>.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
 <td style="text-align: left">Сумма в рублях с копейками.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>overlimit</strong> <br> <font color="#939da3">integer</font></td>
-<td style="text-align: left">Срок рассрочки в месяцах.</td>
-</tr>
-<tr>
-<td style="text-align: right"><strong>mobile_phone</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>mobile_phone</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>email</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>email</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
 </tr>
 <tr>
@@ -582,9 +581,9 @@
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">client</span><span class="p">:</span>
+  <span class="s">"client"</span><span class="p">:</span>
   <span class="p">{</span>
-    <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span>
+    <span class="s">"mobile_phone"</span><span class="p">:</span> <span class="s">"9031234567"</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -595,11 +594,11 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>client</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: right"><strong>client</strong><br> <font color="#939da3">object</font></td>
 <td style="text-align: left">Объект, содержащий информацию о клиенте.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>mobile_phone</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>mobile_phone</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
 </tr>
 </tbody></table>
@@ -608,51 +607,51 @@
 <p>Пример ответа, когда клиент найден в базе</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-    <span class="nx">meta</span><span class="p">:</span>
-    <span class="p">{</span>
-      <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
-    <span class="p">},</span>
-    <span class="nx">client</span><span class="p">:</span>
-    <span class="p">{</span>
-      <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
-      <span class="nx">limit_amount</span><span class="p">:</span> <span class="s">"9500.00"</span><span class="p">,</span>
-      <span class="nx">status</span><span class="p">:</span> <span class="s">"active"</span>
-    <span class="p">}</span>
+  <span class="s">"meta"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span>
+  <span class="p">},</span>
+  <span class="s">"client"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"mobile_phone"</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
+    <span class="s">"limit_amount"</span><span class="p">:</span> <span class="s">"9500.00"</span><span class="p">,</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="s">"active"</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <blockquote>
 <p>Пример ответа, когда клиент найден в базе, но выдача займа невозможна</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-    <span class="nx">meta</span><span class="p">:</span>
-    <span class="p">{</span>
-      <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
-    <span class="p">},</span>
-    <span class="nx">client</span><span class="p">:</span>
-    <span class="p">{</span>
-      <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
-      <span class="nx">limit_amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
-      <span class="nx">status</span><span class="p">:</span> <span class="s">"inactive"</span>
-    <span class="p">}</span>
+  <span class="s">"meta"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span>
+  <span class="p">},</span>
+  <span class="s">"client"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"mobile_phone"</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
+    <span class="s">"limit_amount"</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="s">"inactive"</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <blockquote>
 <p>Пример ответа, когда клиент не найден в базе</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-    <span class="nx">meta</span><span class="p">:</span>
-    <span class="p">{</span>
-      <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
-    <span class="p">},</span>
-    <span class="nx">client</span><span class="p">:</span>
-    <span class="p">{</span>
-      <span class="nx">mobile_phone</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
-      <span class="nx">limit_amount</span><span class="p">:</span> <span class="s">"0.00"</span><span class="p">,</span>
-      <span class="nx">status</span><span class="p">:</span> <span class="s">"new"</span>
-    <span class="p">}</span>
+  <span class="s">"meta"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span>
+  <span class="p">},</span>
+  <span class="s">"client"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"mobile_phone"</span><span class="p">:</span> <span class="s">"9031234567"</span><span class="p">,</span>
+    <span class="s">"limit_amount"</span><span class="p">:</span> <span class="s">"0.00"</span><span class="p">,</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="s">"new"</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -678,12 +677,12 @@
 <td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о клиенте.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>mobile_phone</strong><br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>mobile_phone</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>limit_amount</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>limit_amount</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Лимит средств, доступных клиенту, в рублях с копейками.</td>
 </tr>
@@ -697,12 +696,7 @@
 </code></pre>
 <p>Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url">json ответ</a> с результатом оформления. В случае успешного оформления, средства в размере <code>amount</code> холдируются на счёте клиента в системе Рево.</p>
 
-<p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>):</p>
-
-<ul>
-<li>Если номер телефона клиента не найден в базе Рево (новый клиент), либо расчёт лимита ещё не производился, то форма будет состоять из 3 шагов: регистрации (расчёта лимита), аутентификации по смс и оформления заказа.</li>
-<li>Если номер телефона клиента найден в базе Рево (повторный клиент) и клиенту уже расчитан лимит, то форма будет состоять из 2 шагов: аутентификации по смс и оформления заказа.</li>
-</ul>
+<p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>) - см. <a href="#iframe-revo">Описание iFrame REVO</a>.</p>
 
 <aside class="success">
 Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
@@ -712,26 +706,49 @@
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">callback_url</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
-  <span class="nx">redirect_url</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
-  <span class="nx">primary_phone</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
-  <span class="nx">primary_email</span> <span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
-  <span class="nx">current_order</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
-    <span class="nx">valid_till</span><span class="p">:</span> <span class="s">"21.04.2017 12:08:01+03:00"</span><span class="p">,</span>
-    <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="nx">amount</span><span class="p">:</span> <span class="mf">6700.00</span>
+  <span class="s">"callback_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
+  <span class="s">"redirect_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
+  <span class="s">"primary_phone"</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
+  <span class="s">"primary_email"</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
+  <span class="s">"prepayment_amount"</span><span class="p">:</span> <span class="mf">0.00</span><span class="p">,</span>
+  <span class="s">"current_order"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
+    <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"21.04.2017 12:08:01+03:00"</span><span class="p">,</span>
+    <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">6700.00</span>
   <span class="p">},</span>
-  <span class="nx">person</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nx">first_name</span><span class="p">:</span> <span class="s">"Петр"</span><span class="p">,</span>
-    <span class="nx">surname</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
-    <span class="nx">patronymic</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
-    <span class="nx">birth_date</span><span class="p">:</span> <span class="s">"15.01.1975"</span>
+  <span class="s">"person"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"first_name"</span><span class="p">:</span> <span class="s">"Петр"</span><span class="p">,</span>
+    <span class="s">"surname"</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
+    <span class="s">"patronymic"</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
+    <span class="s">"birth_date"</span><span class="p">:</span> <span class="s">"15.01.1975"</span>
   <span class="p">},</span>
-  <span class="nx">cart_items</span><span class="p">:</span> <span class="p">[{</span>
-    <span class="nx">sku</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span> <span class="nx">name</span><span class="p">:</span> <span class="s">"prod9"</span><span class="p">,</span> <span class="nx">price</span><span class="p">:</span> <span class="s">"12"</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">:</span> <span class="s">"1"</span> <span class="p">},</span>
-  <span class="p">{</span> <span class="nx">sku</span><span class="p">:</span> <span class="s">"2"</span><span class="p">,</span> <span class="nx">name</span><span class="p">:</span> <span class="s">"prod3"</span><span class="p">,</span> <span class="nx">price</span><span class="p">:</span> <span class="s">"7"</span><span class="p">,</span> <span class="nx">sale_price</span><span class="p">:</span> <span class="s">"5"</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">:</span> <span class="s">"1"</span> <span class="p">}],</span>
-  <span class="nx">skip_result_page</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="s">"cart_items"</span><span class="p">:</span>
+  <span class="p">[{</span>
+    <span class="s">"sku"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+    <span class="s">"name"</span><span class="p">:</span> <span class="s">"prod9"</span><span class="p">,</span>
+    <span class="s">"price"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s">"sku"</span><span class="p">:</span> <span class="s">"2"</span><span class="p">,</span>
+    <span class="s">"name"</span><span class="p">:</span> <span class="s">"prod3"</span><span class="p">,</span>
+    <span class="s">"price"</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="s">"sale_price"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">}],</span>
+  <span class="s">"skip_result_page"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="s">"additional_data"</span><span class="p">:</span>
+  <span class="p">[{</span>
+    <span class="s">"name"</span><span class="p">:</span> <span class="s">"Color"</span><span class="p">,</span>
+    <span class="s">"value"</span><span class="p">:</span> <span class="s">"Black"</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s">"name"</span><span class="p">:</span> <span class="s">"Size"</span><span class="p">,</span>
+    <span class="s">"value"</span><span class="p">:</span> <span class="s">"Large"</span>
+  <span class="p">}]</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -743,17 +760,17 @@
 </thead><tbody>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>callback_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>callback_url</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left"><td colspan="2"> URL для ответа от Рево по решению для клиента.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>redirect_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>redirect_url</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left"><td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Рево &quot;Вернуться в интернет магазин&quot;.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>current_order</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: right"><strong>current_order</strong><br> <font color="#939da3">object</font></td>
 <td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о заказе.</td>
 </tr>
 <tr>
@@ -778,13 +795,18 @@
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>primary_phone</strong><br> <font color="#939da3">integer, <em>optional</em></font></td>
+<td style="text-align: right"><strong>primary_phone</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>primary_email</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Email клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>prepayment_amount</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: left"><td colspan="2"> Сумма предоплаты в рублях с копейками, которую клиент уже внёс.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
@@ -814,7 +836,7 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>cart_items</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о заказе.</td>
+<td style="text-align: left"><td colspan="2"> Объект, содержащий массив с информацией о заказе.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>sku</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
@@ -846,6 +868,21 @@
 <td style="text-align: right"><strong>skip_result_page</strong><br> <font color="#939da3">bool, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления в iFrame. По умолчанию - <code>false</code>.<br><code>true</code> - по успешному завершению оформления сразу происходит редирект по <code>redirect_url</code>.<br><code>false</code> - по успешному завершению оформления будет отображено окно с результатом.</td>
 </tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>additional_data</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
+<td style="text-align: left"><td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>name</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Название поля.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>value</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Значение поля.</td>
+</tr>
 </tbody></table>
 
 <p><aside class="success">
@@ -856,9 +893,9 @@
 <p>Пример ответа при успешной аутентификации.</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
-  <span class="nx">iframe_url</span><span class="p">:</span> <span class="s">"https://revo.ru/factoring/v1/form/6976174c5b6a1bb089d15b80e0a6afc62d4283fe"</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="s">"iframe_url"</span><span class="p">:</span> <span class="s">"https://revo.ru/factoring/v1/form/6976174c5b6a1bb089d15b80e0a6afc62d4283fe"</span>
 <span class="p">}</span>
 </code></pre>
 <!-- > Пример ответа при неуспешной аутентификации.
@@ -877,15 +914,15 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>status</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: left">Код ответа.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>message</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Короткое текстовое описание ответа.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>iframe_url</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>iframe_url</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Cсылка на сгенерированный iFrame.</td>
 </tr>
 </tbody></table>
@@ -896,29 +933,33 @@
 <p>Пример callback-а при успешном оформлении товара:</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
-  <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
-  <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
-  <span class="nx">prepayment_amount</span><span class="p">:</span> <span class="s">"1000.00"</span><span class="p">,</span>
-  <span class="nx">total_amount</span><span class="p">:</span> <span class="s">"7700.00"</span><span class="p">,</span>
-  <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-  <span class="nx">client</span><span class="p">:</span>
+  <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+  <span class="s">"decision"</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
+  <span class="s">"amount"</span><span class="p">:</span> <span class="mf">6700.00</span><span class="p">,</span>
+  <span class="s">"prepayment_amount"</span><span class="p">:</span> <span class="mf">1000.00</span><span class="p">,</span>
+  <span class="s">"total_amount"</span><span class="p">:</span> <span class="mf">7700.00</span><span class="p">,</span>
+  <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="s">"client"</span><span class="p">:</span>
   <span class="p">{</span>
-    <span class="nx">primary_phone</span><span class="p">:</span> <span class="s">"8880010203"</span>
-    <span class="nx">full_name</span><span class="p">:</span> <span class="s">"Иванов Иван Иванович"</span>
+    <span class="s">"primary_phone"</span><span class="p">:</span> <span class="s">"8880010203"</span>
+    <span class="s">"email"</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
+    <span class="s">"full_name"</span><span class="p">:</span> <span class="s">"Иванов Иван Иванович"</span><span class="p">,</span>
+    <span class="s">"first_name"</span><span class="p">:</span> <span class="s">"Иван"</span><span class="p">,</span>
+    <span class="s">"surname"</span><span class="p">:</span> <span class="s">"Иванов"</span><span class="p">,</span>
+    <span class="s">"patronymic"</span><span class="p">:</span> <span class="s">"Иванович"</span>
   <span class="p">},</span>
-  <span class="nx">schedule</span><span class="p">:</span>
+  <span class="s">"schedule"</span><span class="p">:</span>
   <span class="p">[{</span>
-    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.01.2018"</span><span class="p">,</span>
-    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+    <span class="s">"date"</span><span class="p">:</span> <span class="s">"01.01.2018"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">2933.33</span>
   <span class="p">},</span>
   <span class="p">{</span>
-    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.02.2018"</span><span class="p">,</span>
-    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+    <span class="s">"date"</span><span class="p">:</span> <span class="s">"01.02.2018"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">2933.33</span>
   <span class="p">},</span>
   <span class="p">{</span>
-    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.03.2018"</span><span class="p">,</span>
-    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+    <span class="s">"date"</span><span class="p">:</span> <span class="s">"01.03.2018"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">2933.33</span>
   <span class="p">}]</span>
 <span class="p">}</span>
 </code></pre>
@@ -931,61 +972,76 @@
 </thead><tbody>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left"><td colspan="2"> Уникальный номер заказа. Не более 255 символов.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>decision</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>decision</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left"><td colspan="2"> Решение по выдаче рассрочки. При положительном решении - значение <code>approved</code>. При отрицательном решении - <code>declined</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
 <td style="text-align: left"><td colspan="2"> Сумма к оплате частями в рублях с копейками.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>prepayment_amount</strong> <br> <font color="#939da3">float, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Сумма предоплаты в рублях с копейками.</td>
+<td style="text-align: right"><strong>monthly_overpayment</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: left"><td colspan="2"> Сумма .</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>total_amount</strong> <br> <font color="#939da3">float, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Общая сумма заказа в рублях с копейками.</td>
-</tr>
-<tr>
-<td style="text-align: right"></td>
-<td style="text-align: right"><strong>term</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>term</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: left"><td colspan="2"> Срок рассрочки в месяцах.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>client</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: right"><strong>client</strong><br> <font color="#939da3">object</font></td>
 <td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о клиенте.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>primary_phone</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>primary_phone</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>full_name</strong>  <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>primary_email</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Email клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>full_name</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">ФИО через пробел.</td>
 </tr>
 <tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>first_name</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>schedule</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: left">Имя клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>surname</strong><br> <font color="#939da3">sring</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Фамилия клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>patronymic</strong><br> <font color="#939da3">string</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Отчество клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>schedule</strong><br> <font color="#939da3">object</font></td>
 <td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о графике платежей.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>date</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>date</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Дата платежа в формате <code>dd.mm.yyyy</code>.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Сумма платежа в рублях с копейками.</td>
 </tr>
@@ -994,15 +1050,15 @@
 <aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
 </aside>
-<h2 id='status'>Status</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">status?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='schedule'>Schedule</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">schedule?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод возвращает информацию по статусу заказа.</p>
+<p>Метод возвращает информацию о доступных предварительных графиках платежей для заданной суммы корзины.</p>
 <h3 id='parameters-4'>Parameters</h3>
 <blockquote>
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span>
+  <span class="s">"amount"</span><span class="p">:</span> <span class="mf">5000.00</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1012,66 +1068,265 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+<td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: left">Сумма к оплате частями в рублях с копейками.</td>
 </tr>
 </tbody></table>
 <h3 id='response-parameters-4'>Response Parameters</h3>
 <blockquote>
-<p>Пример ответа, когда срок актуальности заказа ещё не вышел, решение по заказу (approved или declined) уже есть</p>
+<p>Пример ответа, когда доступны два графика платежей: на 3 и 6 месяцев.</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
-  <span class="nx">current_order</span><span class="p">:</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="s">"payment_schedule"</span><span class="p">:</span>
+  <span class="p">[{</span>
+    <span class="s">"total"</span><span class="p">:</span> <span class="mf">7000.01</span><span class="p">,</span>
+    <span class="s">"monthly_payment"</span><span class="p">:</span> <span class="mi">2334</span><span class="p">,</span>
+    <span class="s">"monthly_overpayment"</span><span class="p">:</span> <span class="mf">666.67</span><span class="p">,</span>
+    <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s">"payment_dates"</span><span class="p">:</span>
+    <span class="p">[{</span>
+      <span class="s">"date"</span><span class="p">:</span> <span class="s">"11.06.2018"</span><span class="p">,</span>
+      <span class="s">"amount"</span><span class="p">:</span> <span class="mf">2334.00</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s">"date"</span><span class="p">:</span> <span class="s">"09.07.2018"</span><span class="p">,</span>
+      <span class="s">"amount"</span><span class="p">:</span> <span class="mf">2334.00</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s">"date"</span><span class="p">:</span> <span class="s">"09.08.2018"</span><span class="p">,</span>
+      <span class="s">"amount"</span><span class="p">:</span> <span class="mf">2332.01</span>
+    <span class="p">}]</span>
+  <span class="p">},</span>
   <span class="p">{</span>
-    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
-    <span class="nx">expired</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
-    <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
-    <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="s">"total"</span><span class="p">:</span> <span class="mi">6500</span><span class="p">,</span>
+    <span class="s">"monthly_payment"</span><span class="p">:</span> <span class="mi">1100</span><span class="p">,</span>
+    <span class="s">"monthly_overpayment"</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+    <span class="s">"term"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="s">"payment_dates"</span><span class="p">:</span>
+    <span class="p">[{</span>
+      <span class="s">"date"</span><span class="p">:</span> <span class="s">"11.06.2018"</span><span class="p">,</span>
+      <span class="s">"amount"</span><span class="p">:</span> <span class="mf">1100.00</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s">"date"</span><span class="p">:</span> <span class="s">"09.07.2018"</span><span class="p">,</span>
+      <span class="s">"amount"</span><span class="p">:</span> <span class="mf">1100.00</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s">"date"</span><span class="p">:</span> <span class="s">"09.08.2018"</span><span class="p">,</span>
+      <span class="s">"amount"</span><span class="p">:</span> <span class="mf">1100.00</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s">"date"</span><span class="p">:</span> <span class="s">"10.09.2018"</span><span class="p">,</span>
+      <span class="s">"amount"</span><span class="p">:</span> <span class="mf">1100.00</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s">"date"</span><span class="p">:</span> <span class="s">"09.10.2018"</span><span class="p">,</span>
+      <span class="s">"amount"</span><span class="p">:</span> <span class="mf">1100.00</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s">"date"</span><span class="p">:</span> <span class="s">"09.11.2018"</span><span class="p">,</span>
+      <span class="s">"amount"</span><span class="p">:</span> <span class="mf">1000.00</span>
+    <span class="p">}]</span>
+  <span class="p">}]</span>
+<span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: right"></th>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>message</strong><br> <font color="#939da3">string</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left"><td colspan="3"> Короткое текстовое описание ответа.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>payment_schedule</strong><br> <font color="#939da3">object</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left"><td colspan="3"> Массив объектов, содержащий информацию о предварительных графиках платежей.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>total</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"><td colspan="2" style="text-align:left"> Полная сумма рассрочки с учётом переплаты.</td>
+<td style="text-align: left"></td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>monthly_payment</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"><td colspan="2" style="text-align:left"> Приблизительная величина ежемесячного платежа с учётом переплаты.</td>
+<td style="text-align: left"></td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>monthly_overpayment</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"><td colspan="2" style="text-align:left"> Величина ежемесячной переплаты в рублях с копейками.</td>
+<td style="text-align: left"></td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>term</strong><br> <font color="#939da3">int</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"><td colspan="2" style="text-align:left"> Срок рассрочки в месяцах.</td>
+<td style="text-align: left"></td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>payment_dates</strong><br> <font color="#939da3">object</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"><td colspan="2" style="text-align:left"> Объект, содержащий информацию о графике платежей.</td>
+<td style="text-align: left"></td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="3" style="text-align:right"><strong>date</strong><br> <font color="#939da3">string</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Дата платежа в формате <code>dd.mm.yyyy</code>.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="3" style="text-align:right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Сумма платежа в рублях с копейками.</td>
+<td style="text-align: left"></td>
+</tr>
+</tbody></table>
+<h2 id='status'>Status</h2><pre class="highlight ruby tab-ruby"><code> <span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">status?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+</code></pre>
+<p>Метод возвращает информацию по статусу заказа.</p>
+<h3 id='parameters-5'>Parameters</h3>
+<blockquote>
+<p>Пример запроса в формате json</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code> <span class="p">{</span>
+   <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R107356"</span>
+ <span class="p">}</span>
+</code></pre>
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+</tr>
+</tbody></table>
+<h3 id='response-parameters-5'>Response Parameters</h3>
+<blockquote>
+<p>Пример ответа, когда клиент прошел до конца оформление в Iframe и ожидает ответа по заказу от Партнера</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="s">"current_order"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"FACTPRECHR00004768"</span><span class="p">,</span>
+    <span class="s">"expired"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="s">"hold"</span><span class="p">,</span>
+    <span class="s">"decision"</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">4999.0</span><span class="p">,</span>
+    <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Пример ответа, когда срок актуальности заказа ещё не вышел, решения по займу нет (клиент не прошёл процесс до конца)</p>
+<p>Пример ответа, когда клиент прошел до конца оформления в Iframe, но партнер отменил заказ</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
-  <span class="nx">current_order</span><span class="p">:</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="s">"current_order"</span><span class="p">:</span>
   <span class="p">{</span>
-    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
-    <span class="nx">expired</span><span class="p">:</span> <span class="s">"false"</span>
+    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"FACTPRECHR00004768"</span><span class="p">,</span>
+    <span class="s">"expired"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="s">"canceled"</span><span class="p">,</span>
+    <span class="s">"decision"</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mi">4999</span><span class="p">,</span>
+    <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Пример ответа, когда срок актуальности заказа истёк, решение по займу (Approve или declined) уже есть:</p>
+<p>Пример ответа, когда клиент прошел до конца оформления в Iframe, партнер подтвердил заказ.</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
-  <span class="nx">current_order</span><span class="p">:</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="s">"current_order"</span><span class="p">:</span>
   <span class="p">{</span>
-    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
-    <span class="nx">expired</span><span class="p">:</span> <span class="s">"true"</span><span class="p">,</span>
-    <span class="nx">decision</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
-    <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
-    <span class="nx">term</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"FACTR00004755"</span><span class="p">,</span>
+    <span class="s">"expired"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="s">"finished"</span><span class="p">,</span>
+    <span class="s">"decision"</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Пример ответа, когда срок актуальности заказа истёк, решения по займу нет (клиент не прошел процесс до конца)</p>
+<p>Пример ответа, когда произошел отказ по политикам Рево</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
-  <span class="nx">current_order</span><span class="p">:</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="s">"current_order"</span><span class="p">:</span>
   <span class="p">{</span>
-    <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
-    <span class="nx">expired</span><span class="p">:</span> <span class="s">"true"</span>
+    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"FACTPRECHR00004721"</span><span class="p">,</span>
+    <span class="s">"expired"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="s">"declined"</span><span class="p">,</span>
+    <span class="s">"decision"</span><span class="p">:</span> <span class="s">"declined"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mi">6498</span><span class="p">,</span>
+    <span class="s">"term"</span><span class="p">:</span> <span class="kc">null</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Пример ответа, когда срок холдирования по заявке истёк. Заявка отменена.</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="s">"current_order"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"FACTPRECHR141531"</span><span class="p">,</span>
+    <span class="s">"expired"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="s">"expired"</span><span class="p">,</span>
+    <span class="s">"decision"</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mi">9000</span><span class="p">,</span>
+    <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Пример ответа, когда клиент успешно прошел оформление в iframe, партнер подтвердил заказ. Был произведен полный возврат.</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="s">"current_order"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"FACTPRECHR00004714"</span><span class="p">,</span>
+    <span class="s">"expired"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">"status"</span><span class="p">:</span> <span class="s">"refunded"</span><span class="p">,</span>
+    <span class="s">"decision"</span><span class="p">:</span> <span class="s">"approved"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">734.51</span><span class="p">,</span>
+    <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -1080,59 +1335,128 @@
 <th style="text-align: right"></th>
 <th style="text-align: right"></th>
 <th style="text-align: left"></th>
+<th style="text-align: left"></th>
 </tr>
 </thead><tbody>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>status</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: left"><td colspan="2"> Код ответа.</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>message</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left"><td colspan="2"> Короткое текстовое описание ответа.</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>current_order</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: right"><strong>current_order</strong><br> <font color="#939da3">object</font></td>
 <td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о заказе.</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>expired</strong> <br> <font color="#939da3">bool</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>expired</strong><br> <font color="#939da3">bool</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Флаг, отображающий статус актуальности заказа. Для актуальных заказов значение <code>true</code>.</td>
+<td style="text-align: left">Флаг, отображающий статус актуальности заказа (холдирования средств). Для актуальных заказов - <code>false</code>. Становится <code>true</code> при наступлении срока <code>valid_till</code>.</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>decision</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>status</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Информация по статусу заказа. Если заказ уже финализирован - <code>approved</code>. Если заказ ожидает финализации - <code>pending</code>. Если заказ отменили - <code>declined</code>.</td>
+<td style="text-align: left">Информация по статусу заказа. Возможные значения:<br> <code>pending</code>, <code>hold</code>, <code>finished</code>, <code>canceled</code>, <code>declined</code>, <code>refunded</code>.</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>decision</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Сумма в рублях с копейками.</td>
+<td style="text-align: left">Информация по статусу лимита. Если лимит одобрен - <code>approved</code>. Если в лимите отказано - <code>declined</code>.</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>term</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Сумма, оформленная клиентом для оплаты частями, в рублях с копейками.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>term</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Срок рассрочки в месяцах.</td>
+<td style="text-align: left"></td>
+</tr>
+</tbody></table>
+<h3 id='status-and-decision-values'>Status and Decision values</h3>
+<table><thead>
+<tr>
+<th style="text-align: left"></th>
+<th style="text-align: left"></th>
+<th style="text-align: left"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: left"><strong>Decision</strong></td>
+<td style="text-align: left"><strong>Status</strong></td>
+<td style="text-align: left"><strong>Description</strong></td>
+</tr>
+<tr>
+<td style="text-align: left"><code>null</code></td>
+<td style="text-align: left"><code>pending</code></td>
+<td style="text-align: left">Клиент не дошёл до конца оформления в форме. Решения о лимите не принято.</td>
+</tr>
+<tr>
+<td style="text-align: left"><code>approved</code></td>
+<td style="text-align: left"><code>hold</code></td>
+<td style="text-align: left">Лимит одобрен, средства захолдированы, ожидается финализация заказа.</td>
+</tr>
+<tr>
+<td style="text-align: left"><code>approved</code></td>
+<td style="text-align: left"><code>finished</code></td>
+<td style="text-align: left">Заказ финализирован. При последующем изменении <code>expired</code>, либо при частичном возврате значение <code>status</code> не поменяется.</td>
+</tr>
+<tr>
+<td style="text-align: left"><code>approved</code></td>
+<td style="text-align: left"><code>canceled</code></td>
+<td style="text-align: left">Заказ отменен. При последующем изменении <code>expired</code> значение <code>status</code> не поменяется.</td>
+</tr>
+<tr>
+<td style="text-align: left"><code>approved</code></td>
+<td style="text-align: left"><code>expired</code></td>
+<td style="text-align: left">Лимит одобрен, срок холдирования по заказу истёк.</td>
+</tr>
+<tr>
+<td style="text-align: left"><code>approved</code></td>
+<td style="text-align: left"><code>refunded</code></td>
+<td style="text-align: left">Был произведен полный возврат средств по заказу. При частичном возврате <code>status</code> останется <code>finished</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left"><code>approved</code></td>
+<td style="text-align: left"><code>declined</code></td>
+<td style="text-align: left">Лимит одобрен, услуга оплаты частями не доступна клиенту (например, сумма заказа превышает лимит).</td>
+</tr>
+<tr>
+<td style="text-align: left"><code>declined</code></td>
+<td style="text-align: left"><code>declined</code></td>
+<td style="text-align: left">В лимите отказано по политикам Рево.</td>
 </tr>
 </tbody></table>
 <h2 id='change'>Change</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">change?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для изменения суммы уже созданного заказа.</p>
-<h3 id='parameters-5'>Parameters</h3>
+<h3 id='parameters-6'>Parameters</h3>
 <blockquote>
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
-  <span class="nx">amount</span><span class="p">:</span> <span class="s">"5600.00"</span>
+  <span class="nx">amount</span><span class="p">:</span> <span class="mf">5600.00</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1142,33 +1466,33 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
 <td style="text-align: left">Сумма в рублях с копейками.</td>
 </tr>
 </tbody></table>
-<h3 id='response-parameters-5'>Response parameters</h3>
+<h3 id='response-parameters-6'>Response parameters</h3>
 <blockquote>
 <p>Пример ответа при успешном изменении заказа:</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
-  <span class="nx">schedule</span><span class="p">:</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
+  <span class="s">"schedule"</span><span class="p">:</span>
   <span class="p">[{</span>
-    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.01.2018"</span><span class="p">,</span>
-    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+    <span class="s">"date"</span><span class="p">:</span> <span class="s">"01.01.2018"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">2933.33</span>
   <span class="p">},</span>
   <span class="p">{</span>
-    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.02.2018"</span><span class="p">,</span>
-    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+    <span class="s">"date"</span><span class="p">:</span> <span class="s">"01.02.2018"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">2933.33</span>
   <span class="p">},</span>
   <span class="p">{</span>
-    <span class="nx">date</span><span class="p">:</span> <span class="s">"01.03.2018"</span><span class="p">,</span>
-    <span class="nx">amount</span><span class="p">:</span> <span class="s">"2933.33"</span>
+    <span class="s">"date"</span><span class="p">:</span> <span class="s">"01.03.2018"</span><span class="p">,</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">2933.33</span>
   <span class="p">}]</span>
 <span class="p">}</span>
 </code></pre>
@@ -1181,26 +1505,26 @@
 </thead><tbody>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>status</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: left"><td colspan="2"> Код ответа.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>message</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left"><td colspan="2"> Короткое текстовое описание ответа.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>schedule</strong> <br> <font color="#939da3">object</font></td>
+<td style="text-align: right"><strong>schedule</strong><br> <font color="#939da3">object</font></td>
 <td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о графике платежей.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>date</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>date</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Дата платежа в формате <code>dd.mm.yyyy</code>.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Сумма платежа в рублях с копейками.</td>
 </tr>
@@ -1208,12 +1532,12 @@
 <h2 id='cancel'>Cancel</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">cancel?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для отмены заказа. При отмене у клиента разблокируются ранее захолдированные средства.</p>
-<h3 id='parameters-6'>Parameters</h3>
+<h3 id='parameters-7'>Parameters</h3>
 <blockquote>
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span>
+  <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R107356"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1223,17 +1547,17 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
 </tr>
 </tbody></table>
-<h3 id='response-parameters-6'>Response Parameters</h3>
+<h3 id='response-parameters-7'>Response Parameters</h3>
 <blockquote>
 <p>Пример ответа, когда файл успешно подгружен</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1243,11 +1567,11 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>status</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: left">Код ответа.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>message</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Короткое текстовое описание ответа.</td>
 </tr>
 </tbody></table>
@@ -1258,14 +1582,14 @@
 <aside class="notice">
 При попытке финализации заявки с истекшим сроком `valid_till`, будет вызван метод `cancel`.
 </aside>
-<h3 id='parameters-7'>Parameters</h3>
+<h3 id='parameters-8'>Parameters</h3>
 <blockquote>
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
-  <span class="nx">amount</span><span class="p">:</span> <span class="s">"6700.00"</span><span class="p">,</span>
-  <span class="nx">check_number</span><span class="p">:</span> <span class="s">"ZDDS3123F"</span>
+  <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+  <span class="s">"amount"</span><span class="p">:</span> <span class="mf">6700.00</span><span class="p">,</span>
+  <span class="s">"check_number"</span><span class="p">:</span> <span class="s">"ZDDS3123F"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1275,25 +1599,25 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>amount</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
 <td style="text-align: left">Сумма в рублях с копейками.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>check_number</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>check_number</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Номер фискального документа в системе партнёра (например, номер чека).</td>
 </tr>
 </tbody></table>
-<h3 id='response-parameters-7'>Response Parameters</h3>
+<h3 id='response-parameters-8'>Response Parameters</h3>
 <blockquote>
 <p>Пример ответа, когда файл успешно подгружен</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1303,24 +1627,24 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>status</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: left">Код ответа.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>message</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Короткое текстовое описание ответа.</td>
 </tr>
 </tbody></table>
 <h2 id='return'>Return</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="k">return</span><span class="p">?</span><span class="n">store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для осуществления процедуры возврата заказа.</p>
-<h3 id='parameters-8'>Parameters</h3>
+<h3 id='parameters-9'>Parameters</h3>
 <blockquote>
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
-  <span class="nx">sum</span><span class="p">:</span> <span class="s">"2010.00"</span>
+  <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
+  <span class="s">"amount"</span><span class="p">:</span> <span class="mf">2010.00</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1330,29 +1654,29 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>order_id</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>sum</strong> <br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
 <td style="text-align: left">Сумма возврата в рублях с копейками. Возврат может быть как полным, так и частичным.</td>
 </tr>
 </tbody></table>
-<h3 id='response-parameters-8'>Response Parameters</h3>
+<h3 id='response-parameters-9'>Response Parameters</h3>
 <blockquote>
 <p>Пример ответа при успешной обработке запроса на возврат</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="s">"0"</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"Payload valid"</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span>
 <span class="p">}</span>
 </code></pre>
 <blockquote>
 <p>Пример ответа при неуспешной обработке запроса на возврат</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">status</span><span class="p">:</span> <span class="s">"10"</span><span class="p">,</span>
-  <span class="nx">message</span><span class="p">:</span> <span class="s">"JSON decode error"</span>
+  <span class="s">"status"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="s">"message"</span><span class="p">:</span> <span class="s">"JSON decode error"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1362,11 +1686,11 @@
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: right"><strong>status</strong> <br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>status</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: left">Код ответа.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>message</strong> <br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><strong>message</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Короткое текстовое описание ответа.</td>
 </tr>
 </tbody></table>
@@ -1469,14 +1793,65 @@
 <li><p>Для тестирования на production сервере код задаётся в настройках магазина партнёра. Например, это может быть 7777, вместо 8888.</p></li>
 <li><p>В анкете идет проверка по ФИО + дате рождения или номеру паспорта на совпадение с существующим клиентом, поэтому при тестировании необходимо вводить различные данные в эти поля.</p></li>
 </ul>
-<h1 id='iframe-revo'>Описание iFrame REVO</h1>
+<h1 id='iframe-revo'>Описание iFrame REVO</h1><h2 id='001a097ed9'>Регистрация и Авторизация</h2>
+<blockquote>
+<p><a href="Registration.png" target="new"> <img src="Registration.png"></a></p>
+</blockquote>
+<h3 id='c5a67eacd9'>Регистрация клиента</h3>
+<p>1-2. Заполнение анкеты.<br>
+3. Переход на экран подтверждения номера телефона кодом из смс-сообщения.<br>
+3.1 Если клиент допустил ошибку при вводе телефона, то возможен переход на шаг с вводом номера телефона. <br>
+4.1 После ввода корректного смс кода происходит отображение окна с результатом &quot;Оформление прошло успешно&quot; и информацией о доступном лимите.<br>
+4.2 Либо отображение окна с результатом &quot;К сожалению, &#39;Оплата частями&#39; Вам недоступна&quot;.<br></p>
+
+<p>При вызове iframe Рево на первом экране (1) отображены поля для ввода персональных данных:</p>
+
 <ul>
-<li>ФИО - заполняется кириллицей</li>
-<li>возраст - не менее 18 лет</li>
+<li>Фамилия</li>
+<li>Имя</li>
+<li>Отчество</li>
+<li>Дата Рождения</li>
+<li>Выбор пола</li>
+<li>Номер мобильного телефона</li>
+<li>Email</li>
+<li>Серия и Номер паспорта</li>
 </ul>
 
-<aside class="warning">
-Данный раздел находится в стадии разработки.
+<p>Валидация:</p>
+
+<ul>
+<li> Фимилия, Имя, Отвество - принимаются данные только в кириллице. Тип данных <code>string</code>.</li>
+<li> Дата рождения - задаётся в формате <code>dd.mm.yyyy</code>, тип данных <code>date</code>.</li>
+<li> Выбор пола - мужской или женский, тип данных <code>boolean</code>.</li>
+<li> Номер мобильного телефона - необходимо вводить в 10-значном формате, например (888)1231212. Тип данных <code>string</code>.</li>
+<li> Email - поле для ввода email, тип данных <code>string</code>.</li>
+<li> Серия и номер паспорта - длина должна быть ровно 10 символов, тип данных <code>string</code>.</li>
+</ul>
+
+<aside class="notice">
+При вызове iframe формы поддерживается возможность автозаполнения полей через тело json запроса.
+</aside>
+<h3 id='c3d3aac3a6'>Авторизация клиента</h3>
+<blockquote>
+<p><a href="Authentication.png" target="new"> <img src="Authentication.png"></a></p>
+</blockquote>
+
+<ol>
+<li>Нажатие кнопки Войти на первой странице формы. <br>
+2.1 Ввод мобильного номера и Нажатие кнопки &quot;Отправить СМС&quot;. <br>
+2.1 Если мобильный номер не существует в базе Рево, клиент переходит на окно с информационным сообщением &quot;С указанным номером телефона мы Вас не нашли&quot;. Нажатие на кнопку &quot;Оформить за 1 минуту&quot; приводит к переход на первый шаг формы. <br>
+3.1 Если мобильный номер существует в базе Рево, клиент переходит на экран Подтверждение мобильного номера кодом из смс-сообщения. <br>
+3.2 Если клиент допустил ошибку при вводе телефона, то возможен переход на шаг с вводом номера телефона. <br>
+4.1 После ввода корректного смс кода происходит отображение окна результата с информацией &quot;Оформление прошло успешно&quot; и информацией о доступном лимите. <br>
+4.2 Либо отображение окна результата с информацией &quot;К сожалению, &#39;Оплата частями&#39; Вам недоступна&quot;. <br></li>
+</ol>
+
+<!-- ><a href="FAQ.png" target="new"> <img src="FAQ.png" size="50%"></a> -->
+
+<p>По нажатию на кнопку FAQ в правом верхнем углу формы открывается список с ответами на часто задаваемые вопросы.</p>
+
+<aside class="notice">
+При авторизации клиента создаётся 30-минутная сессия, в течении которой при повторных обращениях клиенту сразу открывается финальный экран любой формы.
 </aside>
 <h1 id='guides'>Guides</h1><h2 id='iframe'>Вызов iFrame</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">iframe_url</span><span class="p">,</span> <span class="nx">target_selector</span><span class="p">);</span>
 </code></pre>
