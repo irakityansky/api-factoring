@@ -65,13 +65,12 @@ STORE_ID2 = 13
 
 ```ruby--tab
 require 'digest/sha1'
-secret_key = '098f6bcd4621d373cade4e832627b4f6'
-data = "{\"callback_url\":\"https://shop.ru/revo/decision\",
-\"redirect_url\":\"https://shop.ru/revo/redirect\",
-\"current_order\":{\"sum\":\"7500.00\",\"order_id\":\"R001233\"},
-\"primary_phone\":\"9268180621\"}"
+secret_key = '9fff8c602b08b00323567be0001480f6'
+data = "{\"order_id\": \"FACTPRECHR152632\", \"amount\": \"8300.00\"}"
 SIGNATURE = Digest::SHA1.hexdigest(data + secret_key)
 ```
+
+> Результатом шифрования в примере выше будет являться строка "cbfb21630cd585f59c3a50fc3365d8c26b97cd4e".
 
 ```java
 import java.io.UnsupportedEncodingException;
@@ -215,7 +214,7 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 **order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
 **decision**<br> <font color="#939da3">string</font> | Решение по выдаче рассрочки. При положительном решении - значение `approved` (заявка ожидает финализации). При отрицательном решении - `declined`.
 **amount**<br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
-**mobile_phone**<br> <font color="#939da3">integer</font> | Номер телефона клиента 10 цифр (без кода страны).
+**mobile_phone**<br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
 **email**<br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
 **loan_id**  <br> <font color="#939da3">integer</font> | Уникальный номер заказа в системе Рево.
 
