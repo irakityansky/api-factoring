@@ -9,8 +9,8 @@ toc_footers:
 - <a href='https://revo.ru/'>Revo.ru</a>
 - <a href='https://revo.ru/API/en'>API Documentation in English</a>
 
-#includes:
-#- business
+includes:
+- business
 
 search: true
 ---
@@ -389,7 +389,7 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  <td colspan="2" style="text-align:right"> **amount**<br> <font color="#939da3">float</font> | | Сумма заказа в рублях с копейками.
  |**primary_phone**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).
  |**primary_email**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Email клиента.
- |**prepayment_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Сумма предоплаты в рублях с копейками, которую клиент уже внёс.
+ |**prepayment_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Сумма уже внесённой клиентом предоплаты в рублях с копейками.
  |**person**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
  <td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string, *optional*</font> | | Имя клиента.
  <td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring, *optional*</font> | | Фамилия клиента.
@@ -480,7 +480,8 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  |**order_id**<br> <font color="#939da3">string</font> |<td colspan="2"> Уникальный номер заказа. Не более 255 символов.
  |**decision**<br> <font color="#939da3">string</font> |<td colspan="2"> Решение по выдаче рассрочки. При положительном решении - значение `approved`. При отрицательном решении - `declined`.
  |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма к оплате частями в рублях с копейками.
- |**monthly_overpayment**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма .
+ |**prepayment_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Сумма предоплаты в рублях с копейками.
+ |**total_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Полная сумма заказа, с учётом предоплаты.
  |**term**<br> <font color="#939da3">integer</font> |<td colspan="2"> Срок рассрочки в месяцах.
  |**client**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
 <td colspan="2" style="text-align:right">**primary_phone**<br> <font color="#939da3">string</font> | | Номер телефона клиента 10 цифр (без кода страны).
@@ -492,6 +493,7 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  |**schedule**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
 <td colspan="2" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
 <td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
+ |**monthly_overpayment**<br> <font color="#939da3">float</font> |<td colspan="2"> Величина ежемесячной переплаты в рублях с копейками.
 
 <aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
@@ -943,30 +945,32 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 # Коды ошибок
 
-Код | Описание
--:|:-
-**0**  | Payload valid
-**10**  | JSON decode error
-**20**  | Order `order_id` missing
-**21**  | Wrong order `order_id` format
-**22**  | Order exists
-**24**  | Order with specified id not found
-**30**  | Wrong order `order_sum` format
-**40**  | Order `callback_url` missing
-**32**  | Order amount is different from the amount specified before
-**41**  | Order `redirect_url` missing
-**50**  | Store id is missing
-**51**  | Store not found
-**60**  | `Signature` missing
-**61**  | `Signature` wrong
-**70**  | Phone number is different
-**71**  | Client has not enough limit
-**80**  | Unable to finish - order is already finished/canceled
-**82**  | Unable to change - order is already finished/canceled
-**81**  | Unable to cancel - order is already finished/canceled
-**100** | At the moment the server cannot process your request
+Код | Сообщение | Комментарии
+-:|:-|:-
+**0** | Payload valid | Всё ок.
+**10** | JSON decode error | Некорректный json запрос.
+**20** | Order `order_id` missing | Не указан `order_id`.
+**21** | Wrong order `order_id` format | Неверный формат `order_id`.
+**22** | Order exists | Заявка с таким `order_id` уже существует и финалзирована.
+**24** | Order with specified id not found | Заявка с указанным `order_id` не найден.
+**30** | Wrong order `order_sum` format | Нверный формат `order_sum`.
+**32** | Order amount is different from the amount specified before | Указанная при финализации сумма заказа отличается от суммы, на которую совершен заказ. Финализация не осуществлена.
+**33** | Order amount is outside of tariff_limits | Сумма заявки не входит в диапазон, установленный в тарифе партнёра. Заявка не создана.
+**40** | Order `callback_url` missing | Не указан `callback_url`.
+**41** | Order `redirect_url` missing | Не указан `redirect_url`.
+**50** | Store id is missing | Не указан `store_id`.
+**51** | Store not found | Не найден магазин с идентификтором `store_id`.
+**60** | `Signature` missing | Не указана цифровая подпись `signature`.
+**61** | `Signature` wrong | Указанная цифровая подпись `signature` некорректна.
+**62** | Error saving file | Ошибка при сохранении файла.
+**70** | Phone number is different | Номер телефона отличается от указанного в заявке.
+**71** | Client has not enough limit | У клиента недостаточно средств для осуществления оплаты частями заказа.
+**80** | Unable to finish - order is already finished/canceled | Не удаётся финализировать заявку - заявка с указанным `order_id` уже финализирована или отменена.
+**81** | Unable to cancel - order is already finished/canceled | Не удаётся отменить заявку - заявка с указанным `order_id` уже финализирована или отменена.
+**82** | Unable to change - order is already finished/canceled | Не удаётся изменить заявку - заявка с указанным `order_id` уже финализирована или отменена.
+**100** | At the moment the server cannot process your request | Во всех остальных случаях.
 
-# Тестирование и отладка
+Тестирование и отладка
 
 Тестирование и отладка интеграции производятся на demo сервере (https://demo.revoplus.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.
 
