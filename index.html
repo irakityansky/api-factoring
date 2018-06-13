@@ -272,9 +272,6 @@
             <a href="#cb76858662" class="toc-h1 toc-link" data-title="">Коды ошибок</a>
           </li>
           <li>
-            <a href="#db947828e5" class="toc-h1 toc-link" data-title="">Тестирование и отладка</a>
-          </li>
-          <li>
             <a href="#iframe-revo" class="toc-h1 toc-link" data-title="iframe-revo">Описание iFrame REVO</a>
               <ul class="toc-list-h2">
                   <li>
@@ -287,6 +284,29 @@
               <ul class="toc-list-h2">
                   <li>
                     <a href="#iframe" class="toc-h2 toc-link" data-title="iframe">Вызов iFrame</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#6961794a3c" class="toc-h1 toc-link" data-title="">Схемы взаимодействия</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#1" class="toc-h2 toc-link" data-title="1">Факторинг 1</a>
+                  </li>
+                  <li>
+                    <a href="#2" class="toc-h2 toc-link" data-title="2">Факторинг 2</a>
+                  </li>
+                  <li>
+                    <a href="#3" class="toc-h2 toc-link" data-title="3">Факторинг 3</a>
+                  </li>
+                  <li>
+                    <a href="#4" class="toc-h2 toc-link" data-title="4">Факторинг 4</a>
+                  </li>
+                  <li>
+                    <a href="#5" class="toc-h2 toc-link" data-title="5">Факторинг 5</a>
+                  </li>
+                  <li>
+                    <a href="#6" class="toc-h2 toc-link" data-title="6">Факторинг 6</a>
                   </li>
               </ul>
           </li>
@@ -348,13 +368,14 @@
 <p>Алгоритм формирования цифровой подписи</p>
 </blockquote>
 <pre class="highlight ruby tab-ruby--tab"><code><span class="nb">require</span> <span class="s1">'digest/sha1'</span>
-<span class="n">secret_key</span> <span class="o">=</span> <span class="s1">'098f6bcd4621d373cade4e832627b4f6'</span>
-<span class="n">data</span> <span class="o">=</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">callback_url</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">https://shop.ru/revo/decision</span><span class="se">\"</span><span class="s2">,
-</span><span class="se">\"</span><span class="s2">redirect_url</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">https://shop.ru/revo/redirect</span><span class="se">\"</span><span class="s2">,
-</span><span class="se">\"</span><span class="s2">current_order</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">sum</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">7500.00</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">order_id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">R001233</span><span class="se">\"</span><span class="s2">},
-</span><span class="se">\"</span><span class="s2">primary_phone</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">9268180621</span><span class="se">\"</span><span class="s2">}"</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="s1">'9fff8c602b08b00323567be0001480f6'</span>
+<span class="n">data</span> <span class="o">=</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">order_id</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">FACTPRECHR152632</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">amount</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">8300.00</span><span class="se">\"</span><span class="s2">}"</span>
 <span class="no">SIGNATURE</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">SHA1</span><span class="p">.</span><span class="nf">hexdigest</span><span class="p">(</span><span class="n">data</span> <span class="o">+</span> <span class="n">secret_key</span><span class="p">)</span>
-</code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">java.io.UnsupportedEncodingException</span><span class="o">;</span>
+</code></pre>
+<blockquote>
+<p>Результатом шифрования в примере выше будет являться строка &quot;cbfb21630cd585f59c3a50fc3365d8c26b97cd4e&quot;.</p>
+</blockquote>
+<pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">java.io.UnsupportedEncodingException</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">java.security.MessageDigest</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">java.security.NoSuchAlgorithmException</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">java.util.Formatter</span><span class="o">;</span>
@@ -557,7 +578,7 @@
 <td style="text-align: left">Сумма в рублях с копейками.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>mobile_phone</strong><br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><strong>mobile_phone</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
 </tr>
 <tr>
@@ -806,7 +827,7 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>prepayment_amount</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Сумма предоплаты в рублях с копейками, которую клиент уже внёс.</td>
+<td style="text-align: left"><td colspan="2"> Сумма уже внесённой клиентом предоплаты в рублях с копейками.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
@@ -987,8 +1008,13 @@
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>monthly_overpayment</strong><br> <font color="#939da3">float</font></td>
-<td style="text-align: left"><td colspan="2"> Сумма .</td>
+<td style="text-align: right"><strong>prepayment_amount</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: left"><td colspan="2"> Сумма предоплаты в рублях с копейками.</td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>total_amount</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: left"><td colspan="2"> Полная сумма заказа, с учётом предоплаты.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
@@ -1044,6 +1070,11 @@
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Сумма платежа в рублях с копейками.</td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>monthly_overpayment</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: left"><td colspan="2"> Величина ежемесячной переплаты в рублях с копейками.</td>
 </tr>
 </tbody></table>
 
@@ -1698,91 +1729,124 @@
 <table><thead>
 <tr>
 <th style="text-align: right">Код</th>
-<th style="text-align: left">Описание</th>
+<th style="text-align: left">Сообщение</th>
+<th style="text-align: left">Комментарии</th>
 </tr>
 </thead><tbody>
 <tr>
 <td style="text-align: right"><strong>0</strong></td>
 <td style="text-align: left">Payload valid</td>
+<td style="text-align: left">Всё ок.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>10</strong></td>
 <td style="text-align: left">JSON decode error</td>
+<td style="text-align: left">Некорректный json запрос.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>20</strong></td>
 <td style="text-align: left">Order <code>order_id</code> missing</td>
+<td style="text-align: left">Не указан <code>order_id</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>21</strong></td>
 <td style="text-align: left">Wrong order <code>order_id</code> format</td>
+<td style="text-align: left">Неверный формат <code>order_id</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>22</strong></td>
 <td style="text-align: left">Order exists</td>
+<td style="text-align: left">Заявка с таким <code>order_id</code> уже существует и финалзирована.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>24</strong></td>
 <td style="text-align: left">Order with specified id not found</td>
+<td style="text-align: left">Заявка с указанным <code>order_id</code> не найден.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>30</strong></td>
 <td style="text-align: left">Wrong order <code>order_sum</code> format</td>
-</tr>
-<tr>
-<td style="text-align: right"><strong>40</strong></td>
-<td style="text-align: left">Order <code>callback_url</code> missing</td>
+<td style="text-align: left">Нверный формат <code>order_sum</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>32</strong></td>
 <td style="text-align: left">Order amount is different from the amount specified before</td>
+<td style="text-align: left">Указанная при финализации сумма заказа отличается от суммы, на которую совершен заказ. Финализация не осуществлена.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>33</strong></td>
+<td style="text-align: left">Order amount is outside of tariff_limits</td>
+<td style="text-align: left">Сумма заявки не входит в диапазон, установленный в тарифе партнёра. Заявка не создана.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>40</strong></td>
+<td style="text-align: left">Order <code>callback_url</code> missing</td>
+<td style="text-align: left">Не указан <code>callback_url</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>41</strong></td>
 <td style="text-align: left">Order <code>redirect_url</code> missing</td>
+<td style="text-align: left">Не указан <code>redirect_url</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>50</strong></td>
 <td style="text-align: left">Store id is missing</td>
+<td style="text-align: left">Не указан <code>store_id</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>51</strong></td>
 <td style="text-align: left">Store not found</td>
+<td style="text-align: left">Не найден магазин с идентификтором <code>store_id</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>60</strong></td>
 <td style="text-align: left"><code>Signature</code> missing</td>
+<td style="text-align: left">Не указана цифровая подпись <code>signature</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>61</strong></td>
 <td style="text-align: left"><code>Signature</code> wrong</td>
+<td style="text-align: left">Указанная цифровая подпись <code>signature</code> некорректна.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>62</strong></td>
+<td style="text-align: left">Error saving file</td>
+<td style="text-align: left">Ошибка при сохранении файла.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>70</strong></td>
 <td style="text-align: left">Phone number is different</td>
+<td style="text-align: left">Номер телефона отличается от указанного в заявке.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>71</strong></td>
 <td style="text-align: left">Client has not enough limit</td>
+<td style="text-align: left">У клиента недостаточно средств для осуществления оплаты частями заказа.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>80</strong></td>
 <td style="text-align: left">Unable to finish - order is already finished/canceled</td>
-</tr>
-<tr>
-<td style="text-align: right"><strong>82</strong></td>
-<td style="text-align: left">Unable to change - order is already finished/canceled</td>
+<td style="text-align: left">Не удаётся финализировать заявку - заявка с указанным <code>order_id</code> уже финализирована или отменена.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>81</strong></td>
 <td style="text-align: left">Unable to cancel - order is already finished/canceled</td>
+<td style="text-align: left">Не удаётся отменить заявку - заявка с указанным <code>order_id</code> уже финализирована или отменена.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>82</strong></td>
+<td style="text-align: left">Unable to change - order is already finished/canceled</td>
+<td style="text-align: left">Не удаётся изменить заявку - заявка с указанным <code>order_id</code> уже финализирована или отменена.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>100</strong></td>
 <td style="text-align: left">At the moment the server cannot process your request</td>
+<td style="text-align: left">Во всех остальных случаях.</td>
 </tr>
 </tbody></table>
-<h1 id='db947828e5'>Тестирование и отладка</h1>
+
+<p>Тестирование и отладка</p>
+
 <p>Тестирование и отладка интеграции производятся на demo сервере (https://demo.revoplus.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.</p>
 
 <p>Все коды подтверждения и пин-коды <code>8888</code>.</p>
@@ -1853,6 +1917,10 @@
 <aside class="notice">
 При авторизации клиента создаётся 30-минутная сессия, в течении которой при повторных обращениях клиенту сразу открывается финальный экран любой формы.
 </aside>
+
+<aside class="notice">
+Если клиент не завершил оформление в форме по истечении 'valid_till', то будет выдано сообщение об ошибке "К сожалению, время резервирования заказа вышло.".
+</aside>
 <h1 id='guides'>Guides</h1><h2 id='iframe'>Вызов iFrame</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">iframe_url</span><span class="p">,</span> <span class="nx">target_selector</span><span class="p">);</span>
 </code></pre>
 <p>Полученную с помощью метода <a href="#Registration"><code>Registration</code></a> или <a href="#Checkout"><code>Checkout</code></a> ссылку на iFrame необходимо передать в js метод плагина REVO.</p>
@@ -1873,7 +1941,76 @@
 <aside class="success">
 При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой странице производится на стороне Рево.
 </aside>
+<h1 id='6961794a3c'>Схемы взаимодействия</h1>
+<p>Возможны следующие схемы взаимодействия:</p>
 
+<table border="0" align="center">
+  <tr>
+    <th rowspan="2">Схема</th>
+    <th colspan="3" align="center">Предоплата</th>
+    <th rowspan="2">Изменение заказа</th>
+  </tr>
+  <tr>
+    <th>Партнёр</th>
+    <th>Рево</th>
+    <th>Отсутствует</th>
+  </tr>
+  <tr>
+    <td>Факторинг 1</td>
+    <td>х</td>
+    <td></td>
+    <td></td>
+    <td>х</td>
+  </tr>
+  <tr>
+    <td>Факторинг 2</td>
+    <td></td>
+    <td>x</td>
+    <td></td>
+    <td>х</td>
+  </tr>
+  <tr>
+    <td><a href="http://localhost:4567/#3">Факторинг 3</a></td>
+    <td></td>
+    <td></td>
+    <td>x</td>
+    <td>х</td>
+  </tr>
+  <tr>
+    <td>Факторинг 4</td>
+    <td>х</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Факторинг 5</td>
+    <td></td>
+    <td>x</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Факторинг 6</td>
+    <td></td>
+    <td></td>
+    <td>x</td>
+    <td></td>
+  </tr>
+</table>
+<h2 id='1'>Факторинг 1</h2><h2 id='2'>Факторинг 2</h2><h2 id='3'>Факторинг 3</h2>
+<ol>
+<li><p>Клиент переходит к оформлению заказа на сайте партнёра и выбирает способ оплаты &quot;оплата частями РЕВО&quot;. При переходе на следующий шаг оформления происходит отображение поп-апа Рево, ссылка на который получается с помощью метода <a href="#Checkout"><code>Checkout</code></a>. В этом поп-апе клиент аутентифицируется (или регистрируется, если это новый для Рево клиент), и совершает оформление оплаты частями. В случае успешного завершения поп-апа, клиенту отображается финальная страница <code>redirect_url</code> успешного оформления заказ на сайте партнёра.</p></li>
+<li><p>На стороне партнёра формируется предварительный заказ с тем же <code>order_id</code>, который использовался для вызова формы Рево.</p></li>
+<li><p>В системе Рево заявка переводится в статус hold (блокировка средств) на срок <code>valid_till</code>. Если заказ не будет финализирован с помощью метода <a href="#finish"><code>Finish</code></a> до этого срока, то заявка будет отменена.</p></li>
+<li><p>Колл-центр партнёра связывается с клиентом для подтверждения или корректировки заказа.<BR>
+4.1 Если сумма заказа изменилась и превышает лимит, необходимо отменить заявку с помощью метода <a href="#Cancel"><code>Cancel</code></a> и предложить клиенту оплатить заказ другим способом.<BR>
+4.2 Если сумма заказа изменилась в пределах лимита, то необходимо передать обновлённую информацию о заказе с помощью метода <a href="#Change"><code>Change</code></a>.<BR></p></li>
+<li><p>При необходимости, на стороне партнёра происходит подготовка и сбор заказа, после чего с клиентом согласовывается дата и время доставки.</p></li>
+</ol>
+
+<p><img src="images/F3.png"></p>
+<h2 id='4'>Факторинг 4</h2><h2 id='5'>Факторинг 5</h2><h2 id='6'>Факторинг 6</h2>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
