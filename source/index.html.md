@@ -409,9 +409,9 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Название поля.
  <td colspan="2" style="text-align:right"> **value**<br> <font color="#939da3">string, *optional*</font> | | Значение поля.
 
-# <aside class="success">
-# При передаче информации о предоплате клиента следует также использовать `skip_result_page`: выставлять `true` при необходимости клиентом #совершить предоплату и передавать в `callback_url` адрес страницы предоплаты; выставлять `false` при наличии предоплаты.
-#</aside>
+<aside class="success">
+При передаче информации о предоплате клиента следует также использовать `skip_result_page`: выставлять `true` при необходимости клиентом #совершить предоплату и передавать в `callback_url` адрес страницы предоплаты; выставлять `false` при наличии предоплаты.
+</aside>
 
 ### Response Parameters
 
