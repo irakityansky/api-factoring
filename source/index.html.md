@@ -9,8 +9,8 @@ toc_footers:
 - <a href='https://revo.ru/'>Revo.ru</a>
 - <a href='https://revo.ru/API/en'>API Documentation in English</a>
 
-includes:
-- business
+<!-- includes:
+- business -->
 
 search: true
 ---
