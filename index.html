@@ -277,6 +277,9 @@
                   <li>
                     <a href="#001a097ed9" class="toc-h2 toc-link" data-title="">Регистрация и Авторизация</a>
                   </li>
+                  <li>
+                    <a href="#ee363a7d6e" class="toc-h2 toc-link" data-title="">Оформление покупки</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -735,9 +738,9 @@
   <span class="s">"current_order"</span><span class="p">:</span>
   <span class="p">{</span>
     <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
-    <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"21.04.2017 12:08:01+03:00"</span><span class="p">,</span>
+    <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"21.07.2018 12:08:01+03:00"</span><span class="p">,</span>
     <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">6700.00</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">59499.00</span>
   <span class="p">},</span>
   <span class="s">"person"</span><span class="p">:</span>
   <span class="p">{</span>
@@ -748,17 +751,19 @@
   <span class="p">},</span>
   <span class="s">"cart_items"</span><span class="p">:</span>
   <span class="p">[{</span>
-    <span class="s">"sku"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
-    <span class="s">"name"</span><span class="p">:</span> <span class="s">"prod9"</span><span class="p">,</span>
-    <span class="s">"price"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-    <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="s">"sku"</span><span class="p">:</span> <span class="s">"1231"</span><span class="p">,</span>
+    <span class="s">"name"</span><span class="p">:</span> <span class="s">"Samsung Note 8"</span><span class="p">,</span>
+    <span class="s">"price"</span><span class="p">:</span> <span class="mi">55999</span><span class="p">,</span>
+    <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"brand"</span><span class="p">:</span> <span class="s">"Samsung"</span>
   <span class="p">},</span>
   <span class="p">{</span>
-    <span class="s">"sku"</span><span class="p">:</span> <span class="s">"2"</span><span class="p">,</span>
-    <span class="s">"name"</span><span class="p">:</span> <span class="s">"prod3"</span><span class="p">,</span>
-    <span class="s">"price"</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
-    <span class="s">"sale_price"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-    <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="s">"sku"</span><span class="p">:</span> <span class="s">"23543"</span><span class="p">,</span>
+    <span class="s">"name"</span><span class="p">:</span> <span class="s">"Чехол фирменный"</span><span class="p">,</span>
+    <span class="s">"price"</span><span class="p">:</span> <span class="mi">3500</span><span class="p">,</span>
+    <span class="s">"sale_price"</span><span class="p">:</span> <span class="mi">2999</span><span class="p">,</span>
+    <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">"brand"</span> <span class="p">:</span> <span class="s">"Samsung"</span>
   <span class="p">}],</span>
   <span class="s">"skip_result_page"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="s">"additional_data"</span><span class="p">:</span>
@@ -865,12 +870,12 @@
 <td style="text-align: left">Складская учётная единица (stock keeping unit).</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>name</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>name</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Наименование товара.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>price</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>price</strong><br> <font color="#939da3">float</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Цена товара.</td>
 </tr>
@@ -883,6 +888,11 @@
 <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>quantity</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Количество товара.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>brand</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Бренд товара.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
@@ -1486,23 +1496,78 @@
 <p>Пример запроса в формате json</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
-  <span class="nx">order_id</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
-  <span class="nx">amount</span><span class="p">:</span> <span class="mf">5600.00</span>
+  <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
+  <span class="s">"amount"</span><span class="p">:</span> <span class="mf">59999.00</span><span class="p">,</span>
+  <span class="s">"cart_items"</span><span class="p">:</span>
+  <span class="p">[{</span>
+    <span class="s">"sku"</span><span class="p">:</span> <span class="s">"1231"</span><span class="p">,</span>
+    <span class="s">"name"</span><span class="p">:</span> <span class="s">"Samsung Note 8"</span><span class="p">,</span>
+    <span class="s">"price"</span><span class="p">:</span> <span class="mi">55999</span><span class="p">,</span>
+    <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">}]</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
 <tr>
 <th style="text-align: right"></th>
+<th style="text-align: right"></th>
+<th style="text-align: left"></th>
 <th style="text-align: left"></th>
 </tr>
 </thead><tbody>
 <tr>
+<td style="text-align: right"></td>
 <td style="text-align: right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+<td style="text-align: left"><td colspan="2"> Уникальный номер заказа. Не более 255 символов.</td>
+<td style="text-align: left"></td>
 </tr>
 <tr>
+<td style="text-align: right"></td>
 <td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
-<td style="text-align: left">Сумма в рублях с копейками.</td>
+<td style="text-align: left"><td colspan="2"> Сумма в рублях с копейками.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>cart_items</strong><br> <font color="#939da3">object</font></td>
+<td style="text-align: left"><td colspan="2"> Объект, содержащий массив с информацией о заказе.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>sku</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Складская учётная единица (stock keeping unit).</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>name</strong><br> <font color="#939da3">string</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Наименование товара.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>price</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Цена товара.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>sale_price</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Цена товара со скидкой (если есть).</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>quantity</strong><br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Количество товара.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>brand</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Бренд товара.</td>
+<td style="text-align: left"></td>
 </tr>
 </tbody></table>
 <h3 id='response-parameters-6'>Response parameters</h3>
@@ -1756,7 +1821,12 @@
 <tr>
 <td style="text-align: right"><strong>22</strong></td>
 <td style="text-align: left">Order exists</td>
-<td style="text-align: left">Заявка с таким <code>order_id</code> уже существует и финалзирована.</td>
+<td style="text-align: left">Заявка с данным <code>order_id</code> уже существует и финалзирована.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>23</strong></td>
+<td style="text-align: left">Order expired</td>
+<td style="text-align: left">У заявки с данным <code>order_id</code> уже истёк холдирования.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>24</strong></td>
@@ -1839,6 +1909,11 @@
 <td style="text-align: left">Не удаётся изменить заявку - заявка с указанным <code>order_id</code> уже финализирована или отменена.</td>
 </tr>
 <tr>
+<td style="text-align: right"><strong>90</strong></td>
+<td style="text-align: left">Cart items are missing</td>
+<td style="text-align: left">Не удаётся изменить заявку - не передана информация о корзине.</td>
+</tr>
+<tr>
 <td style="text-align: right"><strong>100</strong></td>
 <td style="text-align: left">At the moment the server cannot process your request</td>
 <td style="text-align: left">Во всех остальных случаях.</td>
@@ -1875,7 +1950,6 @@
 <li>Имя</li>
 <li>Отчество</li>
 <li>Дата Рождения</li>
-<li>Выбор пола</li>
 <li>Номер мобильного телефона</li>
 <li>Email</li>
 <li>Серия и Номер паспорта</li>
@@ -1886,7 +1960,6 @@
 <ul>
 <li> Фимилия, Имя, Отвество - принимаются данные только в кириллице. Тип данных <code>string</code>.</li>
 <li> Дата рождения - задаётся в формате <code>dd.mm.yyyy</code>, тип данных <code>date</code>.</li>
-<li> Выбор пола - мужской или женский, тип данных <code>boolean</code>.</li>
 <li> Номер мобильного телефона - необходимо вводить в 10-значном формате, например (888)1231212. Тип данных <code>string</code>.</li>
 <li> Email - поле для ввода email, тип данных <code>string</code>.</li>
 <li> Серия и номер паспорта - длина должна быть ровно 10 символов, тип данных <code>string</code>.</li>
@@ -1921,6 +1994,22 @@
 <aside class="notice">
 Если клиент не завершил оформление в форме по истечении 'valid_till', то будет выдано сообщение об ошибке "К сожалению, время резервирования заказа вышло.".
 </aside>
+<h2 id='ee363a7d6e'>Оформление покупки</h2>
+<blockquote>
+<p><a href="Checkout.png" target="new"> <img src="Checkout.png"></a></p>
+</blockquote>
+
+<ol>
+<li>Заполнение анкеты. <br>
+2.1 Переход на экран подтверждения номера телефона кодом из смс-сообщения.<br>
+2.2 Если клиент допустил ошибку при вводе телефона, то возможен переход на шаг с вводом номера телефона. <br>
+3.1 Если для оформления заказа не требуется предоплата, то идёт переход на экран, где клиенту необходимо выбрать один из возможных для данной суммы заказа периодов оплаты. <br>
+3.1 Если для оформления заказа клиенту необходимо внести предоплату, то идёт переход на экран, где клиенту необходимо выбрать один из возможных для данной суммы заказа периодов оплаты, а также указать желаемую величину предоплаты. <br>
+4.1 После успешного оформления заказа без предоплаты происходит отображение окна результата с информацией &quot;Оформление прошло успешно&quot; и кнопкой для возврата в магазин. <br>
+4.2 Либо отображение окна результата с информацией &quot;К сожалению, &#39;Оплата частями&#39; Вам недоступна&quot;. <br>
+4.3 После успешного оформления заказа с предоплатой происходит отображение окна результата с инфомрмацией &quot;Оформление прошло успешно&quot; и кнопкой для перехода к оплате картой. <br>
+4.4 Либо отображение окна результата с информацией &quot;К сожалению, &#39;Оплата частями&#39; Вам недоступна&quot;. <br></li>
+</ol>
 <h1 id='guides'>Guides</h1><h2 id='iframe'>Вызов iFrame</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">iframe_url</span><span class="p">,</span> <span class="nx">target_selector</span><span class="p">);</span>
 </code></pre>
 <p>Полученную с помощью метода <a href="#Registration"><code>Registration</code></a> или <a href="#Checkout"><code>Checkout</code></a> ссылку на iFrame необходимо передать в js метод плагина REVO.</p>
