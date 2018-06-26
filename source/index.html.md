@@ -340,9 +340,9 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
   "current_order":
   {
     "order_id": "R001233",
-    "valid_till": "21.04.2017 12:08:01+03:00",
+    "valid_till": "21.07.2018 12:08:01+03:00",
     "term": 3,
-    "amount": 6700.00
+    "amount": 59499.00
   },
   "person":
   {
@@ -353,17 +353,19 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
   },
   "cart_items":
   [{
-    "sku": "1",
-    "name": "prod9",
-    "price": 12,
-    "quantity": 1
+    "sku": "1231",
+    "name": "Samsung Note 8",
+    "price": 55999,
+    "quantity": 1,
+    "brand": "Samsung"
   },
   {
-    "sku": "2",
-    "name": "prod3",
-    "price": 7,
-    "sale_price": 5,
-    "quantity": 1
+    "sku": "23543",
+    "name": "Чехол фирменный",
+    "price": 3500,
+    "sale_price": 2999,
+    "quantity": 1,
+    "brand" : "Samsung"
   }],
   "skip_result_page": true,
   "additional_data":
@@ -397,10 +399,11 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  <td colspan="2" style="text-align:right"> **birth_date**<br> <font color="#939da3">string, *optional*</font> | | Дата рождения клиента в формате `dd.mm.yyyy`.
  |**cart_items**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект, содержащий массив с информацией о заказе.
  <td colspan="2" style="text-align:right"> **sku**<br> <font color="#939da3">string, *optional*</font> | | Складская учётная единица (stock keeping unit).
- <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Наименование товара.
- <td colspan="2" style="text-align:right"> **price**<br> <font color="#939da3">float, *optional*</font> | | Цена товара.
+ <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string</font> | | Наименование товара.
+ <td colspan="2" style="text-align:right"> **price**<br> <font color="#939da3">float</font> | | Цена товара.
  <td colspan="2" style="text-align:right"> **sale_price**<br> <font color="#939da3">float, *optional*</font> | | Цена товара со скидкой (если есть).
  <td colspan="2" style="text-align:right"> **quantity**<br> <font color="#939da3">integer</font> | | Количество товара.
+ <td colspan="2" style="text-align:right"> **brand**<br> <font color="#939da3">string, *optional*</font> | | Бренд товара.
  |**skip_result_page**<br> <font color="#939da3">bool, *optional*</font> |<td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления в iFrame. По умолчанию - `false`.<br>`true` - по успешному завершению оформления сразу происходит редирект по `redirect_url`.<br>`false` - по успешному завершению оформления будет отображено окно с результатом.
  |**additional_data**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.
  <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Название поля.
@@ -768,15 +771,29 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATUR
 
 ```jsonnet
 {
-  order_id: "R107356",
-  amount: 5600.00
+  "order_id": "R107356",
+  "amount": 59999.00,
+  "cart_items":
+  [{
+    "sku": "1231",
+    "name": "Samsung Note 8",
+    "price": 55999,
+    "quantity": 1
+  }]
 }
 ```
 
- | |
--:|:-
-**order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**amount**<br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
+ | | | |
+-:|-:|:-|:-
+ |**order_id**<br> <font color="#939da3">string</font> |<td colspan="2"> Уникальный номер заказа. Не более 255 символов.
+ |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма в рублях с копейками.
+ |**cart_items**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий массив с информацией о заказе.
+<td colspan="2" style="text-align:right"> **sku**<br> <font color="#939da3">string, *optional*</font> | | Складская учётная единица (stock keeping unit).
+<td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string</font> | | Наименование товара.
+<td colspan="2" style="text-align:right"> **price**<br> <font color="#939da3">float</font> | | Цена товара.
+<td colspan="2" style="text-align:right"> **sale_price**<br> <font color="#939da3">float, *optional*</font> | | Цена товара со скидкой (если есть).
+<td colspan="2" style="text-align:right"> **quantity**<br> <font color="#939da3">integer</font> | | Количество товара.
+<td colspan="2" style="text-align:right"> **brand**<br> <font color="#939da3">string, *optional*</font> | | Бренд товара.
 
 ### Response parameters
 
@@ -951,7 +968,8 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 **10** | JSON decode error | Некорректный json запрос.
 **20** | Order `order_id` missing | Не указан `order_id`.
 **21** | Wrong order `order_id` format | Неверный формат `order_id`.
-**22** | Order exists | Заявка с таким `order_id` уже существует и финалзирована.
+**22** | Order exists | Заявка с данным `order_id` уже существует и финалзирована.
+**23** | Order expired | У заявки с данным `order_id` уже истёк холдирования.
 **24** | Order with specified id not found | Заявка с указанным `order_id` не найден.
 **30** | Wrong order `order_sum` format | Нверный формат `order_sum`.
 **32** | Order amount is different from the amount specified before | Указанная при финализации сумма заказа отличается от суммы, на которую совершен заказ. Финализация не осуществлена.
@@ -968,6 +986,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 **80** | Unable to finish - order is already finished/canceled | Не удаётся финализировать заявку - заявка с указанным `order_id` уже финализирована или отменена.
 **81** | Unable to cancel - order is already finished/canceled | Не удаётся отменить заявку - заявка с указанным `order_id` уже финализирована или отменена.
 **82** | Unable to change - order is already finished/canceled | Не удаётся изменить заявку - заявка с указанным `order_id` уже финализирована или отменена.
+**90** | Cart items are missing | Не удаётся изменить заявку - не передана информация о корзине.
 **100** | At the moment the server cannot process your request | Во всех остальных случаях.
 
 Тестирование и отладка
@@ -1004,7 +1023,6 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
   * Имя
   * Отчество
   * Дата Рождения
-  * Выбор пола
   * Номер мобильного телефона
   * Email
   * Серия и Номер паспорта
@@ -1013,7 +1031,6 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
   *  Фимилия, Имя, Отвество - принимаются данные только в кириллице. Тип данных `string`.
   *  Дата рождения - задаётся в формате `dd.mm.yyyy`, тип данных `date`.
-  *  Выбор пола - мужской или женский, тип данных `boolean`.
   *  Номер мобильного телефона - необходимо вводить в 10-значном формате, например (888)1231212. Тип данных `string`.
   *  Email - поле для ввода email, тип данных `string`.
   *  Серия и номер паспорта - длина должна быть ровно 10 символов, тип данных `string`.
@@ -1045,6 +1062,20 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 <aside class="notice">
 Если клиент не завершил оформление в форме по истечении 'valid_till', то будет выдано сообщение об ошибке "К сожалению, время резервирования заказа вышло.".
 </aside>
+
+## Оформление покупки
+
+><a href="Checkout.png" target="new"> <img src="Checkout.png"></a>
+
+1. Заполнение анкеты. <br>
+2.1 Переход на экран подтверждения номера телефона кодом из смс-сообщения.<br>
+2.2 Если клиент допустил ошибку при вводе телефона, то возможен переход на шаг с вводом номера телефона. <br>
+3.1 Если для оформления заказа не требуется предоплата, то идёт переход на экран, где клиенту необходимо выбрать один из возможных для данной суммы заказа периодов оплаты. <br>
+3.1 Если для оформления заказа клиенту необходимо внести предоплату, то идёт переход на экран, где клиенту необходимо выбрать один из возможных для данной суммы заказа периодов оплаты, а также указать желаемую величину предоплаты. <br>
+4.1 После успешного оформления заказа без предоплаты происходит отображение окна результата с информацией "Оформление прошло успешно" и кнопкой для возврата в магазин. <br>
+4.2 Либо отображение окна результата с информацией "К сожалению, 'Оплата частями' Вам недоступна". <br>
+4.3 После успешного оформления заказа с предоплатой происходит отображение окна результата с инфомрмацией "Оформление прошло успешно" и кнопкой для перехода к оплате картой. <br>
+4.4 Либо отображение окна результата с информацией "К сожалению, 'Оплата частями' Вам недоступна". <br>
 
 # Guides
 
