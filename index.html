@@ -248,6 +248,23 @@
                   <li>
                     <a href="#checkout" class="toc-h2 toc-link" data-title="checkout">Checkout</a>
                   </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#affaa4ab33" class="toc-h1 toc-link" data-title="aside-class-success-aside"><aside class="success"></aside></a>
+          </li>
+          <li>
+            <a href="#skip_result_page-true-callback_url-false" class="toc-h1 toc-link" data-title="code-skip_result_page-code-code-true-code-code-callback_url-code-code-false-code">При передаче информации о предоплате клиента следует также использовать <code>skip_result_page</code>: выставлять <code>true</code> при необходимости клиентом #совершить предоплату и передавать в <code>callback_url</code> адрес страницы предоплаты; выставлять <code>false</code> при наличии предоплаты.</a>
+          </li>
+          <li>
+            <a href="#4420c3f377" class="toc-h1 toc-link" data-title=""></a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#response-parameters-3" class="toc-h2 toc-link" data-title="response-parameters">Response Parameters</a>
+                  </li>
+                  <li>
+                    <a href="#callback-parameters-2" class="toc-h2 toc-link" data-title="callback-parameters">Callback parameters</a>
+                  </li>
                   <li>
                     <a href="#schedule" class="toc-h2 toc-link" data-title="schedule">Schedule</a>
                   </li>
@@ -711,13 +728,13 @@
   <span class="s">"redirect_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
   <span class="s">"primary_phone"</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
   <span class="s">"primary_email"</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
-  <span class="s">"prepayment_amount"</span><span class="p">:</span> <span class="mf">0.00</span><span class="p">,</span>
   <span class="s">"current_order"</span><span class="p">:</span>
   <span class="p">{</span>
     <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
     <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"21.07.2018 12:08:01+03:00"</span><span class="p">,</span>
     <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">59499.00</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">59499.00</span><span class="p">,</span>
+    <span class="s">"prepayment_amount"</span><span class="p">:</span> <span class="mf">1000.00</span>
   <span class="p">},</span>
   <span class="s">"person"</span><span class="p">:</span>
   <span class="p">{</span>
@@ -797,6 +814,11 @@
 <td style="text-align: left">Сумма заказа в рублях с копейками.</td>
 </tr>
 <tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>prepayment_amount</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Сумма уже внесённой клиентом предоплаты в рублях с копейками.</td>
+</tr>
+<tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>primary_phone</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).</td>
@@ -805,11 +827,6 @@
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>primary_email</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Email клиента.</td>
-</tr>
-<tr>
-<td style="text-align: right"></td>
-<td style="text-align: right"><strong>prepayment_amount</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Сумма уже внесённой клиентом предоплаты в рублях с копейками.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
@@ -892,11 +909,7 @@
 <td style="text-align: left">Значение поля.</td>
 </tr>
 </tbody></table>
-
-<p><aside class="success">
- При передаче информации о предоплате клиента следует также использовать <code>skip_result_page</code>: выставлять <code>true</code> при необходимости клиентом совершить предоплату и передавать в <code>callback_url</code> адрес страницы предоплаты; выставлять <code>false</code> при наличии предоплаты.
- </aside></p>
-<h3 id='response-parameters-3'>Response Parameters</h3>
+<h1 id='affaa4ab33'><aside class="success"></h1><h1 id='skip_result_page-true-callback_url-false'>При передаче информации о предоплате клиента следует также использовать <code>skip_result_page</code>: выставлять <code>true</code> при необходимости клиентом #совершить предоплату и передавать в <code>callback_url</code> адрес страницы предоплаты; выставлять <code>false</code> при наличии предоплаты.</h1><h1 id='4420c3f377'></aside></h1><h3 id='response-parameters-3'>Response Parameters</h3>
 <blockquote>
 <p>Пример ответа при успешной аутентификации.</p>
 </blockquote>
@@ -1824,6 +1837,11 @@
 <td style="text-align: right"><strong>33</strong></td>
 <td style="text-align: left">Order amount is outside of tariff_limits</td>
 <td style="text-align: left">Сумма заявки не входит в диапазон, установленный в тарифе партнёра. Заявка не создана.</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>35</strong></td>
+<td style="text-align: left">Order prepayment amount is wrong</td>
+<td style="text-align: left">Величина <code>prepayment_amount</code> превосходит <code>amount</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>40</strong></td>
