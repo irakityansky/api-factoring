@@ -9,8 +9,8 @@ toc_footers:
 - <a href='https://revo.ru/'>Revo.ru</a>
 - <a href='https://revo.ru/API/en'>API Documentation in English</a>
 
-includes:
-- business
+#includes:
+#- business
 
 search: true
 ---
@@ -336,13 +336,13 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
   "redirect_url": "https://shop.ru/revo/redirect",
   "primary_phone": "9268180621",
   "primary_email": "ivan@gmail.com",
-  "prepayment_amount": 0.00,
   "current_order":
   {
     "order_id": "R001233",
     "valid_till": "21.07.2018 12:08:01+03:00",
     "term": 3,
-    "amount": 59499.00
+    "amount": 59499.00,
+    "prepayment_amount": 1000.00
   },
   "person":
   {
@@ -389,9 +389,9 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 <td colspan="2" style="text-align:right"> **valid_till**<br> <font color="#939da3">String, *optional*</font> | | Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после  "+" указывается часовой пояс относительно GMT. По умолчанию - 24 часа.
  <td colspan="2" style="text-align:right"> **term**<br> <font color="#939da3">integer, *optional*</font> | | Срок рассрочки в месяцах.
  <td colspan="2" style="text-align:right"> **amount**<br> <font color="#939da3">float</font> | | Сумма заказа в рублях с копейками.
+ <td colspan="2" style="text-align:right"> **prepayment_amount**<br> <font color="#939da3">float, *optional*</font> | | Сумма уже внесённой клиентом предоплаты в рублях с копейками.
  |**primary_phone**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).
  |**primary_email**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Email клиента.
- |**prepayment_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Сумма уже внесённой клиентом предоплаты в рублях с копейками.
  |**person**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
  <td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string, *optional*</font> | | Имя клиента.
  <td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring, *optional*</font> | | Фамилия клиента.
@@ -409,9 +409,9 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Название поля.
  <td colspan="2" style="text-align:right"> **value**<br> <font color="#939da3">string, *optional*</font> | | Значение поля.
 
- <aside class="success">
- При передаче информации о предоплате клиента следует также использовать `skip_result_page`: выставлять `true` при необходимости клиентом совершить предоплату и передавать в `callback_url` адрес страницы предоплаты; выставлять `false` при наличии предоплаты.
- </aside>
+# <aside class="success">
+# При передаче информации о предоплате клиента следует также использовать `skip_result_page`: выставлять `true` при необходимости клиентом #совершить предоплату и передавать в `callback_url` адрес страницы предоплаты; выставлять `false` при наличии предоплаты.
+#</aside>
 
 ### Response Parameters
 
@@ -974,6 +974,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 **30** | Wrong order `order_sum` format | Нверный формат `order_sum`.
 **32** | Order amount is different from the amount specified before | Указанная при финализации сумма заказа отличается от суммы, на которую совершен заказ. Финализация не осуществлена.
 **33** | Order amount is outside of tariff_limits | Сумма заявки не входит в диапазон, установленный в тарифе партнёра. Заявка не создана.
+**35** | Order prepayment amount is wrong | Величина `prepayment_amount` превосходит `amount`.
 **40** | Order `callback_url` missing | Не указан `callback_url`.
 **41** | Order `redirect_url` missing | Не указан `redirect_url`.
 **50** | Store id is missing | Не указан `store_id`.
