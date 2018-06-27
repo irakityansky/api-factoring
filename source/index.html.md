@@ -1108,3 +1108,80 @@ REVO.Form.onResult(function() { console.log('result'); });
 <aside class="success">
 При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой странице производится на стороне Рево.
 </aside>
+
+# Тестирование и отладка
+
+## Тестовые Параметры
+
+Тестовые мобильные номера для ввода в <a href="#iframe-revo">iframe</a>:
+
+`8881ХХХХXX` - одобрено всё (второе оформление = повторная заявка)
+
+`88821ХХХХХ` - отказано полностью
+
+`88822ХХХХХ` - одобрены только займ
+
+Код для подтверждения номера телефона - `8888`
+
+## Кейсы для тестирования
+
+### Подробное описание вызова формы для регистрации клиента.
+
+Для вызова формы используется метод <a href="#registration">registration</a>.
+
+> Пример формирования signature на ruby:
+
+```jsonnet
+data = {
+"callback_url": "https://shop.ru/revo/decision",
+"redirect_url": "https://shop.ru/revo/redirect",
+"primary_phone": "9268180621",
+"primary_email": "ivan@gmail.com",
+"current_order":
+{
+ "order_id": "R001233"
+}}
+ => {:callback_url=>"https://shop.ru/revo/decision", :redirect_url=>"https://shop.ru/revo/redirect", :primary_phone=>"9268180621", :primary_email=>"ivan@gmail.com", :current_order=>{:order_id=>"R001233"}}
+
+ data = data.to_json
+ => "{\"callback_url\":\"https://shop.ru/revo/decision\",\"redirect_url\":\"https://shop.ru/revo/redirect\",\"primary_phone\":\"9268180621\",\"primary_email\":\"ivan@gmail.com\",\"current_order\":{\"order_id\":\"R001233\"}}"
+
+ secret_key = "9fff8c602b08b00323567be0001480f6"
+
+ signature = Digest::SHA1.hexdigest(secret_key + data)
+ => "347e8cff27d30b5200c8b32def4365ebbf4270d0"
+
+puts data
+{"callback_url":"https://shop.ru/revo/decision","redirect_url":"https://shop.ru/revo/redirect","primary_phone":"9268180621","primary_email":"ivan@gmail.com","current_order":{"order_id":"R001233"}}
+
+```
+
+> Пример отправки запроса через API CLIENT:
+
+><a href="rest_client.png" target="new"> <img src="rest_client.png"></a>
+
+ Необходимые параметры для вызова формы:
+
+* базовый URL сервиса для тестирования и отладки 
+* store_id 
+* signature 
+
+Описание формирования запроса на получение ссылки вызова iframe:
+
+* В переменную `data` вводится тело json запроса
+* Переводим `data` в `json` формат
+* В переменную `secret_key` вводим наименование ключа
+* В переменную `signature` формируем подпись
+* Выводим тело `json` запроса через команду `puts` для отправки запроса через клиент
+
+Пример отправки запроса через API клиент POSTMAN:
+Используется POST URL:
+`https://demo.revoup.ru/factoring/v1/limit/auth?store_id=72&signature=347e8cff27d30b5200c8b32def4365ebbf4270d0`
+
+Тело JSON:
+{"callback_url":"https://shop.ru/revo/decision","redirect_url":"https://shop.ru/revo/redirect","primary_phone":"9268180621","primary_email":"ivan@gmail.com","current_order":{"order_id":"R001233"}}
+
+
+## Особенности
+
+
