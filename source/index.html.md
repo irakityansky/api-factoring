@@ -1068,7 +1068,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 ## Оформление покупки
 
-><a href="Checkout.png" target="new"> <img src="Checkout.png"></a>
+><a href="REVO Presentation.pdf target="new"> <img src="Checkout.png"></a>
 
 1. Заполнение анкеты. <br>
 2.1 Переход на экран подтверждения номера телефона кодом из смс-сообщения.<br>
@@ -1079,6 +1079,14 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 4.2 Либо отображение окна результата с информацией "К сожалению, 'Оплата частями' Вам недоступна". <br>
 4.3 После успешного оформления заказа с предоплатой происходит отображение окна результата с инфомрмацией "Оформление прошло успешно" и кнопкой для перехода к оплате картой. <br>
 4.4 Либо отображение окна результата с информацией "К сожалению, 'Оплата частями' Вам недоступна". <br>
+
+# Представление на сайте
+
+В <a href="REVO Presentation.pdf target="new">презентации</a> визуализирован стандартный вариант представления Рево на сайте партнёра.
+
+<aside class="warning">
+Скоро здесь будут представлены описания реализации отдельных элементов из презентации с использованием данного API.
+</aside>
 
 # Guides
 
@@ -1184,6 +1192,3 @@ puts data
 
 Тело JSON:
 `{"callback_url":"https://shop.ru/revo/decision","redirect_url":"https://shop.ru/revo/redirect","primary_phone":"9268180621","primary_email":"ivan@gmail.com","current_order":{"order_id":"R001233"}}`
-
-
-## Особенности
