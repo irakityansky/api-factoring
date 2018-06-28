@@ -322,6 +322,12 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 
 В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать `primary_phone`) - см. <a href="#iframe-revo">Описание iFrame REVO</a>.
 
+Для бизнес-моделей, где клиенту необходимо осуществлять предоплату, метод поддерживает 2 способа предоплаты:
+
+ * Если предоплата осуществлена до вызова iFrame, то информацию о ней необходимо передавать в `prepayment_amount`.
+
+ * Если предоплата должна быть осуществлена после вызова iFrame, то производится соответствующая настройка на стороне Рево. При этом следует параметр `skip_result_page` выставлять как `true` и передавать в `callback_url` адрес страницы предоплаты, на которую будет перенаправлен клиент по завершению оформления в iFrame.
+
 <aside class="success">
 Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
 </aside>
@@ -408,10 +414,6 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  |**additional_data**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.
  <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Название поля.
  <td colspan="2" style="text-align:right"> **value**<br> <font color="#939da3">string, *optional*</font> | | Значение поля.
-
-<aside class="success">
-При передаче информации о предоплате клиента следует также использовать `skip_result_page`: выставлять `true` при необходимости клиентом #совершить предоплату и передавать в `callback_url` адрес страницы предоплаты; выставлять `false` при наличии предоплаты.
-</aside>
 
 ### Response Parameters
 
