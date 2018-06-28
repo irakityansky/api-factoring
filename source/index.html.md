@@ -1068,7 +1068,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 ## Оформление покупки
 
-><a href="REVO Presentation.pdf target="new"> <img src="Checkout.png"></a>
+><a href="Checkout.png" target="new"> <img src="Checkout.png"></a>
 
 1. Заполнение анкеты. <br>
 2.1 Переход на экран подтверждения номера телефона кодом из смс-сообщения.<br>
@@ -1082,7 +1082,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 # Представление на сайте
 
-В <a href="REVO Presentation.pdf target="new">презентации</a> визуализирован стандартный вариант представления Рево на сайте партнёра.
+В <a href="REVO Presentation.pdf" target="new">презентации</a> визуализирован стандартный вариант представления Рево на сайте партнёра.
 
 <aside class="warning">
 Скоро здесь будут представлены описания реализации отдельных элементов из презентации с использованием данного API.
