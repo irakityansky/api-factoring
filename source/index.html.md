@@ -1126,15 +1126,14 @@ REVO.Form.onResult(function() { console.log('result'); });
 
 Код для подтверждения номера телефона - `8888`
 
+
 ## Кейсы для тестирования
 
 ### Подробное описание вызова формы для регистрации клиента.
 
-Для вызова формы используется метод <a href="#registration">registration</a>.
-
 > Пример формирования signature на ruby:
 
-```jsonnet
+```ruby--tab
 data = {
 "callback_url": "https://shop.ru/revo/decision",
 "redirect_url": "https://shop.ru/revo/redirect",
@@ -1159,6 +1158,8 @@ puts data
 
 ```
 
+Для вызова формы используется метод <a href="#registration">registration</a>.
+
 > Пример отправки запроса через API CLIENT:
 
 ><a href="rest_client.png" target="new"> <img src="rest_client.png"></a>
@@ -1182,7 +1183,7 @@ puts data
 `https://demo.revoup.ru/factoring/v1/limit/auth?store_id=72&signature=347e8cff27d30b5200c8b32def4365ebbf4270d0`
 
 Тело JSON:
-{"callback_url":"https://shop.ru/revo/decision","redirect_url":"https://shop.ru/revo/redirect","primary_phone":"9268180621","primary_email":"ivan@gmail.com","current_order":{"order_id":"R001233"}}
+`{"callback_url":"https://shop.ru/revo/decision","redirect_url":"https://shop.ru/revo/redirect","primary_phone":"9268180621","primary_email":"ivan@gmail.com","current_order":{"order_id":"R001233"}}`
 
 
 ## Особенности
