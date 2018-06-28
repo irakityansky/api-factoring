@@ -290,6 +290,20 @@
                   </li>
               </ul>
           </li>
+          <li>
+            <a href="#db947828e5" class="toc-h1 toc-link" data-title="">Тестирование и отладка</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#afed7bf690" class="toc-h2 toc-link" data-title="">Тестовые Параметры</a>
+                  </li>
+                  <li>
+                    <a href="#b7617b8769" class="toc-h2 toc-link" data-title="">Кейсы для тестирования</a>
+                  </li>
+                  <li>
+                    <a href="#ad57058c12" class="toc-h2 toc-link" data-title="">Особенности</a>
+                  </li>
+              </ul>
+          </li>
       </div>
         <ul class="toc-footer">
             <li><a href='https://revo.ru/'>Revo.ru</a></li>
@@ -711,13 +725,13 @@
   <span class="s">"redirect_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
   <span class="s">"primary_phone"</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
   <span class="s">"primary_email"</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
+  <span class="s">"prepayment_amount"</span><span class="p">:</span> <span class="mf">0.00</span><span class="p">,</span>
   <span class="s">"current_order"</span><span class="p">:</span>
   <span class="p">{</span>
     <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
     <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"21.07.2018 12:08:01+03:00"</span><span class="p">,</span>
     <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">59499.00</span><span class="p">,</span>
-    <span class="s">"prepayment_amount"</span><span class="p">:</span> <span class="mf">1000.00</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">59499.00</span>
   <span class="p">},</span>
   <span class="s">"person"</span><span class="p">:</span>
   <span class="p">{</span>
@@ -797,11 +811,6 @@
 <td style="text-align: left">Сумма заказа в рублях с копейками.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>prepayment_amount</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
-<td style="text-align: right"></td>
-<td style="text-align: left">Сумма уже внесённой клиентом предоплаты в рублях с копейками.</td>
-</tr>
-<tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>primary_phone</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).</td>
@@ -810,6 +819,11 @@
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>primary_email</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Email клиента.</td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>prepayment_amount</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: left"><td colspan="2"> Сумма уже внесённой клиентом предоплаты в рублях с копейками.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
@@ -893,9 +907,9 @@
 </tr>
 </tbody></table>
 
-<aside class="success">
-При передаче информации о предоплате клиента следует также использовать `skip_result_page`: выставлять `true` при необходимости клиентом #совершить предоплату и передавать в `callback_url` адрес страницы предоплаты; выставлять `false` при наличии предоплаты.
-</aside>
+<p><aside class="success">
+ При передаче информации о предоплате клиента следует также использовать <code>skip_result_page</code>: выставлять <code>true</code> при необходимости клиентом совершить предоплату и передавать в <code>callback_url</code> адрес страницы предоплаты; выставлять <code>false</code> при наличии предоплаты.
+ </aside></p>
 <h3 id='response-parameters-3'>Response Parameters</h3>
 <blockquote>
 <p>Пример ответа при успешной аутентификации.</p>
@@ -1826,11 +1840,6 @@
 <td style="text-align: left">Сумма заявки не входит в диапазон, установленный в тарифе партнёра. Заявка не создана.</td>
 </tr>
 <tr>
-<td style="text-align: right"><strong>35</strong></td>
-<td style="text-align: left">Order prepayment amount is wrong</td>
-<td style="text-align: left">Величина <code>prepayment_amount</code> превосходит <code>amount</code>.</td>
-</tr>
-<tr>
 <td style="text-align: right"><strong>40</strong></td>
 <td style="text-align: left">Order <code>callback_url</code> missing</td>
 <td style="text-align: left">Не указан <code>callback_url</code>.</td>
@@ -2012,7 +2021,76 @@
 <aside class="success">
 При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой странице производится на стороне Рево.
 </aside>
+<h1 id='db947828e5'>Тестирование и отладка</h1><h2 id='afed7bf690'>Тестовые Параметры</h2>
+<p>Тестовые мобильные номера для ввода в <a href="#iframe-revo">iframe</a>:</p>
 
+<p><code>8881ХХХХXX</code> - одобрено всё (второе оформление = повторная заявка)</p>
+
+<p><code>88821ХХХХХ</code> - отказано полностью</p>
+
+<p><code>88822ХХХХХ</code> - одобрены только займ</p>
+
+<p>Код для подтверждения номера телефона - <code>8888</code></p>
+<h2 id='b7617b8769'>Кейсы для тестирования</h2><h3 id='41a57c96e5'>Подробное описание вызова формы для регистрации клиента.</h3>
+<p>Для вызова формы используется метод <a href="#registration">registration</a>.</p>
+
+<blockquote>
+<p>Пример формирования signature на ruby:</p>
+</blockquote>
+<pre class="highlight jsonnet tab-jsonnet"><code><span class="nx">data</span> <span class="p">=</span> <span class="p">{</span>
+<span class="s">"callback_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
+<span class="s">"redirect_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
+<span class="s">"primary_phone"</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
+<span class="s">"primary_email"</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
+<span class="s">"current_order"</span><span class="p">:</span>
+<span class="p">{</span>
+ <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span>
+<span class="p">}}</span>
+ <span class="p">=</span><span class="err">&gt;</span> <span class="p">{:</span><span class="nx">callback_url</span><span class="p">=</span><span class="err">&gt;</span><span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span> <span class="p">:</span><span class="nx">redirect_url</span><span class="p">=</span><span class="err">&gt;</span><span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span> <span class="p">:</span><span class="nx">primary_phone</span><span class="p">=</span><span class="err">&gt;</span><span class="s">"9268180621"</span><span class="p">,</span> <span class="p">:</span><span class="nx">primary_email</span><span class="p">=</span><span class="err">&gt;</span><span class="s">"ivan@gmail.com"</span><span class="p">,</span> <span class="p">:</span><span class="nx">current_order</span><span class="p">=</span><span class="err">&gt;</span><span class="p">{:</span><span class="nx">order_id</span><span class="p">=</span><span class="err">&gt;</span><span class="s">"R001233"</span><span class="p">}}</span>
+
+ <span class="nx">data</span> <span class="p">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">to_json</span>
+ <span class="p">=</span><span class="err">&gt;</span> <span class="s">"{</span><span class="se">\"</span><span class="s">callback_url</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">https://shop.ru/revo/decision</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">redirect_url</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">https://shop.ru/revo/redirect</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">primary_phone</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">9268180621</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">primary_email</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">ivan@gmail.com</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">current_order</span><span class="se">\"</span><span class="s">:{</span><span class="se">\"</span><span class="s">order_id</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">R001233</span><span class="se">\"</span><span class="s">}}"</span>
+
+ <span class="nx">secret_key</span> <span class="p">=</span> <span class="s">"9fff8c602b08b00323567be0001480f6"</span>
+
+ <span class="nx">signature</span> <span class="p">=</span> <span class="nx">Digest</span><span class="p">::</span><span class="nx">SHA1</span><span class="p">.</span><span class="nx">hexdigest</span><span class="p">(</span><span class="nx">secret_key</span> <span class="p">+</span> <span class="nx">data</span><span class="p">)</span>
+ <span class="p">=</span><span class="err">&gt;</span> <span class="s">"347e8cff27d30b5200c8b32def4365ebbf4270d0"</span>
+
+<span class="nx">puts</span> <span class="nx">data</span>
+<span class="p">{</span><span class="s">"callback_url"</span><span class="p">:</span><span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span><span class="s">"redirect_url"</span><span class="p">:</span><span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span><span class="s">"primary_phone"</span><span class="p">:</span><span class="s">"9268180621"</span><span class="p">,</span><span class="s">"primary_email"</span><span class="p">:</span><span class="s">"ivan@gmail.com"</span><span class="p">,</span><span class="s">"current_order"</span><span class="p">:{</span><span class="s">"order_id"</span><span class="p">:</span><span class="s">"R001233"</span><span class="p">}}</span>
+
+</code></pre>
+<blockquote>
+<p>Пример отправки запроса через API CLIENT:</p>
+
+<p><a href="rest_client.png" target="new"> <img src="rest_client.png"></a></p>
+</blockquote>
+
+<p>Необходимые параметры для вызова формы:</p>
+
+<ul>
+<li>базовый URL сервиса для тестирования и отладки </li>
+<li>store_id </li>
+<li>signature </li>
+</ul>
+
+<p>Описание формирования запроса на получение ссылки вызова iframe:</p>
+
+<ul>
+<li>В переменную <code>data</code> вводится тело json запроса</li>
+<li>Переводим <code>data</code> в <code>json</code> формат</li>
+<li>В переменную <code>secret_key</code> вводим наименование ключа</li>
+<li>В переменную <code>signature</code> формируем подпись</li>
+<li>Выводим тело <code>json</code> запроса через команду <code>puts</code> для отправки запроса через клиент</li>
+</ul>
+
+<p>Пример отправки запроса через API клиент POSTMAN:
+Используется POST URL:
+<code>https://demo.revoup.ru/factoring/v1/limit/auth?store_id=72&amp;signature=347e8cff27d30b5200c8b32def4365ebbf4270d0</code></p>
+
+<p>Тело JSON:
+{&quot;callback_url&quot;:&quot;https://shop.ru/revo/decision&quot;,&quot;redirect_url&quot;:&quot;https://shop.ru/revo/redirect&quot;,&quot;primary_phone&quot;:&quot;9268180621&quot;,&quot;primary_email&quot;:&quot;ivan@gmail.com&quot;,&quot;current_order&quot;:{&quot;order_id&quot;:&quot;R001233&quot;}}</p>
+<h2 id='ad57058c12'>Особенности</h2>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
