@@ -1008,11 +1008,9 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 # Описание iFrame REVO
 
-## Регистрация и Авторизация
-
 ><a href="Registration.png" target="new"> <img src="Registration.png"></a>
 
-### Регистрация клиента
+## Регистрация клиента
 
 1-2. Заполнение анкеты.<br>
 3. Переход на экран подтверждения номера телефона кодом из смс-сообщения.<br>
@@ -1042,7 +1040,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 При вызове iframe формы поддерживается возможность автозаполнения полей через тело json запроса.
 </aside>
 
-### Авторизация клиента
+## Авторизация клиента
 
 ><a href="Authentication.png" target="new"> <img src="Authentication.png"></a>
 
@@ -1082,13 +1080,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 # Представление на сайте
 
-В <a href="REVO Presentation.pdf" target="new">презентации</a> визуализирован стандартный вариант представления Рево на сайте партнёра.
-
-<aside class="warning">
-Скоро здесь будут представлены описания реализации отдельных элементов из презентации с использованием данного API.
-</aside>
-
-# Guides
+Рекомендации по представлению услуги Оплата частями на партёнрском сайте представлены в <a href="REVO Presentation.pdf" target="new">презентации</a>. Ниже приведены инструкции по реализации отдельных элементов Рево из презентации.
 
 ## Вызов iFrame
 
@@ -1096,7 +1088,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 REVO.Form.show(iframe_url, target_selector);
 ```
 
-Полученную с помощью метода <a href="#Registration">`Registration`</a> или <a href="#Checkout">`Checkout`</a> ссылку на iFrame необходимо передать в js метод плагина REVO.
+По нажатию на кнопки "Оформить за 1 минуту", "?" справа от надписи "или 150 Р/мес" и "Оплата" при выбранном способе "Оплата частями" необходимо вызвать iFrame Рево для регистрации и оформления заказа, соответственно. Для этого нужно получить с помощью метода <a href="#Registration">`Registration`</a> или <a href="#Checkout">`Checkout`</a> ссылку на iFrame и передать её в js метод плагина REVO.
 
 `iframe_url` – адрес открываемого iFrame, обязательный параметр.
 `target_selector` – селектор элемента, внутрь которого должен быть вставлен iFrame.
@@ -1117,8 +1109,12 @@ REVO.Form.onLoad(function () { console.log('frame loaded'); });
 REVO.Form.onResult(function() { console.log('result'); });
 ```
 <aside class="success">
-При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой странице производится на стороне Рево.
+При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой страницы производится на стороне Рево.
 </aside>
+
+## Отображение доступного лимита
+
+Если клиент уже прошёл регистрацию и получил лимит, то доступные ему для Оплаты частями средства можно отображать с помощью метода <a href="#limit">Limit</a>.
 
 # Тестирование и отладка
 
