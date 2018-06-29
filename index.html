@@ -283,6 +283,9 @@
               </ul>
           </li>
           <li>
+            <a href="#5a291e242a" class="toc-h1 toc-link" data-title="">Представление на сайте</a>
+          </li>
+          <li>
             <a href="#guides" class="toc-h1 toc-link" data-title="guides">Guides</a>
               <ul class="toc-list-h2">
                   <li>
@@ -299,9 +302,6 @@
                   <li>
                     <a href="#b7617b8769" class="toc-h2 toc-link" data-title="">Кейсы для тестирования</a>
                   </li>
-                  <li>
-                    <a href="#ad57058c12" class="toc-h2 toc-link" data-title="">Особенности</a>
-                  </li>
               </ul>
           </li>
       </div>
@@ -314,7 +314,7 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='3394112aa9'>Введение</h1>
-<p>API Factoring реализовано на протоколе HTTPS на основе JSON запросов (application/x-www-form-urlencoded).</p>
+<p>API Factoring реализовано на протоколе HTTPS на основе JSON запросов.</p>
 
 <p>Документация состоит из 3 основных частей:</p>
 
@@ -1727,7 +1727,7 @@
 </tbody></table>
 <h2 id='return'>Return</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="k">return</span><span class="p">?</span><span class="n">store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод для осуществления процедуры возврата заказа.</p>
+<p>Метод для осуществления процедуры полного или частичного возврата заказа. Возвращать можно только уже финализированный заказ. Если заказ ещё не финализирован, вместо возврата его необходимо отменить с помощью метода <a href="#cancel">Cancel</a>. Частичный возврат можно провести не ранее, чем на следующий день после финализации. При возврате средства на счёт клиента зачисляются в полном объёме, включая переплаты, если клиент уже совершал платежи для погашения рассрочки.</p>
 <h3 id='parameters-9'>Parameters</h3>
 <blockquote>
 <p>Пример запроса в формате json</p>
@@ -2009,6 +2009,12 @@
 4.3 После успешного оформления заказа с предоплатой происходит отображение окна результата с инфомрмацией &quot;Оформление прошло успешно&quot; и кнопкой для перехода к оплате картой. <br>
 4.4 Либо отображение окна результата с информацией &quot;К сожалению, &#39;Оплата частями&#39; Вам недоступна&quot;. <br></li>
 </ol>
+<h1 id='5a291e242a'>Представление на сайте</h1>
+<p>В <a href="REVO Presentation.pdf" target="new">презентации</a> визуализирован стандартный вариант представления Рево на сайте партнёра.</p>
+
+<aside class="warning">
+Скоро здесь будут представлены описания реализации отдельных элементов из презентации с использованием данного API.
+</aside>
 <h1 id='guides'>Guides</h1><h2 id='iframe'>Вызов iFrame</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">iframe_url</span><span class="p">,</span> <span class="nx">target_selector</span><span class="p">);</span>
 </code></pre>
 <p>Полученную с помощью метода <a href="#Registration"><code>Registration</code></a> или <a href="#Checkout"><code>Checkout</code></a> ссылку на iFrame необходимо передать в js метод плагина REVO.</p>
@@ -2040,34 +2046,34 @@
 
 <p>Код для подтверждения номера телефона - <code>8888</code></p>
 <h2 id='b7617b8769'>Кейсы для тестирования</h2><h3 id='41a57c96e5'>Подробное описание вызова формы для регистрации клиента.</h3>
-<p>Для вызова формы используется метод <a href="#registration">registration</a>.</p>
-
 <blockquote>
 <p>Пример формирования signature на ruby:</p>
 </blockquote>
-<pre class="highlight jsonnet tab-jsonnet"><code><span class="nx">data</span> <span class="p">=</span> <span class="p">{</span>
-<span class="s">"callback_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
-<span class="s">"redirect_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
-<span class="s">"primary_phone"</span><span class="p">:</span> <span class="s">"9268180621"</span><span class="p">,</span>
-<span class="s">"primary_email"</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span><span class="p">,</span>
-<span class="s">"current_order"</span><span class="p">:</span>
+<pre class="highlight ruby tab-ruby--tab"><code><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s2">"callback_url"</span><span class="p">:</span> <span class="s2">"https://shop.ru/revo/decision"</span><span class="p">,</span>
+<span class="s2">"redirect_url"</span><span class="p">:</span> <span class="s2">"https://shop.ru/revo/redirect"</span><span class="p">,</span>
+<span class="s2">"primary_phone"</span><span class="p">:</span> <span class="s2">"9268180621"</span><span class="p">,</span>
+<span class="s2">"primary_email"</span><span class="p">:</span> <span class="s2">"ivan@gmail.com"</span><span class="p">,</span>
+<span class="s2">"current_order"</span><span class="p">:</span>
 <span class="p">{</span>
- <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span>
+ <span class="s2">"order_id"</span><span class="p">:</span> <span class="s2">"R001233"</span>
 <span class="p">}}</span>
- <span class="p">=</span><span class="err">&gt;</span> <span class="p">{:</span><span class="nx">callback_url</span><span class="p">=</span><span class="err">&gt;</span><span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span> <span class="p">:</span><span class="nx">redirect_url</span><span class="p">=</span><span class="err">&gt;</span><span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span> <span class="p">:</span><span class="nx">primary_phone</span><span class="p">=</span><span class="err">&gt;</span><span class="s">"9268180621"</span><span class="p">,</span> <span class="p">:</span><span class="nx">primary_email</span><span class="p">=</span><span class="err">&gt;</span><span class="s">"ivan@gmail.com"</span><span class="p">,</span> <span class="p">:</span><span class="nx">current_order</span><span class="p">=</span><span class="err">&gt;</span><span class="p">{:</span><span class="nx">order_id</span><span class="p">=</span><span class="err">&gt;</span><span class="s">"R001233"</span><span class="p">}}</span>
+ <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:callback_url</span><span class="o">=&gt;</span><span class="s2">"https://shop.ru/revo/decision"</span><span class="p">,</span> <span class="ss">:redirect_url</span><span class="o">=&gt;</span><span class="s2">"https://shop.ru/revo/redirect"</span><span class="p">,</span> <span class="ss">:primary_phone</span><span class="o">=&gt;</span><span class="s2">"9268180621"</span><span class="p">,</span> <span class="ss">:primary_email</span><span class="o">=&gt;</span><span class="s2">"ivan@gmail.com"</span><span class="p">,</span> <span class="ss">:current_order</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:order_id</span><span class="o">=&gt;</span><span class="s2">"R001233"</span><span class="p">}}</span>
 
- <span class="nx">data</span> <span class="p">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">to_json</span>
- <span class="p">=</span><span class="err">&gt;</span> <span class="s">"{</span><span class="se">\"</span><span class="s">callback_url</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">https://shop.ru/revo/decision</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">redirect_url</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">https://shop.ru/revo/redirect</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">primary_phone</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">9268180621</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">primary_email</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">ivan@gmail.com</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">current_order</span><span class="se">\"</span><span class="s">:{</span><span class="se">\"</span><span class="s">order_id</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">R001233</span><span class="se">\"</span><span class="s">}}"</span>
+ <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">to_json</span>
+ <span class="o">=&gt;</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">callback_url</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">https://shop.ru/revo/decision</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">redirect_url</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">https://shop.ru/revo/redirect</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">primary_phone</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">9268180621</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">primary_email</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">ivan@gmail.com</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">current_order</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">order_id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">R001233</span><span class="se">\"</span><span class="s2">}}"</span>
 
- <span class="nx">secret_key</span> <span class="p">=</span> <span class="s">"9fff8c602b08b00323567be0001480f6"</span>
+ <span class="n">secret_key</span> <span class="o">=</span> <span class="s2">"9fff8c602b08b00323567be0001480f6"</span>
 
- <span class="nx">signature</span> <span class="p">=</span> <span class="nx">Digest</span><span class="p">::</span><span class="nx">SHA1</span><span class="p">.</span><span class="nx">hexdigest</span><span class="p">(</span><span class="nx">secret_key</span> <span class="p">+</span> <span class="nx">data</span><span class="p">)</span>
- <span class="p">=</span><span class="err">&gt;</span> <span class="s">"347e8cff27d30b5200c8b32def4365ebbf4270d0"</span>
+ <span class="n">signature</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">SHA1</span><span class="p">.</span><span class="nf">hexdigest</span><span class="p">(</span><span class="n">secret_key</span> <span class="o">+</span> <span class="n">data</span><span class="p">)</span>
+ <span class="o">=&gt;</span> <span class="s2">"347e8cff27d30b5200c8b32def4365ebbf4270d0"</span>
 
-<span class="nx">puts</span> <span class="nx">data</span>
-<span class="p">{</span><span class="s">"callback_url"</span><span class="p">:</span><span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span><span class="s">"redirect_url"</span><span class="p">:</span><span class="s">"https://shop.ru/revo/redirect"</span><span class="p">,</span><span class="s">"primary_phone"</span><span class="p">:</span><span class="s">"9268180621"</span><span class="p">,</span><span class="s">"primary_email"</span><span class="p">:</span><span class="s">"ivan@gmail.com"</span><span class="p">,</span><span class="s">"current_order"</span><span class="p">:{</span><span class="s">"order_id"</span><span class="p">:</span><span class="s">"R001233"</span><span class="p">}}</span>
+<span class="nb">puts</span> <span class="n">data</span>
+<span class="p">{</span><span class="s2">"callback_url"</span><span class="ss">:"https://shop.ru/revo/decision"</span><span class="p">,</span><span class="s2">"redirect_url"</span><span class="ss">:"https://shop.ru/revo/redirect"</span><span class="p">,</span><span class="s2">"primary_phone"</span><span class="ss">:"9268180621"</span><span class="p">,</span><span class="s2">"primary_email"</span><span class="ss">:"ivan@gmail.com"</span><span class="p">,</span><span class="s2">"current_order"</span><span class="p">:{</span><span class="s2">"order_id"</span><span class="ss">:"R001233"</span><span class="p">}}</span>
 
 </code></pre>
+<p>Для вызова формы используется метод <a href="#registration">registration</a>.</p>
+
 <blockquote>
 <p>Пример отправки запроса через API CLIENT:</p>
 
@@ -2077,9 +2083,9 @@
 <p>Необходимые параметры для вызова формы:</p>
 
 <ul>
-<li>базовый URL сервиса для тестирования и отладки </li>
-<li>store_id </li>
-<li>signature </li>
+<li>базовый URL сервиса для тестирования и отладки</li>
+<li>store_id</li>
+<li>signature</li>
 </ul>
 
 <p>Описание формирования запроса на получение ссылки вызова iframe:</p>
@@ -2097,8 +2103,8 @@
 <code>https://demo.revoup.ru/factoring/v1/limit/auth?store_id=72&amp;signature=347e8cff27d30b5200c8b32def4365ebbf4270d0</code></p>
 
 <p>Тело JSON:
-{&quot;callback_url&quot;:&quot;https://shop.ru/revo/decision&quot;,&quot;redirect_url&quot;:&quot;https://shop.ru/revo/redirect&quot;,&quot;primary_phone&quot;:&quot;9268180621&quot;,&quot;primary_email&quot;:&quot;ivan@gmail.com&quot;,&quot;current_order&quot;:{&quot;order_id&quot;:&quot;R001233&quot;}}</p>
-<h2 id='ad57058c12'>Особенности</h2>
+<code>{&quot;callback_url&quot;:&quot;https://shop.ru/revo/decision&quot;,&quot;redirect_url&quot;:&quot;https://shop.ru/revo/redirect&quot;,&quot;primary_phone&quot;:&quot;9268180621&quot;,&quot;primary_email&quot;:&quot;ivan@gmail.com&quot;,&quot;current_order&quot;:{&quot;order_id&quot;:&quot;R001233&quot;}}</code></p>
+
       </div>
       <div class="dark-box">
           <div class="lang-selector">
