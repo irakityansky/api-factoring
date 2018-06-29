@@ -275,7 +275,10 @@
             <a href="#iframe-revo" class="toc-h1 toc-link" data-title="iframe-revo">Описание iFrame REVO</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#001a097ed9" class="toc-h2 toc-link" data-title="">Регистрация и Авторизация</a>
+                    <a href="#c5a67eacd9" class="toc-h2 toc-link" data-title="">Регистрация клиента</a>
+                  </li>
+                  <li>
+                    <a href="#c3d3aac3a6" class="toc-h2 toc-link" data-title="">Авторизация клиента</a>
                   </li>
                   <li>
                     <a href="#ee363a7d6e" class="toc-h2 toc-link" data-title="">Оформление покупки</a>
@@ -284,12 +287,12 @@
           </li>
           <li>
             <a href="#5a291e242a" class="toc-h1 toc-link" data-title="">Представление на сайте</a>
-          </li>
-          <li>
-            <a href="#guides" class="toc-h1 toc-link" data-title="guides">Guides</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#iframe" class="toc-h2 toc-link" data-title="iframe">Вызов iFrame</a>
+                  </li>
+                  <li>
+                    <a href="#818f499a59" class="toc-h2 toc-link" data-title="">Отображение доступного лимита</a>
                   </li>
               </ul>
           </li>
@@ -1931,11 +1934,11 @@
 <li><p>Для тестирования на production сервере код задаётся в настройках магазина партнёра. Например, это может быть 7777, вместо 8888.</p></li>
 <li><p>В анкете идет проверка по ФИО + дате рождения или номеру паспорта на совпадение с существующим клиентом, поэтому при тестировании необходимо вводить различные данные в эти поля.</p></li>
 </ul>
-<h1 id='iframe-revo'>Описание iFrame REVO</h1><h2 id='001a097ed9'>Регистрация и Авторизация</h2>
+<h1 id='iframe-revo'>Описание iFrame REVO</h1>
 <blockquote>
 <p><a href="Registration.png" target="new"> <img src="Registration.png"></a></p>
 </blockquote>
-<h3 id='c5a67eacd9'>Регистрация клиента</h3>
+<h2 id='c5a67eacd9'>Регистрация клиента</h2>
 <p>1-2. Заполнение анкеты.<br>
 3. Переход на экран подтверждения номера телефона кодом из смс-сообщения.<br>
 3.1 Если клиент допустил ошибку при вводе телефона, то возможен переход на шаг с вводом номера телефона. <br>
@@ -1967,7 +1970,7 @@
 <aside class="notice">
 При вызове iframe формы поддерживается возможность автозаполнения полей через тело json запроса.
 </aside>
-<h3 id='c3d3aac3a6'>Авторизация клиента</h3>
+<h2 id='c3d3aac3a6'>Авторизация клиента</h2>
 <blockquote>
 <p><a href="Authentication.png" target="new"> <img src="Authentication.png"></a></p>
 </blockquote>
@@ -2010,14 +2013,10 @@
 4.4 Либо отображение окна результата с информацией &quot;К сожалению, &#39;Оплата частями&#39; Вам недоступна&quot;. <br></li>
 </ol>
 <h1 id='5a291e242a'>Представление на сайте</h1>
-<p>В <a href="REVO Presentation.pdf" target="new">презентации</a> визуализирован стандартный вариант представления Рево на сайте партнёра.</p>
-
-<aside class="warning">
-Скоро здесь будут представлены описания реализации отдельных элементов из презентации с использованием данного API.
-</aside>
-<h1 id='guides'>Guides</h1><h2 id='iframe'>Вызов iFrame</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">iframe_url</span><span class="p">,</span> <span class="nx">target_selector</span><span class="p">);</span>
+<p>Рекомендации по представлению услуги Оплата частями на партёнрском сайте представлены в <a href="REVO Presentation.pdf" target="new">презентации</a>. Ниже приведены инструкции по реализации отдельных элементов Рево из презентации.</p>
+<h2 id='iframe'>Вызов iFrame</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">iframe_url</span><span class="p">,</span> <span class="nx">target_selector</span><span class="p">);</span>
 </code></pre>
-<p>Полученную с помощью метода <a href="#Registration"><code>Registration</code></a> или <a href="#Checkout"><code>Checkout</code></a> ссылку на iFrame необходимо передать в js метод плагина REVO.</p>
+<p>По нажатию на кнопки &quot;Оформить за 1 минуту&quot;, &quot;?&quot; справа от надписи &quot;или 150 Р/мес&quot; и &quot;Оплата&quot; при выбранном способе &quot;Оплата частями&quot; необходимо вызвать iFrame Рево для регистрации и оформления заказа, соответственно. Для этого нужно получить с помощью метода <a href="#Registration"><code>Registration</code></a> или <a href="#Checkout"><code>Checkout</code></a> ссылку на iFrame и передать её в js метод плагина REVO.</p>
 
 <p><code>iframe_url</code> – адрес открываемого iFrame, обязательный параметр.
 <code>target_selector</code> – селектор элемента, внутрь которого должен быть вставлен iFrame.</p>
@@ -2033,8 +2032,10 @@
 <span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onResult</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'result'</span><span class="p">);</span> <span class="p">});</span>
 </code></pre>
 <aside class="success">
-При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой странице производится на стороне Рево.
+При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой страницы производится на стороне Рево.
 </aside>
+<h2 id='818f499a59'>Отображение доступного лимита</h2>
+<p>Если клиент уже прошёл регистрацию и получил лимит, то доступные ему для Оплаты частями средства можно отображать с помощью метода <a href="#limit">Limit</a>.</p>
 <h1 id='db947828e5'>Тестирование и отладка</h1><h2 id='afed7bf690'>Тестовые Параметры</h2>
 <p>Тестовые мобильные номера для ввода в <a href="#iframe-revo">iframe</a>:</p>
 
