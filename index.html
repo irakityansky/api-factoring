@@ -305,6 +305,9 @@
                   <li>
                     <a href="#b7617b8769" class="toc-h2 toc-link" data-title="">Кейсы для тестирования</a>
                   </li>
+                  <li>
+                    <a href="#ad57058c12" class="toc-h2 toc-link" data-title="">Особенности</a>
+                  </li>
               </ul>
           </li>
       </div>
@@ -1557,7 +1560,7 @@
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>quantity</strong><br> <font color="#939da3">integer</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Количество товара.</td>
+<td style="text-align: left">Количество товара. Если передано нецелое число, то в форме не отображается.</td>
 <td style="text-align: left"></td>
 </tr>
 <tr>
@@ -1670,7 +1673,7 @@
 </tbody></table>
 <h2 id='finish'>Finish</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">finish?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Фискальный документ должен быть передан по HTTP через multipart с названием <code>check</code>.</p>
+<p>Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Запрос должен быть отправлен c типом содержимого multipart/form-data. В запросе должны быть указаны два ключа. Первый ключ с названием <code>body</code>, в котором должно быть указано тело json запроса. Второй ключ с названием <code>check</code>, где прикладывается файл(фискальный документ). <code>Signature</code> формируется по основному принципу, без второго ключа.</p>
 
 <aside class="notice">
 При попытке финализации заявки с истекшим сроком `valid_till`, будет вызван метод `cancel`.
@@ -2046,6 +2049,10 @@
 <p><code>88822ХХХХХ</code> - одобрены только займ</p>
 
 <p>Код для подтверждения номера телефона - <code>8888</code></p>
+
+<aside class="notice">
+Данные параметры предназначены только для demo сервиса.
+</aside>
 <h2 id='b7617b8769'>Кейсы для тестирования</h2><h3 id='41a57c96e5'>Подробное описание вызова формы для регистрации клиента.</h3>
 <blockquote>
 <p>Пример формирования signature на ruby:</p>
@@ -2105,7 +2112,7 @@
 
 <p>Тело JSON:
 <code>{&quot;callback_url&quot;:&quot;https://shop.ru/revo/decision&quot;,&quot;redirect_url&quot;:&quot;https://shop.ru/revo/redirect&quot;,&quot;primary_phone&quot;:&quot;9268180621&quot;,&quot;primary_email&quot;:&quot;ivan@gmail.com&quot;,&quot;current_order&quot;:{&quot;order_id&quot;:&quot;R001233&quot;}}</code></p>
-
+<h2 id='ad57058c12'>Особенности</h2>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
