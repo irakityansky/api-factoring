@@ -873,7 +873,7 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID2&signature=SIGNATUR
 POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID2&signature=SIGNATURE
 ```
 
-Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Фискальный документ должен быть передан по HTTP через multipart с названием `check`.
+Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Запрос должен быть отправлен c типом содержимого multipart/form-data. В запросе должны быть указаны два ключа. Первый ключ с названием `body`, в котором должно быть указано тело json запроса. Второй ключ с названием `check`, где прикладывается файл(фискальный документ). `Signature` формируется по основному принципу, без второго ключа.
 
 <aside class="notice">
 При попытке финализации заявки с истекшим сроком `valid_till`, будет вызван метод `cancel`.
@@ -1130,6 +1130,11 @@ REVO.Form.onResult(function() { console.log('result'); });
 
 Код для подтверждения номера телефона - `8888`
 
+<aside class="notice">
+Данные параметры предназначены только для demo сервиса.
+</aside>
+
+
 
 ## Кейсы для тестирования
 
@@ -1188,3 +1193,6 @@ puts data
 
 Тело JSON:
 `{"callback_url":"https://shop.ru/revo/decision","redirect_url":"https://shop.ru/revo/redirect","primary_phone":"9268180621","primary_email":"ivan@gmail.com","current_order":{"order_id":"R001233"}}`
+
+## Особенности
+
