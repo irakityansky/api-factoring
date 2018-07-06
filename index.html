@@ -2106,12 +2106,64 @@
 <li>Выводим тело <code>json</code> запроса через команду <code>puts</code> для отправки запроса через клиент</li>
 </ul>
 
-<p>Пример отправки запроса через API клиент POSTMAN:
-Используется POST URL:
+<p>Данные для отправки запроса в REST CLIENT:</p>
+
+<p>Используется POST URL:
 <code>https://demo.revoup.ru/factoring/v1/limit/auth?store_id=72&amp;signature=347e8cff27d30b5200c8b32def4365ebbf4270d0</code></p>
 
 <p>Тело JSON:
 <code>{&quot;callback_url&quot;:&quot;https://shop.ru/revo/decision&quot;,&quot;redirect_url&quot;:&quot;https://shop.ru/revo/redirect&quot;,&quot;primary_phone&quot;:&quot;9268180621&quot;,&quot;primary_email&quot;:&quot;ivan@gmail.com&quot;,&quot;current_order&quot;:{&quot;order_id&quot;:&quot;R001233&quot;}}</code></p>
+<h3 id='74e834851b'>Подробное описание отправки запроса на финализацию заказа</h3>
+<blockquote>
+<p>Пример формирования signature на ruby:</p>
+</blockquote>
+<pre class="highlight ruby tab-ruby--tab"><code><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="ss">order_id: </span><span class="s2">"FACTPRECHR00005384"</span><span class="p">,</span> <span class="ss">amount: </span><span class="mi">4999</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">check_number: </span><span class="s2">"sdfhk"</span><span class="p">}</span>
+ <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:order_id</span><span class="o">=&gt;</span><span class="s2">"FACTPRECHR00005384"</span><span class="p">,</span> <span class="ss">:amount</span><span class="o">=&gt;</span><span class="mi">4999</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:check_number</span><span class="o">=&gt;</span><span class="s2">"sdfhk"</span><span class="p">}</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">to_json</span>
+ <span class="o">=&gt;</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">order_id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">FACTPRECHR00005384</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">amount</span><span class="se">\"</span><span class="s2">:4999.0,</span><span class="se">\"</span><span class="s2">check_number</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">sdfhk</span><span class="se">\"</span><span class="s2">}"</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="s2">"9fff8c602b08b00323567be0001480f6"</span>
+ <span class="o">=&gt;</span> <span class="s2">"9fff8c602b08b00323567be0001480f6"</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">SHA1</span><span class="p">.</span><span class="nf">hexdigest</span><span class="p">(</span><span class="n">data</span> <span class="o">+</span> <span class="n">secret_key</span><span class="p">)</span>
+ <span class="o">=&gt;</span> <span class="s2">"70189f8a4f413fcb01c8933cae50f4341fe8fdee"</span>
+<span class="mi">2</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">012</span> <span class="o">&gt;</span> <span class="nb">puts</span> <span class="n">data</span>
+<span class="p">{</span><span class="s2">"order_id"</span><span class="ss">:"FACTPRECHR00005384"</span><span class="p">,</span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">4999</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="s2">"check_number"</span><span class="ss">:"sdfhk"</span><span class="p">}</span>
+
+</code></pre>
+<blockquote>
+<p>Пример запроса через REST клиент POSTMAN:</p>
+
+<p><a href="post_finish.png" target="new"> <img src="post_finish.png"></a></p>
+</blockquote>
+
+<p>Для финализации заказа используется метод <a href="#finish">finish</a></p>
+
+<p>Необходимые параметры для финализации заказа:</p>
+
+<ul>
+<li>базовый URL для тестирования и отладки</li>
+<li>store_id</li>
+<li>signature</li>
+</ul>
+
+<p>Описание формирования запрос на финализацию заказа:</p>
+
+<ul>
+<li>В переменную <code>data</code> вводится тело json запроса</li>
+<li>Переводим   <code>data</code> в <code>json</code> формат</li>
+<li>В переменную <code>secret_key</code> вводим наименование ключа</li>
+<li>В переменную  <code>signature</code> формируем подпись</li>
+<li>Выводим тело <code>json</code> запроса через команду <code>puts</code> для отправки запроса через клиент</li>
+</ul>
+
+<p>Данные для отправки запроса в REST CLIENT:</p>
+
+<p>Используется POST URL:
+<code>https://demo.revoup.ru/factoring/v1/precheck/finish?store_id=72&amp;signature=70189f8a4f413fcb01c8933cae50f4341fe8fdee</code></p>
+
+<p>Тело JSON с key = body:
+<code>{&quot;order_id&quot;:&quot;FACTPRECHR00005384&quot;,&quot;amount&quot;:4999.0,&quot;check_number&quot;:&quot;sdfhk&quot;}</code></p>
+
+<p>Приложение фискального документа с key = check.</p>
 <h2 id='ad57058c12'>Особенности</h2>
       </div>
       <div class="dark-box">
