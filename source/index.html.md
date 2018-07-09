@@ -1008,9 +1008,9 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 # Описание iFrame REVO
 
-><a href="Registration.png" target="new"> <img src="Registration.png"></a>
-
 ## Регистрация клиента
+
+><a href="Registration.png" target="new"> <img src="Registration.png"></a>
 
 1-2. Заполнение анкеты.<br>
 3. Переход на экран подтверждения номера телефона кодом из смс-сообщения.<br>
