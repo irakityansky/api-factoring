@@ -873,7 +873,7 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID2&signature=SIGNATUR
 POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID2&signature=SIGNATURE
 ```
 
-Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Фискальный документ должен быть передан по HTTP через multipart с названием `check`.
+Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Запрос должен быть отправлен c типом содержимого multipart/form-data. В запросе должны быть указаны два ключа. Первый ключ с названием `body`, в котором должно быть указано тело json запроса. Второй ключ с названием `check`, где прикладывается файл(фискальный документ). `Signature` формируется по основному принципу, без второго ключа.
 
 <aside class="notice">
 При попытке финализации заявки с истекшим сроком `valid_till`, будет вызван метод `cancel`.
@@ -1130,6 +1130,11 @@ REVO.Form.onResult(function() { console.log('result'); });
 
 Код для подтверждения номера телефона - `8888`
 
+<aside class="notice">
+Данные параметры предназначены только для demo сервиса.
+</aside>
+
+
 
 ## Кейсы для тестирования
 
@@ -1182,9 +1187,65 @@ puts data
 * В переменную `signature` формируем подпись
 * Выводим тело `json` запроса через команду `puts` для отправки запроса через клиент
 
-Пример отправки запроса через API клиент POSTMAN:
+Данные для отправки запроса в REST CLIENT:
+
 Используется POST URL:
 `https://demo.revoup.ru/factoring/v1/limit/auth?store_id=72&signature=347e8cff27d30b5200c8b32def4365ebbf4270d0`
 
 Тело JSON:
 `{"callback_url":"https://shop.ru/revo/decision","redirect_url":"https://shop.ru/revo/redirect","primary_phone":"9268180621","primary_email":"ivan@gmail.com","current_order":{"order_id":"R001233"}}`
+
+
+
+### Подробное описание отправки запроса на финализацию заказа
+
+> Пример формирования signature на ruby:
+
+```ruby--tab
+data = {order_id: "FACTPRECHR00005384", amount: 4999.0, check_number: "sdfhk"}
+ => {:order_id=>"FACTPRECHR00005384", :amount=>4999.0, :check_number=>"sdfhk"}
+data = data.to_json
+ => "{\"order_id\":\"FACTPRECHR00005384\",\"amount\":4999.0,\"check_number\":\"sdfhk\"}"
+secret_key = "9fff8c602b08b00323567be0001480f6"
+ => "9fff8c602b08b00323567be0001480f6"
+signature = Digest::SHA1.hexdigest(data + secret_key)
+ => "70189f8a4f413fcb01c8933cae50f4341fe8fdee"
+2.3.3 :012 > puts data
+{"order_id":"FACTPRECHR00005384","amount":4999.0,"check_number":"sdfhk"}
+
+```
+>Пример запроса через REST клиент POSTMAN:
+
+><a href="post_finish.png" target="new"> <img src="post_finish.png"></a>
+
+
+Для финализации заказа используется метод <a href="#finish">finish</a>
+
+Необходимые параметры для финализации заказа:
+
+* базовый URL для тестирования и отладки
+* store_id
+* signature
+
+Описание формирования запрос на финализацию заказа:
+
+* В переменную `data` вводится тело json запроса
+* Переводим   `data` в `json` формат
+* В переменную `secret_key` вводим наименование ключа
+* В переменную  `signature` формируем подпись
+* Выводим тело `json` запроса через команду `puts` для отправки запроса через клиент
+
+Данные для отправки запроса в REST CLIENT:
+
+Используется POST URL:
+`https://demo.revoup.ru/factoring/v1/precheck/finish?store_id=72&signature=70189f8a4f413fcb01c8933cae50f4341fe8fdee`
+
+Тело JSON с key = body:
+`{"order_id":"FACTPRECHR00005384","amount":4999.0,"check_number":"sdfhk"}`
+
+Приложение фискального документа с key = check.
+
+
+
+## Особенности
+
