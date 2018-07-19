@@ -1249,12 +1249,11 @@ signature = Digest::SHA1.hexdigest(data + secret_key)
 
 ## Особенности
 
-### Логика взаимодействия ввода персональных данных при оформлении заказа в iframe
-
-
 >Кейс 1
 
 ><a href="approve.png" target="new"> <img src="approve.png"></a><a href="declined_fio_dr.png" target="new"> <img src="declined_fio_dr.png"></a>
+
+### Логика взаимодействия ввода персональных данных при оформлении заказа в iframe
 
 
 Кейс 1:
