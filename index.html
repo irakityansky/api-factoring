@@ -322,12 +322,13 @@
         <h1 id='3394112aa9'>Введение</h1>
 <p>API Factoring реализовано на протоколе HTTPS на основе JSON запросов.</p>
 
-<p>Документация состоит из 3 основных частей:</p>
+<p>Документация состоит из следующих основных частей:</p>
 
 <ul>
-<li>Описание авторизации, методов API и кодов ошибок.</li>
+<li>Описание авторизации, <a href="#api">методов API</a> и <a href="#cb76858662"> кодов ошибок</a>.</li>
+<li><a href="#iframe-revo">Описание iFrame Рево</a>.</li>
+<li><a href="#5a291e242a">Представление сервиса Рево на сайте</a>.</li>
 <li><a href="#db947828e5">Руководство по тестированию</a>.</li>
-<li><a href="#guides">Руководство по реализации основных элементов</a>.</li>
 </ul>
 <h1 id='93900fccba'>Авторизация</h1><h2 id='url'>Базовые URL адреса</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://r.revoplus.ru/"</span>
 <span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://demo.revoplus.ru/"</span>
@@ -1498,6 +1499,7 @@
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
   <span class="s">"amount"</span><span class="p">:</span> <span class="mf">59999.00</span><span class="p">,</span>
+  <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"29.07.2018 12:08:01+03:00"</span>
   <span class="s">"cart_items"</span><span class="p">:</span>
   <span class="p">[{</span>
     <span class="s">"sku"</span><span class="p">:</span> <span class="s">"1231"</span><span class="p">,</span>
@@ -1525,6 +1527,12 @@
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
 <td style="text-align: left"><td colspan="2"> Сумма в рублях с копейками.</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>valid_till</strong><br> <font color="#939da3">String, <em>optional</em></font></td>
+<td style="text-align: left"><td colspan="2"> Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: <code>dd.mm.yyyy hh:mm:ss+hh:mm</code>, где после  &quot;+&quot; указывается часовой пояс относительно GMT. По умолчанию - 24 часа.</td>
 <td style="text-align: left"></td>
 </tr>
 <tr>
