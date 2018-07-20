@@ -776,6 +776,7 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATUR
 {
   "order_id": "R107356",
   "amount": 59999.00,
+  "valid_till": "29.07.2018 12:08:01+03:00"
   "cart_items":
   [{
     "sku": "1231",
@@ -790,6 +791,7 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATUR
 -:|-:|:-|:-
  |**order_id**<br> <font color="#939da3">string</font> |<td colspan="2"> Уникальный номер заказа. Не более 255 символов.
  |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма в рублях с копейками.
+ |**valid_till**<br> <font color="#939da3">String, *optional*</font> |<td colspan="2"> Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после  "+" указывается часовой пояс относительно GMT. По умолчанию - 24 часа.
  |**cart_items**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий массив с информацией о заказе.
 <td colspan="2" style="text-align:right"> **sku**<br> <font color="#939da3">string, *optional*</font> | | Складская учётная единица (stock keeping unit).
 <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string</font> | | Наименование товара.
@@ -1253,6 +1255,7 @@ signature = Digest::SHA1.hexdigest(data + secret_key)
 >Кейс 1
 
 ><a href="approve.png" target="new"> <img src="approve.png"></a><a href="declined_fio_dr.png" target="new"> <img src="declined_fio_dr.png"></a>
+
 ### Логика взаимодействия ввода персональных данных при оформлении заказа в iframe
 
 
