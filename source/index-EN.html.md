@@ -15,20 +15,21 @@ toc_footers:
 search: true
 ---
 
-# Введение
+# Introduction
 
-API Factoring реализовано на протоколе HTTPS на основе JSON запросов.
+API Factoring is based on the HTTPS protocol with JSON queries.
 
-Документация состоит из следующих основных частей:
+The documentation consists of 4 main parts:
 
-* Описание авторизации, <a href="#api">методов API</a> и <a href="#cb76858662"> кодов ошибок</a>.
-* <a href="#iframe-revo">Описание iFrame Рево</a>.
-* <a href="#5a291e242a">Представление сервиса Рево на сайте</a>.
-* <a href="#db947828e5">Руководство по тестированию</a>.
 
-# Авторизация
+* Authorization description, <a href="#api">API methods</a> and <a href="#cb76858662">error codes</a>.
+* <a href="#iframe-revo">Revo iFrame description</a>.
+* <a href="#5a291e242a">Visualisation on a partner website</a>.
+* <a href="#db947828e5">Test manual</a>.
 
-## Базовые URL адреса
+# Authorization
+
+## Base URL addresses
 
 ```javascript
 BASE_URL = "https://r.revoplus.ru/"
