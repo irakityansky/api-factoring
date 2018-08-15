@@ -229,15 +229,15 @@
                     <a href="#base-url-addresses" class="toc-h2 toc-link" data-title="base-url-addresses">Base URL addresses</a>
                   </li>
                   <li>
-                    <a href="#3b61794258" class="toc-h2 toc-link" data-title="">Параметры авторизации</a>
+                    <a href="#authorization-parameters" class="toc-h2 toc-link" data-title="authorization-parameters">Authorization parameters</a>
                   </li>
                   <li>
-                    <a href="#1c37860b3b" class="toc-h2 toc-link" data-title="">Принцип формирования цифровой подписи</a>
+                    <a href="#digital-signature-generation" class="toc-h2 toc-link" data-title="digital-signature-generation">Digital signature generation</a>
                   </li>
               </ul>
           </li>
           <li>
-            <a href="#api" class="toc-h1 toc-link" data-title="api">Методы API</a>
+            <a href="#api-methods" class="toc-h1 toc-link" data-title="api-methods">API Methods</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#registration" class="toc-h2 toc-link" data-title="registration">Registration</a>
@@ -334,39 +334,39 @@
 <span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://demo.revoplus.ru/"</span>
 </code></pre>
 <ol>
-<li>Для взаимодействия с сервисами Рево используются 2 базовых адреса:
+<li>To interact with Revo services, two base addresses are used:
 
 <ul>
-<li>https://r.revoplus.ru/ - адрес <code>production</code> сервиса.</li>
-<li>https://demo.revoup.ru/ - адрес <code>demo</code> сервиса.</li>
+<li>https://r.revoplus.ru/ - the <code>production</code> address of the service.</li>
+<li>https://demo.revoup.ru/ - the <code>demo</code> address of the service.</li>
 </ul></li>
 <li><code>BASE_URL</code> - переменная обозначающая базовый адрес.</li>
 </ol>
 
 <aside class="notice">
-Подключение должно производиться только по протоколу HTTPS  - при попытке подключения по HTTP будет возникать 404 ошибка.
+The connection shall be made only via HTTPS protocol - when trying to connect via HTTP, 404 error will occur.
 </aside>
-<h2 id='3b61794258'>Параметры авторизации</h2>
+<h2 id='authorization-parameters'>Authorization parameters</h2>
 <blockquote>
-<p>Пример параметров</p>
+<p>Parameters example</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="nx">secret_key</span> <span class="o">=</span> <span class="s2">"098f6bcd4621d373cade4e832627b4f6"</span>
 <span class="nx">STORE_ID1</span> <span class="o">=</span> <span class="mi">12</span>
 <span class="nx">STORE_ID2</span> <span class="o">=</span> <span class="mi">13</span>
 </code></pre>
 <ol>
-<li>На стороне Рево формируются уникальный идентификатор магазина и секретный ключ, которые передаются партнеру:
+<li>On Revo’s side a unique store identifier and a secret key are generated, which are transferred to the partner:
 
 <ul>
-<li><code>store_id</code> - уникальный идентификатор магазина. Для одного партнера может быть сформировано несколько уникальных идентификаторов, чаще всего, не менее 2. <code>STORE_ID1</code> используется для методов <code>Registration</code> и <code>Limit</code>. <code>STORE_ID2</code> - для всех остальных методов.</li>
-<li><code>secret_key</code> - секретный ключ, который используется при формировании электронно-цифровой подписи для аутентификации (проверки подлинности) параметров запроса с целью защиты формы от запуска сторонними лицами. Длина ключа от 8 байт. Алгоритм шифрования SHA1.</li>
+<li><code>store_id</code> - unique store identifier. In most cases, at least two unique identifiers are generated: <code>STORE_ID1</code> is used for <code>Registration</code> and <code>Limit</code> methods. <code>STORE_ID2</code> - for all the other methods.</li>
+<li><code>secret_key</code> - a secret key used when generating the digital signature for authentication of query parameters to protect the form from being launched by third parties. Key length is 8 bytes. Encryption algorithm is SHA1.</li>
 </ul></li>
-<li>Для авторизации партнер отправляет <code>POST</code> запрос, используя <a href="#1c37860b3b">цифровую подпись</a> <code>signature</code> и уникальный идентификатор магазина <code>store_id</code>.</li>
-<li>Примеры URL запросов можно посмотреть в разделе <a href="#api"> Методы API</a>.</li>
+<li>For authorization, the partner sends POST query, using digital signature and unique store identifier <code>store_id</code>.</li>
+<li>Examples of URL queries can be found in <a href="#api">API Methods</a> section.</li>
 </ol>
-<h2 id='1c37860b3b'>Принцип формирования цифровой подписи</h2>
+<h2 id='digital-signature-generation'>Digital signature generation</h2>
 <blockquote>
-<p>Алгоритм формирования цифровой подписи</p>
+<p>Algorithm of digital signature generation</p>
 </blockquote>
 <pre class="highlight ruby tab-ruby--tab"><code><span class="nb">require</span> <span class="s1">'digest/sha1'</span>
 <span class="n">secret_key</span> <span class="o">=</span> <span class="s1">'9fff8c602b08b00323567be0001480f6'</span>
@@ -374,7 +374,7 @@
 <span class="no">SIGNATURE</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">SHA1</span><span class="p">.</span><span class="nf">hexdigest</span><span class="p">(</span><span class="n">data</span> <span class="o">+</span> <span class="n">secret_key</span><span class="p">)</span>
 </code></pre>
 <blockquote>
-<p>Результатом шифрования в примере выше будет являться строка &quot;cbfb21630cd585f59c3a50fc3365d8c26b97cd4e&quot;.</p>
+<p>The result of the encryption in the above example is &quot;cbfb21630cd585f59c3a50fc3365d8c26b97cd4e&quot;.</p>
 </blockquote>
 <pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">java.io.UnsupportedEncodingException</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">java.security.MessageDigest</span><span class="o">;</span>
@@ -418,23 +418,23 @@
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre>
-<p>К строке <code>data</code> в формате json добавляется секретный ключ <code>secret_key</code>. К получившейся строке применяется алгоритм SHA1, в результате формируется цифровая подпись <code>signature</code>.</p>
+<p>A secret key <code>secret_key</code> is added to the data string in json format. SHA1 algorithm is then used to the generate a string which forms a digital <code>signature</code>.</p>
 
 <aside class="notice">
-Необходимо обратить внимание, что при формировании signature длина всегда будет 40 символов по SHA1.
+Please note, that the signature length will always be 40 symbols according to SHA1.
 </aside>
-<h1 id='api'>Методы API</h1><h2 id='registration'>Registration</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">limit</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID1</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h1 id='api-methods'>API Methods</h1><h2 id='registration'>Registration</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">limit</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID1</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.</p>
+<p>The method returns a reference to the iFrame in order to get the client&#39;s limit. Upon completion of the form a json response with information about client&#39;s limit is sent to the address specified in <code>callback_url</code>.</p>
 
-<p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>) - см. подробнее <a href="#iframe-revo">Описание iFrame REVO</a>.</p>
+<p>Depending on the information about the user in the Revo system the form will have a different number of steps (<code>primary_phone</code> has to be specified) - see more info on <a href="#iframe-revo">REVO iFrame description</a>.</p>
 
 <aside class="success">
-Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
+If the client fills in the personal data on the partner's website, it shall be sent in the query for autocompletion of the corresponding form fields.
 </aside>
 <h3 id='parameters'>Parameters</h3>
 <blockquote>
-<p>Пример запроса в формате json</p>
+<p>Json query example</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"callback_url"</span><span class="p">:</span> <span class="s">"https://shop.ru/revo/decision"</span><span class="p">,</span>
@@ -464,62 +464,62 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>callback_url</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left"><td colspan="2"> URL для ответа от Рево по решению для клиента.</td>
+<td style="text-align: left"><td colspan="2"> URL for Revo response with information about client&#39;s limit.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>redirect_url</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left"><td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Рево &quot;Вернуться в интернет магазин&quot;.</td>
+<td style="text-align: left"><td colspan="2"> URL for redirecting upon clicking the button &quot;Return to online store” in the Revo form.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>current_order</strong><br> <font color="#939da3">object</font></td>
-<td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о заказе.</td>
+<td style="text-align: left"><td colspan="2"> The object containing information about the order.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Уникальный номер заказа. Не более 255 символов. Можно использовать уникальную случайную строку.</td>
+<td style="text-align: left">Unique order number. Maximum 255 characters. A unique random string can be used.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>primary_phone</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).</td>
+<td style="text-align: left"><td colspan="2"> Client’s phone number consisting of 10 digits (omitting the country code).</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>primary_email</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Email клиента.</td>
+<td style="text-align: left"><td colspan="2"> Client’s email.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>person</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о клиенте.</td>
+<td style="text-align: left"><td colspan="2"> The object containing information about the client.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>first_name</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Имя клиента.</td>
+<td style="text-align: left">Client’s name.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>surname</strong><br> <font color="#939da3">sring, <em>optional</em></font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Фамилия клиента.</td>
+<td style="text-align: left">Client’s surname.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>patronymic</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Отчество клиента.</td>
+<td style="text-align: left">Client&#39;s patronymic.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>birth_date</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Дата рождения клиента в формате <code>dd.mm.yyyy</code>.</td>
+<td style="text-align: left">Client’s birth date in <code>dd.mm.yyyy</code> format.</td>
 </tr>
 </tbody></table>
 <h3 id='response-parameters'>Response Parameters</h3>
 <blockquote>
-<p>Пример ответа для успешной аутентификации.</p>
+<p>Response example in case of successful authentication.</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
@@ -535,22 +535,22 @@
 </thead><tbody>
 <tr>
 <td style="text-align: right"><strong>status</strong><br> <font color="#939da3">integer</font></td>
-<td style="text-align: left">Код ответа.</td>
+<td style="text-align: left">Response code.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>message</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Короткое текстовое описание ответа.</td>
+<td style="text-align: left">A short text description of the response.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>iframe_url</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Cсылка на сгенерированный iFrame.</td>
+<td style="text-align: left">URL for the generated iFrame.</td>
 </tr>
 </tbody></table>
 
 <p><a name="callback_url"></a></p>
 <h3 id='callback-parameters'>callback parameters</h3>
 <blockquote>
-<p>Пример callback-а при успешном завершении формы:</p>
+<p>Callback example in case of successful authentication.</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"32423"</span><span class="p">,</span>
@@ -568,27 +568,23 @@
 </thead><tbody>
 <tr>
 <td style="text-align: right"><strong>order_id</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Уникальный номер заказа. Не более 255 символов.</td>
+<td style="text-align: left">Unique order number. Maximum 255 characters.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>decision</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Решение по выдаче рассрочки. При положительном решении - значение <code>approved</code> (заявка ожидает финализации). При отрицательном решении - <code>declined</code>.</td>
+<td style="text-align: left">Decision on instalments. In case of positive decision - <code>approved</code> (the order is waiting to be finalized). In case of negative decision - <code>declined</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
-<td style="text-align: left">Сумма в рублях с копейками.</td>
+<td style="text-align: left">Amount in rubles with kopecks.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>mobile_phone</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
+<td style="text-align: left">Client’s phone number consisting of 10 digits (omitting the country code).</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>email</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Email клиента.</td>
-</tr>
-<tr>
-<td style="text-align: right"><strong>loan_id</strong>  <br> <font color="#939da3">integer</font></td>
-<td style="text-align: left">Уникальный номер заказа в системе Рево.</td>
+<td style="text-align: left">Client&#39;s email.</td>
 </tr>
 </tbody></table>
 
