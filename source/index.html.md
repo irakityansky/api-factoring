@@ -9,8 +9,8 @@ toc_footers:
 - <a href='https://revo.ru/'>Revo.ru</a>
 - <a href='https://revo.ru/API/en'>API Documentation in English</a>
 
-#includes:
-#- business
+<!-- includes:
+- business -->
 
 search: true
 ---
@@ -217,7 +217,6 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 **amount**<br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
 **mobile_phone**<br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
 **email**<br> <font color="#939da3">string</font> | Email клиента.
-**loan_id**  <br> <font color="#939da3">integer</font> | Уникальный номер заказа в системе Рево.
 
 <aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое.
