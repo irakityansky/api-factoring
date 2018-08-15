@@ -576,7 +576,7 @@ If the client fills in the personal data on the partner's website, it shall be s
 </tr>
 <tr>
 <td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
-<td style="text-align: left">Amount in rubles with kopecks.</td>
+<td style="text-align: left">Amount in rubles.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>mobile_phone</strong><br> <font color="#939da3">string</font></td>
@@ -589,14 +589,14 @@ If the client fills in the personal data on the partner's website, it shall be s
 </tbody></table>
 
 <aside class="success">
-При `decision` равном `declined` значение `amount` будет нулевое.
+If `decision` is equal to `declined` the `amount` value will be zero.
 </aside>
 <h2 id='limit'>Limit</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">limit?store_id</span><span class="o">=</span><span class="no">STORE_ID1</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод для получения суммы лимита клиента по номеру его телефона. Для новых клиентов получить информацию о лимите только по номеру телефона нельзя.</p>
+<p>The method for obtaining the client’s limit amount using his phone number. Not applicable for new customers.</p>
 <h3 id='parameters-2'>Parameters</h3>
 <blockquote>
-<p>Пример запроса в формате json</p>
+<p>Json query example</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"client"</span><span class="p">:</span>
@@ -613,16 +613,16 @@ If the client fills in the personal data on the partner's website, it shall be s
 </thead><tbody>
 <tr>
 <td style="text-align: right"><strong>client</strong><br> <font color="#939da3">object</font></td>
-<td style="text-align: left">Объект, содержащий информацию о клиенте.</td>
+<td style="text-align: left">The object containing information about the client.</td>
 </tr>
 <tr>
 <td style="text-align: right"><strong>mobile_phone</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
+<td style="text-align: left">Client’s phone number consisting of 10 digits (omitting the country code).</td>
 </tr>
 </tbody></table>
 <h3 id='response-parameters-2'>Response Parameters</h3>
 <blockquote>
-<p>Пример ответа, когда клиент найден в базе</p>
+<p>Response example in case of a returning customer</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"meta"</span><span class="p">:</span>
@@ -639,7 +639,7 @@ If the client fills in the personal data on the partner's website, it shall be s
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Пример ответа, когда клиент найден в базе, но выдача займа невозможна</p>
+<p>Response example in case of a returning customer with installments products unavailable</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"meta"</span><span class="p">:</span>
@@ -656,7 +656,7 @@ If the client fills in the personal data on the partner's website, it shall be s
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Пример ответа, когда клиент не найден в базе</p>
+<p>Response example in case of a new customer</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"meta"</span><span class="p">:</span>
@@ -682,32 +682,32 @@ If the client fills in the personal data on the partner's website, it shall be s
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>status</strong><br> <font color="#939da3">integer</font></td>
-<td style="text-align: left"><td colspan="2"> Код ответа.</td>
+<td style="text-align: left"><td colspan="2"> Response code.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>message</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left"><td colspan="2"> Короткое текстовое описание ответа.</td>
+<td style="text-align: left"><td colspan="2"> A short text description of the response.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>client</strong><br> <font color="#939da3">object</font></td>
-<td style="text-align: left"><td colspan="2"> Объект, содержащий информацию о клиенте.</td>
+<td style="text-align: left"><td colspan="2"> The object containing information about the client.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>mobile_phone</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Номер телефона клиента 10 цифр (без кода страны).</td>
+<td style="text-align: left">Client’s phone number consisting of 10 digits (omitting the country code).</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>limit_amount</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Лимит средств, доступных клиенту, в рублях с копейками.</td>
+<td style="text-align: left">The amount of funds available to the client in rubles.</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>status</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
-<td style="text-align: left">Статус пользователя. Возможные значения:<br><code>active</code> - пользователю доступна услуга оплаты частями на сумму <code>limit_amount</code>;<br><code>inactive</code> - пользователю не доступна услуга оплаты частями;<br><code>new</code> - новый пользователь, которому доступна услуга оплаты частями на сумму <code>limit_amount</code>.</td>
+<td style="text-align: left">User status. Possible values:<br><code>active</code> - the installments product is available to the user; <br><code>inactive</code> - the installments product is unavailable to the user;<br><code>new</code> - a new user with installments product available.</td>
 </tr>
 </tbody></table>
 <h2 id='checkout'>Checkout</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
