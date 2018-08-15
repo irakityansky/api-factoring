@@ -215,12 +215,12 @@ If the client fills in the personal data on the partner's website, it shall be s
 -:|:-
 **order_id**<br> <font color="#939da3">string</font> | Unique order number. Maximum 255 characters.
 **decision**<br> <font color="#939da3">string</font> | Decision on instalments. In case of positive decision - `approved` (the order is waiting to be finalized). In case of negative decision - `declined`.
-**amount**<br> <font color="#939da3">float</font> | Amount in rubles with kopecks.
+**amount**<br> <font color="#939da3">float</font> | Amount in rubles.
 **mobile_phone**<br> <font color="#939da3">string</font> | Client’s phone number consisting of 10 digits (omitting the country code).
 **email**<br> <font color="#939da3">string</font> | Client's email.
 
 <aside class="success">
-При `decision` равном `declined` значение `amount` будет нулевое.
+If `decision` is equal to `declined` the `amount` value will be zero.
 </aside>
 
 ## Limit
@@ -229,11 +229,11 @@ If the client fills in the personal data on the partner's website, it shall be s
 POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATURE
 ```
 
-Метод для получения суммы лимита клиента по номеру его телефона. Для новых клиентов получить информацию о лимите только по номеру телефона нельзя.
+The method for obtaining the client’s limit amount using his phone number. Not applicable for new customers.
 
 ### Parameters
 
-> Пример запроса в формате json
+> Json query example
 
 ```jsonnet
 {
@@ -246,12 +246,12 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 
  | |
 -:|:-
-**client**<br> <font color="#939da3">object</font> | Объект, содержащий информацию о клиенте.
-**mobile_phone**<br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
+**client**<br> <font color="#939da3">object</font> | The object containing information about the client.
+**mobile_phone**<br> <font color="#939da3">string</font> | Client’s phone number consisting of 10 digits (omitting the country code).
 
 ### Response Parameters
 
-> Пример ответа, когда клиент найден в базе
+> Response example in case of a returning customer
 
 ```jsonnet
 {
@@ -269,7 +269,7 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 }
 ```
 
-> Пример ответа, когда клиент найден в базе, но выдача займа невозможна
+> Response example in case of a returning customer with installments products unavailable
 
 ```jsonnet
 {
@@ -287,7 +287,7 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 }
 ```
 
-> Пример ответа, когда клиент не найден в базе
+> Response example in case of a new customer
 
 ```jsonnet
 {
@@ -307,12 +307,14 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 
 | | | |
 -:|-:|:-|:-
- |**status**<br> <font color="#939da3">integer</font> | <td colspan="2"> Код ответа.
- |**message**<br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа.
- |**client**<br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о клиенте.
- <td colspan="2" style="text-align:right">**mobile_phone**<br> <font color="#939da3">string</font> | | Номер телефона клиента 10 цифр (без кода страны).
- <td colspan="2" style="text-align:right">**limit_amount**<br> <font color="#939da3">string</font> | | Лимит средств, доступных клиенту, в рублях с копейками.
- <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Статус пользователя. Возможные значения:<br>`active` - пользователю доступна услуга оплаты частями на сумму `limit_amount`;<br>`inactive` - пользователю не доступна услуга оплаты частями;<br>`new` - новый пользователь, которому доступна услуга оплаты частями на сумму `limit_amount`.
+ |**status**<br> <font color="#939da3">integer</font> | <td colspan="2"> Response code.
+ |**message**<br> <font color="#939da3">string</font> | <td colspan="2"> A short text description of the response.
+ |**client**<br> <font color="#939da3">object</font> | <td colspan="2"> The object containing information about the client.
+ <td colspan="2" style="text-align:right">**mobile_phone**<br> <font color="#939da3">string</font> | | Client’s phone number consisting of 10 digits (omitting the country code).
+ <td colspan="2" style="text-align:right">**limit_amount**<br> <font color="#939da3">string</font> | | The amount of funds available to the client in rubles.
+ <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | User status. Possible values:<br>`active` - the installments product is available to the user; <br>`inactive` - the installments product is unavailable to the user;<br>`new` - a new user with installments product available.
+
+
 
 ## Checkout
 ```ruby
