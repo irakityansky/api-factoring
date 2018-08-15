@@ -7,7 +7,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
 
 toc_footers:
 - <a href='https://revo.ru/'>Revo.ru</a>
-- <a href='https://revo.ru/API/en'>API Documentation in English</a>
+- <a href='https://revotechnology.github.io/api-factoring-eng/'>API Documentation in English</a>
 
 <!-- includes:
 - business -->
