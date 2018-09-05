@@ -222,6 +222,17 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 При `decision` равном `declined` значение `amount` будет нулевое.
 </aside>
 
+### Упрощенный вызов формы регистрации клиента
+
+Данный способ позволяет напрямую по ссылке вызывать <a href="#c5a67eacd9">iframe</a> для регистрации клиента.
+
+Ссылка для вызова формы:
+``https://{BASE_URL}/iframe/v2/limit_form/{uid}``
+
+* BASE_URL можно посмотреть в разделе Авторизация > <a href="#url">Базовые URL адреса</a>
+* В разделе Представление на сайте > <a href="#iframe">Вызов iframe</a> можно посмотреть, как вызывать форму в pop-up
+* В UID указывается идентификатор партнера, который предоставляет Рево
+
 ## Limit
 
 ```ruby
