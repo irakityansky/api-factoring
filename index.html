@@ -591,6 +591,17 @@
 <aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое.
 </aside>
+<h3 id='7153adaedf'>Упрощенный вызов формы регистрации клиента</h3>
+<p>Данный способ позволяет напрямую по ссылке вызывать <a href="#c5a67eacd9">iframe</a> для регистрации клиента.</p>
+
+<p>Ссылка для вызова формы:
+https://{BASE_URL}/iframe/v2/limit_form/{uid}</p>
+
+<ul>
+<li>BASE_URL можно посмотреть в разделе Авторизация &gt; <a href="#url">Базовые URL адреса</a></li>
+<li>В разделе Представление на сайте &gt; <a href="#iframe">Вызов iframe</a> можно посмотреть, как вызывать форму в pop-up</li>
+<li>В UID указывается идентификатор партнера, который предоставляет Рево</li>
+</ul>
 <h2 id='limit'>Limit</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">limit?store_id</span><span class="o">=</span><span class="no">STORE_ID1</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для получения суммы лимита клиента по номеру его телефона. Для новых клиентов получить информацию о лимите только по номеру телефона нельзя.</p>
