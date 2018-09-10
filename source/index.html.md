@@ -1008,6 +1008,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 **82** | Unable to change - order is already finished/canceled | Не удаётся изменить заявку - заявка с указанным `order_id` уже финализирована или отменена.
 **90** | Cart items are missing | Не удаётся изменить заявку - не передана информация о корзине.
 **100** | At the moment the server cannot process your request | Во всех остальных случаях.
+**110** | Invalid time format value | Неверный формат срока действия заявки `valid_till`.
 
 Тестирование и отладка
 
