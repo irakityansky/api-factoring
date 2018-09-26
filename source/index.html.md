@@ -31,13 +31,13 @@ API Factoring реализовано на протоколе HTTPS на осно
 ## Базовые URL адреса
 
 ```javascript
-BASE_URL = "https://r.revoplus.ru/"
-BASE_URL = "https://demo.revoplus.ru/"
+BASE_URL = "https://r.revoplus.ru"
+BASE_URL = "https://demo.revoplus.ru"
 ```
 
 1. Для взаимодействия с сервисами Рево используются 2 базовых адреса:
- * https://r.revoplus.ru/ - адрес `production` сервиса.
- * https://demo.revoup.ru/ - адрес `demo` сервиса.
+ * https://r.revoplus.ru - адрес `production` сервиса.
+ * https://demo.revoup.ru - адрес `demo` сервиса.
 2. `BASE_URL` - переменная обозначающая базовый адрес.
 
 <aside class="notice">
@@ -82,7 +82,7 @@ import java.util.Formatter;
 public class Main {
 
     static String secret_key = "098f6bcd4621d373cade4e832627b4f6"; // Это пример
-    static String data = "{\"callback_url\":\"https://shop.ru/revo/decision\",\"redirect_url\":\"https://shop.ru/revo/redirect\",\"current_order\":{\"sum\":\"7500.00\",\"order_id\":\"R001233\"},\"primary_phone\":\"9268180621\"}";
+    static String data = "{\"callback_url\":\"https://shop.ru/revo/decision\",\"redirect_url\":\"https://shop.ru/revo/redirect\",\"current_order\":{\"amount\":\"7500.00\",\"order_id\":\"R001233\"},\"primary_phone\":\"9268180621\"}";
 
     public static void main(String[] args) {
 
@@ -384,9 +384,20 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
     "sale_price": 2999,
     "quantity": 1,
     "unit": "шт.",
-    "brand" : "Samsung"
+    "brand" : "Samsung",
+    "category": "Accessories"
   }],
   "skip_result_page": true,
+  "delivery_info":
+  {
+    "first_name": "Петр",
+    "surname": "Чернышев",
+    "patronymic": "Александрович",
+    "type": "Pickpoint",
+    "address": "ул. Ленина, д.1",
+    "phone": "9268180621",
+    "email": "ivan@gmail.com"
+  },
   "additional_data":
   [{
     "name": "Color",
@@ -424,11 +435,20 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  <td colspan="2" style="text-align:right"> **quantity**<br> <font color="#939da3">integer</font> | | Количество товара.
  <td colspan="2" style="text-align:right"> **unit**<br> <font color="#939da3">string</font> | | Единица измерения товара. Например, "шт.", "л.", "компл." и т.д.
  <td colspan="2" style="text-align:right"> **brand**<br> <font color="#939da3">string, *optional*</font> | | Бренд товара.
+ <td colspan="2" style="text-align:right"> **category**<br> <font color="#939da3">string, *optional*</font> | | Категория товара.
  |**skip_result_page**<br> <font color="#939da3">bool, *optional*</font> |<td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления в iFrame. По умолчанию - `false`.<br>`true` - по успешному завершению оформления сразу происходит редирект по `redirect_url`.<br>`false` - по успешному завершению оформления будет отображено окно с результатом.
+ |**delivery_info**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.
+ <td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string, *optional*</font> | | Имя клиента.
+ <td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring, *optional*</font> | | Фамилия клиента.
+ <td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">string, *optional*</font> | | Отчество клиента.
+ <td colspan="2" style="text-align:right"> **type**<br> <font color="#939da3">string, *optional*</font> | | Способ доставки.
+ <td colspan="2" style="text-align:right"> **address**<br> <font color="#939da3">string, *optional*</font> | | Адрес доставки.
+ <td colspan="2" style="text-align:right"> **phone**<br> <font color="#939da3">sring, *optional*</font> | |  Номер телефона клиента 10 цифр (без кода страны).
+ <td colspan="2" style="text-align:right"> **email**<br> <font color="#939da3">string, *optional*</font> | | Email клиента.
  |**additional_data**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.
  <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Название поля.
  <td colspan="2" style="text-align:right"> **value**<br> <font color="#939da3">string, *optional*</font> | | Значение поля.
-
+ 
 ### Response Parameters
 
 > Пример ответа при успешной аутентификации.
@@ -989,7 +1009,6 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 **22** | Order exists | Заявка с данным `order_id` уже существует и финалзирована.
 **23** | Order expired | У заявки с данным `order_id` уже истёк холдирования.
 **24** | Order with specified id not found | Заявка с указанным `order_id` не найден.
-**30** | Wrong order `order_sum` format | Нверный формат `order_sum`.
 **32** | Order amount is different from the amount specified before | Указанная при финализации сумма заказа отличается от суммы, на которую совершен заказ. Финализация не осуществлена.
 **33** | Order amount is outside of tariff_limits | Сумма заявки не входит в диапазон, установленный в тарифе партнёра. Заявка не создана.
 **34** | Order term value is wrong | Указано некорректное значение срока рассрочки `term` (не существует такого тарифа).
