@@ -448,7 +448,7 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  |**additional_data**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.
  <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Название поля.
  <td colspan="2" style="text-align:right"> **value**<br> <font color="#939da3">string, *optional*</font> | | Значение поля.
- 
+
 ### Response Parameters
 
 > Пример ответа при успешной аутентификации.
@@ -544,7 +544,7 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 ```
 
-Метод возвращает информацию о доступных предварительных графиках платежей для заданной суммы корзины.
+Метод возвращает информацию о доступных графиках платежей для заданной суммы корзины `amount`. Если для указанной суммы нет ни одного подходящего тарифа, возвращается пустой массив.
 
 ### Parameters
 
