@@ -1164,7 +1164,7 @@
 </aside>
 <h2 id='schedule'>Schedule</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">schedule?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод возвращает информацию о доступных предварительных графиках платежей для заданной суммы корзины.</p>
+<p>Метод возвращает информацию о доступных графиках платежей для заданной суммы корзины <code>amount</code>. Если для указанной суммы нет ни одного подходящего тарифа, возвращается пустой массив.</p>
 <h3 id='parameters-4'>Parameters</h3>
 <blockquote>
 <p>Пример запроса в формате json</p>
