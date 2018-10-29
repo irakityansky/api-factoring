@@ -525,10 +525,10 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  |**client**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
 <td colspan="2" style="text-align:right">**primary_phone**<br> <font color="#939da3">string</font> | | Номер телефона клиента 10 цифр (без кода страны).
 <td colspan="2" style="text-align:right">**primary_email**<br> <font color="#939da3">string, *optional*</font> | | Email клиента.
-<td colspan="2" style="text-align:right">**full_name**<br> <font color="#939da3">string</font> | | ФИО через пробел.
-<td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string</font> | | Имя клиента.
-<td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring</font> | | Фамилия клиента.
-<td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">string</font> | | Отчество клиента.
+<td colspan="2" style="text-align:right">**full_name**<br> <font color="#939da3">string, *optional*</font> | | ФИО через пробел.
+<td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string, *optional*</font> | | Имя клиента.
+<td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">string, *optional*</font> | | Фамилия клиента.
+<td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">string, *optional*</font> | | Отчество клиента.
  |**schedule**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
 <td colspan="2" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
 <td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
