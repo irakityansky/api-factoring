@@ -31,12 +31,12 @@ API Factoring реализовано на протоколе HTTPS на осно
 ## Базовые URL адреса
 
 ```javascript
-BASE_URL = "https://r.revoplus.ru"
-BASE_URL = "https://demo.revoplus.ru"
+BASE_URL = "https://r.revo.ru"
+BASE_URL = "https://demo.revoup.ru"
 ```
 
 1. Для взаимодействия с сервисами Рево используются 2 базовых адреса:
- * https://r.revoplus.ru - адрес `production` сервиса.
+ * https://r.revo.ru - адрес `production` сервиса.
  * https://demo.revoup.ru - адрес `demo` сервиса.
 2. `BASE_URL` - переменная обозначающая базовый адрес.
 
@@ -185,7 +185,7 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 {
   "status": 0,
   "message": "Payload valid",
-  "iframe_url": "https://r.revoplus.ru/form/v1/af45ef12f4233f"
+  "iframe_url": "https://r.revoup.ru/form/v1/af45ef12f4233f"
 }
 ```
 
@@ -1031,7 +1031,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
 
 Тестирование и отладка
 
-Тестирование и отладка интеграции производятся на demo сервере (https://demo.revoplus.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.
+Тестирование и отладка интеграции производятся на demo сервере (https://demo.revoup.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.
 
 Все коды подтверждения и пин-коды `8888`.
 
