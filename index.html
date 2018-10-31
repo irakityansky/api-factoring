@@ -330,14 +330,14 @@
 <li><a href="#5a291e242a">Представление сервиса Рево на сайте</a>.</li>
 <li><a href="#db947828e5">Руководство по тестированию</a>.</li>
 </ul>
-<h1 id='93900fccba'>Авторизация</h1><h2 id='url'>Базовые URL адреса</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://r.revoplus.ru"</span>
-<span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://demo.revoplus.ru"</span>
+<h1 id='93900fccba'>Авторизация</h1><h2 id='url'>Базовые URL адреса</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://r.revo.ru"</span>
+<span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://demo.revoup.ru"</span>
 </code></pre>
 <ol>
 <li>Для взаимодействия с сервисами Рево используются 2 базовых адреса:
 
 <ul>
-<li>https://r.revoplus.ru - адрес <code>production</code> сервиса.</li>
+<li>https://r.revo.ru - адрес <code>production</code> сервиса.</li>
 <li>https://demo.revoup.ru - адрес <code>demo</code> сервиса.</li>
 </ul></li>
 <li><code>BASE_URL</code> - переменная обозначающая базовый адрес.</li>
@@ -524,7 +524,7 @@
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
   <span class="s">"message"</span><span class="p">:</span> <span class="s">"Payload valid"</span><span class="p">,</span>
-  <span class="s">"iframe_url"</span><span class="p">:</span> <span class="s">"https://r.revoplus.ru/form/v1/af45ef12f4233f"</span>
+  <span class="s">"iframe_url"</span><span class="p">:</span> <span class="s">"https://r.revoup.ru/form/v1/af45ef12f4233f"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -2010,7 +2010,7 @@
 
 <p>Тестирование и отладка</p>
 
-<p>Тестирование и отладка интеграции производятся на demo сервере (https://demo.revoplus.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.</p>
+<p>Тестирование и отладка интеграции производятся на demo сервере (https://demo.revoup.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.</p>
 
 <p>Все коды подтверждения и пин-коды <code>8888</code>.</p>
 
