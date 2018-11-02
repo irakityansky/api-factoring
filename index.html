@@ -234,6 +234,9 @@
                   <li>
                     <a href="#1c37860b3b" class="toc-h2 toc-link" data-title="">Принцип формирования цифровой подписи</a>
                   </li>
+                  <li>
+                    <a href="#1cb46d0fab" class="toc-h2 toc-link" data-title="">Принципиальная схема взаимодействия</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -423,6 +426,14 @@
 <aside class="notice">
 Необходимо обратить внимание, что при формировании signature длина всегда будет 40 символов по SHA1.
 </aside>
+<h2 id='1cb46d0fab'>Принципиальная схема взаимодействия</h2>
+<blockquote>
+<p><a href="Diagram.png" target="new"><img src="Diagram.png"></a></p>
+</blockquote>
+
+<p>Расчёт доступной клиенту для оплаты частями суммы производится с помощью метода <a href="#registration">Registration</a>, который возвращает ссылку на iFrame Рево. Клиент проходит процедуру регистрации в iFrame Рево, после чего в callback передаётся информация о результате: одобрение или отказ в лимите (доступной для оплаты частями сумме).</p>
+
+<p>Оформление покупки совершается аналогичным образом с помощью метода <a href="#registration">Checkout</a>, который возвращает ссылку на iFrame Рево, но уже с большим числом шагов. После регистрации (или авторизации) клиента, появляется шаг с выбором графика платежей. Принципиальная схема процесса представлена на диграмме справа.</p>
 <h1 id='api'>Методы API</h1><h2 id='registration'>Registration</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">limit</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID1</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.</p>
