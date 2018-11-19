@@ -309,6 +309,9 @@
                     <a href="#b7617b8769" class="toc-h2 toc-link" data-title="">Кейсы для тестирования</a>
                   </li>
                   <li>
+                    <a href="#16d7f57449" class="toc-h2 toc-link" data-title="">Инструкции для тестирования</a>
+                  </li>
+                  <li>
                     <a href="#ad57058c12" class="toc-h2 toc-link" data-title="">Особенности</a>
                   </li>
               </ul>
@@ -803,14 +806,14 @@
     <span class="s">"email"</span><span class="p">:</span> <span class="s">"ivan@gmail.com"</span>
   <span class="p">},</span>
   <span class="s">"additional_data"</span><span class="p">:</span>
-  <span class="p">[{</span>
-    <span class="s">"name"</span><span class="p">:</span> <span class="s">"Color"</span><span class="p">,</span>
-    <span class="s">"value"</span><span class="p">:</span> <span class="s">"Black"</span>
-  <span class="p">},</span>
   <span class="p">{</span>
-    <span class="s">"name"</span><span class="p">:</span> <span class="s">"Size"</span><span class="p">,</span>
-    <span class="s">"value"</span><span class="p">:</span> <span class="s">"Large"</span>
-  <span class="p">}]</span>
+    <span class="s">"previous_url"</span><span class="p">:</span> <span class="s">"https://www.revo.ru"</span><span class="p">,</span>
+    <span class="s">"channel"</span><span class="p">:</span> <span class="s">"mobile"</span><span class="p">,</span>
+    <span class="s">"returning_customer"</span><span class="p">:</span> <span class="s">"yes"</span><span class="p">,</span>
+    <span class="s">"bank_card"</span><span class="p">:</span> <span class="s">"yes"</span><span class="p">,</span>
+    <span class="s">"last_orders"</span><span class="p">:</span> <span class="s">"3"</span><span class="p">,</span>
+    <span class="s">"same_address"</span><span class="p">:</span> <span class="s">"no"</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -988,17 +991,7 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>additional_data</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.</td>
-</tr>
-<tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>name</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
-<td style="text-align: right"></td>
-<td style="text-align: left">Название поля.</td>
-</tr>
-<tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>value</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
-<td style="text-align: right"></td>
-<td style="text-align: left">Значение поля.</td>
+<td style="text-align: left"><td colspan="2"> Объект для передачи дополнительной информации о клиенте.</td>
 </tr>
 </tbody></table>
 <h3 id='response-parameters-3'>Response Parameters</h3>
@@ -2147,7 +2140,31 @@
 <aside class="notice">
 Данные параметры предназначены только для demo сервиса.
 </aside>
-<h2 id='b7617b8769'>Кейсы для тестирования</h2><h3 id='41a57c96e5'>Подробное описание вызова формы для регистрации клиента.</h3>
+<h2 id='b7617b8769'>Кейсы для тестирования</h2>
+<table><thead>
+<tr>
+<th style="text-align: left">Шаги</th>
+<th style="text-align: left">Ожидаемый результат</th>
+<th style="text-align: left">Статус по заявке</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: left"><strong>1. Кейс checkout &gt; frame &gt; finish успешное оформление</strong></td>
+<td style="text-align: left"></td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: left">Отправить запрос с помощью метода <a href="#checkout">checkout</a></td>
+<td style="text-align: left">Получить ссылку на вызов iframe</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Вызов iframe_url</td>
+<td style="text-align: left">Отображение <a href="#ee363a7d6e">iframe формы</a> с вводом персональных данных</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+</tbody></table>
+<h2 id='16d7f57449'>Инструкции для тестирования</h2><h3 id='41a57c96e5'>Подробное описание вызова формы для регистрации клиента.</h3>
 <blockquote>
 <p>Пример формирования signature на ruby:</p>
 </blockquote>
