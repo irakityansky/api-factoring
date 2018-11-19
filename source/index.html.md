@@ -407,14 +407,14 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
     "email": "ivan@gmail.com"
   },
   "additional_data":
-  [{
-    "name": "Color",
-    "value": "Black"
-  },
   {
-    "name": "Size",
-    "value": "Large"
-  }]
+    "previous_url": "https://www.revo.ru",
+    "channel": "mobile",
+    "returning_customer": "yes",
+    "bank_card": "yes",
+    "last_orders": "3",
+    "same_address": "no"
+  }
 }
 ```
 
@@ -453,9 +453,7 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  <td colspan="2" style="text-align:right"> **address**<br> <font color="#939da3">string, *optional*</font> | | Адрес доставки.
  <td colspan="2" style="text-align:right"> **phone**<br> <font color="#939da3">sring, *optional*</font> | |  Номер телефона клиента 10 цифр (без кода страны).
  <td colspan="2" style="text-align:right"> **email**<br> <font color="#939da3">string, *optional*</font> | | Email клиента.
- |**additional_data**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.
- <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string, *optional*</font> | | Название поля.
- <td colspan="2" style="text-align:right"> **value**<br> <font color="#939da3">string, *optional*</font> | | Значение поля.
+ |**additional_data**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи дополнительной информации о клиенте.
 
 ### Response Parameters
 
