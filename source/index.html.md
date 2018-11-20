@@ -440,8 +440,8 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
  <td colspan="2" style="text-align:right"> **name**<br> <font color="#939da3">string</font> | | Наименование товара.
  <td colspan="2" style="text-align:right"> **price**<br> <font color="#939da3">float</font> | | Цена товара.
  <td colspan="2" style="text-align:right"> **sale_price**<br> <font color="#939da3">float, *optional*</font> | | Цена товара со скидкой (если есть).
- <td colspan="2" style="text-align:right"> **quantity**<br> <font color="#939da3">integer</font> | | Количество товара.
- <td colspan="2" style="text-align:right"> **unit**<br> <font color="#939da3">string</font> | | Единица измерения товара. Например, "шт.", "л.", "компл." и т.д.
+ <td colspan="2" style="text-align:right"> **quantity**<br> <font color="#939da3">integer</font>, *optional* | | Количество товара.
+ <td colspan="2" style="text-align:right"> **unit**<br> <font color="#939da3">string</font>, *optional* | | Единица измерения товара. Например, "шт.", "л.", "компл." и т.д.
  <td colspan="2" style="text-align:right"> **brand**<br> <font color="#939da3">string, *optional*</font> | | Бренд товара.
  <td colspan="2" style="text-align:right"> **category**<br> <font color="#939da3">string, *optional*</font> | | Категория товара.
  |**skip_result_page**<br> <font color="#939da3">bool, *optional*</font> |<td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления в iFrame. По умолчанию - `false`.<br>`true` - по успешному завершению оформления сразу происходит редирект по `redirect_url`.<br>`false` - по успешному завершению оформления будет отображено окно с результатом.
