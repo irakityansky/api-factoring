@@ -50,12 +50,11 @@ BASE_URL = "https://demo.revoup.ru"
 
 ```javascript
 secret_key = "098f6bcd4621d373cade4e832627b4f6"
-STORE_ID1 = 12
-STORE_ID2 = 13
+STORE_ID = 123
 ```
 
 1. На стороне Рево формируются уникальный идентификатор магазина и секретный ключ, которые передаются партнеру:
- * `store_id` - уникальный идентификатор магазина. Для одного партнера может быть сформировано несколько уникальных идентификаторов, чаще всего, не менее 2. `STORE_ID1` используется для методов `Registration` и `Limit`. `STORE_ID2` - для всех остальных методов.
+ * `store_id` - уникальный идентификатор магазина. Для одного партнера может быть сформировано несколько уникальных идентификаторов.
  * `secret_key` - секретный ключ, который используется при формировании электронно-цифровой подписи для аутентификации (проверки подлинности) параметров запроса с целью защиты формы от запуска сторонними лицами. Длина ключа от 8 байт. Алгоритм шифрования SHA1.
 2. Для авторизации партнер отправляет `POST` запрос, используя <a href="#1c37860b3b">цифровую подпись</a> `signature` и уникальный идентификатор магазина `store_id`.
 3. Примеры URL запросов можно посмотреть в разделе <a href="#api"> Методы API</a>.
@@ -136,7 +135,7 @@ public class Main {
 ## Registration
 
 ```ruby
-POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
+POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
 ```
 
 Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в `callback_url` отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.
@@ -167,6 +166,15 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
     "surname": "Чернышев",
     "patronymic": "Александрович",
     "birth_date": "15.01.1975"
+  },
+  "additional_data":
+  {
+    "previous_url": "https://www.revo.ru",
+    "channel": "mobile",
+    "returning_customer": "yes",
+    "bank_card": "yes",
+    "last_orders": "3",
+    "same_address": "no"
   }
 }
 ```
@@ -244,7 +252,7 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID1&signature=SIGNATURE
 ## Limit
 
 ```ruby
-POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATURE
+POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID&signature=SIGNATURE
 ```
 
 Метод для получения суммы лимита клиента по номеру его телефона. Для новых клиентов получить информацию о лимите только по номеру телефона нельзя.
@@ -334,7 +342,7 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID1&signature=SIGNATUR
 
 ## Checkout
 ```ruby
-POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
+POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
 ```
 
 Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в `callback_url` отправляется <a href="#callback_url">json ответ</a> с результатом оформления. В случае успешного оформления, средства в размере `amount` холдируются на счёте клиента в системе Рево.
@@ -547,7 +555,7 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID2&signature=SIGNATURE
 ## Schedule
 
 ```ruby
-POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
+POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID&signature=SIGNATURE
 ```
 
 Метод возвращает информацию о доступных графиках платежей для заданной суммы корзины `amount`. Если для указанной суммы нет ни одного подходящего тарифа, возвращается пустой массив.
@@ -643,7 +651,7 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 ## Status
 
  ```ruby
- POST BASE_URL/factoring/v1/status?store_id=STORE_ID2&signature=SIGNATURE
+ POST BASE_URL/factoring/v1/status?store_id=STORE_ID&signature=SIGNATURE
  ```
 
  Метод возвращает информацию по статусу заказа.
@@ -802,7 +810,7 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID2&signature=SIGNATURE
 ## Change
 
 ```ruby
-POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATURE
+POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID&signature=SIGNATURE
 ```
 
 Метод для изменения суммы уже созданного заказа.
@@ -874,7 +882,7 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID2&signature=SIGNATUR
 ## Cancel
 
 ```ruby
-POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID2&signature=SIGNATURE
+POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID&signature=SIGNATURE
 ```
 
 Метод для отмены заказа. При отмене у клиента разблокируются ранее захолдированные средства.
@@ -912,7 +920,7 @@ POST BASE_URL/factoring/v1/precheck/cancel?store_id=STORE_ID2&signature=SIGNATUR
 ## Finish
 
 ```ruby
-POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID2&signature=SIGNATURE
+POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID&signature=SIGNATURE
 ```
 
 Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Запрос должен быть отправлен c типом содержимого `multipart/form-data`. В запросе должны быть указаны два ключа. Первый ключ с названием `body`, в котором должно быть указано тело json запроса. Второй ключ с названием `check`, где прикладывается файл(фискальный документ). `Signature` формируется по основному принципу, без второго ключа.
@@ -958,7 +966,7 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID2&signature=SIGNATUR
 ## Return
 
 ```ruby
-POST BASE_URL/factoring/v1/return?store_id=STORE_ID2&signature=SIGNATURE
+POST BASE_URL/factoring/v1/return?store_id=STORE_ID&signature=SIGNATURE
 ```
 
 Метод для осуществления процедуры полного или частичного возврата заказа. Возвращать можно только уже финализированный заказ. Если заказ ещё не финализирован, вместо возврата его необходимо отменить с помощью метода <a href="#cancel">Cancel</a>. Частичный возврат можно провести не ранее, чем на следующий день после финализации. При возврате средства на счёт клиента зачисляются в полном объёме, включая переплаты, если клиент уже совершал платежи для погашения рассрочки.
