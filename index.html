@@ -357,14 +357,13 @@
 <p>Пример параметров</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="nx">secret_key</span> <span class="o">=</span> <span class="s2">"098f6bcd4621d373cade4e832627b4f6"</span>
-<span class="nx">STORE_ID1</span> <span class="o">=</span> <span class="mi">12</span>
-<span class="nx">STORE_ID2</span> <span class="o">=</span> <span class="mi">13</span>
+<span class="nx">STORE_ID</span> <span class="o">=</span> <span class="mi">123</span>
 </code></pre>
 <ol>
 <li>На стороне Рево формируются уникальный идентификатор магазина и секретный ключ, которые передаются партнеру:
 
 <ul>
-<li><code>store_id</code> - уникальный идентификатор магазина. Для одного партнера может быть сформировано несколько уникальных идентификаторов, чаще всего, не менее 2. <code>STORE_ID1</code> используется для методов <code>Registration</code> и <code>Limit</code>. <code>STORE_ID2</code> - для всех остальных методов.</li>
+<li><code>store_id</code> - уникальный идентификатор магазина. Для одного партнера может быть сформировано несколько уникальных идентификаторов.</li>
 <li><code>secret_key</code> - секретный ключ, который используется при формировании электронно-цифровой подписи для аутентификации (проверки подлинности) параметров запроса с целью защиты формы от запуска сторонними лицами. Длина ключа от 8 байт. Алгоритм шифрования SHA1.</li>
 </ul></li>
 <li>Для авторизации партнер отправляет <code>POST</code> запрос, используя <a href="#1c37860b3b">цифровую подпись</a> <code>signature</code> и уникальный идентификатор магазина <code>store_id</code>.</li>
@@ -437,7 +436,7 @@
 <p>Расчёт доступной клиенту для оплаты частями суммы производится с помощью метода <a href="#registration">Registration</a>, который возвращает ссылку на iFrame Рево. Клиент проходит процедуру регистрации в iFrame Рево, после чего в callback передаётся информация о результате: одобрение или отказ в лимите (доступной для оплаты частями сумме).</p>
 
 <p>Оформление покупки совершается аналогичным образом с помощью метода <a href="#registration">Checkout</a>, который возвращает ссылку на iFrame Рево, но уже с большим числом шагов. После регистрации (или авторизации) клиента, появляется шаг с выбором графика платежей. Принципиальная схема процесса представлена на диграмме справа.</p>
-<h1 id='api'>Методы API</h1><h2 id='registration'>Registration</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">limit</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID1</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h1 id='api'>Методы API</h1><h2 id='registration'>Registration</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">limit</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.</p>
 
@@ -465,6 +464,15 @@
     <span class="s">"surname"</span><span class="p">:</span> <span class="s">"Чернышев"</span><span class="p">,</span>
     <span class="s">"patronymic"</span><span class="p">:</span> <span class="s">"Александрович"</span><span class="p">,</span>
     <span class="s">"birth_date"</span><span class="p">:</span> <span class="s">"15.01.1975"</span>
+  <span class="p">},</span>
+  <span class="s">"additional_data"</span><span class="p">:</span>
+  <span class="p">{</span>
+    <span class="s">"previous_url"</span><span class="p">:</span> <span class="s">"https://revo.ru/where-to-buy"</span><span class="p">,</span>
+    <span class="s">"channel"</span><span class="p">:</span> <span class="s">"mobile"</span><span class="p">,</span>
+    <span class="s">"returning_customer"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">"bank_card"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">"last_orders"</span><span class="p">:</span> <span class="s">"3"</span><span class="p">,</span>
+    <span class="s">"same_address"</span><span class="p">:</span> <span class="kc">true</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -529,6 +537,41 @@
 <td style="text-align: right"><td colspan="2" style="text-align:right"><strong>birth_date</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Дата рождения клиента в формате <code>dd.mm.yyyy</code>.</td>
+</tr>
+<tr>
+<td style="text-align: right"></td>
+<td style="text-align: right"><strong>additional_data</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
+<td style="text-align: left"><td colspan="2"> Объект для передачи дополнительной информации о клиенте.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>previous_url</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Адрес, откуда клиент зашёл на сайт партнёра.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>channel</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">В каком канале открыта форма. Возможные значения: <code>mobile</code>, <code>app</code>, <code>desktop</code>.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>returning_customer</strong><br> <font color="#939da3">bool, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Является ли клиент повторным для партнёра.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>bank_card</strong><br> <font color="#939da3">bool, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Является ли последним способом оплаты банковская карта.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>last_orders</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Количество заказов за последние 6 мес.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>same_address</strong><br> <font color="#939da3">bool, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Совпадает ли текущий адрес доставки с предыдущим адресом доставки.</td>
 </tr>
 </tbody></table>
 <h3 id='response-parameters'>Response Parameters</h3>
@@ -616,7 +659,7 @@
 <li>В разделе Представление на сайте &gt; <a href="#iframe">Вызов iframe</a> можно посмотреть, как вызывать форму в pop-up</li>
 <li>В UID указывается идентификатор партнера, который предоставляет Рево</li>
 </ul>
-<h2 id='limit'>Limit</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">limit?store_id</span><span class="o">=</span><span class="no">STORE_ID1</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='limit'>Limit</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">limit?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для получения суммы лимита клиента по номеру его телефона. Для новых клиентов получить информацию о лимите только по номеру телефона нельзя.</p>
 <h3 id='parameters-2'>Parameters</h3>
@@ -735,7 +778,7 @@
 <td style="text-align: left">Статус пользователя. Возможные значения:<br><code>active</code> - пользователю доступна услуга оплаты частями на сумму <code>limit_amount</code>;<br><code>inactive</code> - пользователю не доступна услуга оплаты частями;<br><code>new</code> - новый пользователь, которому доступна услуга оплаты частями на сумму <code>limit_amount</code>.</td>
 </tr>
 </tbody></table>
-<h2 id='checkout'>Checkout</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='checkout'>Checkout</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url">json ответ</a> с результатом оформления. В случае успешного оформления, средства в размере <code>amount</code> холдируются на счёте клиента в системе Рево.</p>
 
@@ -807,12 +850,12 @@
   <span class="p">},</span>
   <span class="s">"additional_data"</span><span class="p">:</span>
   <span class="p">{</span>
-    <span class="s">"previous_url"</span><span class="p">:</span> <span class="s">"https://www.revo.ru"</span><span class="p">,</span>
+    <span class="s">"previous_url"</span><span class="p">:</span> <span class="s">"https://revo.ru/where-to-buy"</span><span class="p">,</span>
     <span class="s">"channel"</span><span class="p">:</span> <span class="s">"mobile"</span><span class="p">,</span>
-    <span class="s">"returning_customer"</span><span class="p">:</span> <span class="s">"yes"</span><span class="p">,</span>
-    <span class="s">"bank_card"</span><span class="p">:</span> <span class="s">"yes"</span><span class="p">,</span>
+    <span class="s">"returning_customer"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s">"bank_card"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="s">"last_orders"</span><span class="p">:</span> <span class="s">"3"</span><span class="p">,</span>
-    <span class="s">"same_address"</span><span class="p">:</span> <span class="s">"no"</span>
+    <span class="s">"same_address"</span><span class="p">:</span> <span class="kc">true</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -924,12 +967,12 @@
 <td style="text-align: left">Цена товара со скидкой (если есть).</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>quantity</strong><br> <font color="#939da3">integer</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>quantity</strong><br> <font color="#939da3">integer</font>, <em>optional</em></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Количество товара.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>unit</strong><br> <font color="#939da3">string</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>unit</strong><br> <font color="#939da3">string</font>, <em>optional</em></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Единица измерения товара. Например, &quot;шт.&quot;, &quot;л.&quot;, &quot;компл.&quot; и т.д.</td>
 </tr>
@@ -951,7 +994,7 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>delivery_info</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.</td>
+<td style="text-align: left"><td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе, которую клиент вводит на сайте партнёра (не в форме Рево).</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>first_name</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
@@ -992,6 +1035,36 @@
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>additional_data</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
 <td style="text-align: left"><td colspan="2"> Объект для передачи дополнительной информации о клиенте.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>previous_url</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Адрес, откуда клиент зашёл на сайт партнёра.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>channel</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">В каком канале открыта форма. Возможные значения: <code>mobile</code>, <code>app</code>, <code>desktop</code>.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>returning_customer</strong><br> <font color="#939da3">bool, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Является ли клиент повторным для партнёра.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>bank_card</strong><br> <font color="#939da3">bool, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Является ли последним способом оплаты банковская карта.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>last_orders</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Количество заказов за последние 6 мес.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>same_address</strong><br> <font color="#939da3">bool, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Совпадает ли текущий адрес доставки с предыдущим адресом доставки.</td>
 </tr>
 </tbody></table>
 <h3 id='response-parameters-3'>Response Parameters</h3>
@@ -1166,7 +1239,7 @@
 <aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
 </aside>
-<h2 id='schedule'>Schedule</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">schedule?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='schedule'>Schedule</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">schedule?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод возвращает информацию о доступных графиках платежей для заданной суммы корзины <code>amount</code>. Если для указанной суммы нет ни одного подходящего тарифа, возвращается пустой массив.</p>
 <h3 id='parameters-4'>Parameters</h3>
@@ -1321,7 +1394,7 @@
 <td style="text-align: left"></td>
 </tr>
 </tbody></table>
-<h2 id='status'>Status</h2><pre class="highlight ruby tab-ruby"><code> <span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">status?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='status'>Status</h2><pre class="highlight ruby tab-ruby"><code> <span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">status?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод возвращает информацию по статусу заказа.</p>
 <h3 id='parameters-5'>Parameters</h3>
@@ -1563,7 +1636,7 @@
 <td style="text-align: left">В лимите отказано по политикам Рево.</td>
 </tr>
 </tbody></table>
-<h2 id='change'>Change</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">change?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='change'>Change</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">change?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для изменения суммы уже созданного заказа.</p>
 <h3 id='parameters-6'>Parameters</h3>
@@ -1707,7 +1780,7 @@
 <td style="text-align: left">Сумма платежа в рублях с копейками.</td>
 </tr>
 </tbody></table>
-<h2 id='cancel'>Cancel</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">cancel?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='cancel'>Cancel</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">cancel?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для отмены заказа. При отмене у клиента разблокируются ранее захолдированные средства.</p>
 <h3 id='parameters-7'>Parameters</h3>
@@ -1753,7 +1826,7 @@
 <td style="text-align: left">Короткое текстовое описание ответа.</td>
 </tr>
 </tbody></table>
-<h2 id='finish'>Finish</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">finish?store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='finish'>Finish</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">finish?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Запрос должен быть отправлен c типом содержимого <code>multipart/form-data</code>. В запросе должны быть указаны два ключа. Первый ключ с названием <code>body</code>, в котором должно быть указано тело json запроса. Второй ключ с названием <code>check</code>, где прикладывается файл(фискальный документ). <code>Signature</code> формируется по основному принципу, без второго ключа.</p>
 
@@ -1813,7 +1886,7 @@
 <td style="text-align: left">Короткое текстовое описание ответа.</td>
 </tr>
 </tbody></table>
-<h2 id='return'>Return</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="k">return</span><span class="p">?</span><span class="n">store_id</span><span class="o">=</span><span class="no">STORE_ID2</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
+<h2 id='return'>Return</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="k">return</span><span class="p">?</span><span class="n">store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод для осуществления процедуры полного или частичного возврата заказа. Возвращать можно только уже финализированный заказ. Если заказ ещё не финализирован, вместо возврата его необходимо отменить с помощью метода <a href="#cancel">Cancel</a>. Частичный возврат можно провести не ранее, чем на следующий день после финализации. При возврате средства на счёт клиента зачисляются в полном объёме, включая переплаты, если клиент уже совершал платежи для погашения рассрочки.</p>
 <h3 id='parameters-9'>Parameters</h3>
