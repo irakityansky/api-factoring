@@ -169,12 +169,12 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
   },
   "additional_data":
   {
-    "previous_url": "https://www.revo.ru",
+    "previous_url": "https://revo.ru/where-to-buy",
     "channel": "mobile",
-    "returning_customer": "yes",
-    "bank_card": "yes",
+    "returning_customer": true,
+    "bank_card": true,
     "last_orders": "3",
-    "same_address": "no"
+    "same_address": true
   }
 }
 ```
@@ -192,6 +192,13 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
   <td colspan="2" style="text-align:right">**surname**<br> <font color="#939da3">sring, *optional*</font> | | Фамилия клиента.
   <td colspan="2" style="text-align:right">**patronymic**<br> <font color="#939da3">string, *optional*</font> | | Отчество клиента.
   <td colspan="2" style="text-align:right">**birth_date**<br> <font color="#939da3">object, *optional*</font> | | Дата рождения клиента в формате `dd.mm.yyyy`.
+  |**additional_data**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи дополнительной информации о клиенте.
+  <td colspan="2" style="text-align:right"> **previous_url**<br> <font color="#939da3">string, *optional*</font> | | Адрес, откуда клиент зашёл на сайт партнёра.
+  <td colspan="2" style="text-align:right"> **channel**<br> <font color="#939da3">string, *optional*</font> | | В каком канале открыта форма. Возможные значения: `mobile`, `app`, `desktop`.
+  <td colspan="2" style="text-align:right"> **returning_customer**<br> <font color="#939da3">bool, *optional*</font> | | Является ли клиент повторным для партнёра.
+  <td colspan="2" style="text-align:right"> **bank_card**<br> <font color="#939da3">bool, *optional*</font> | | Является ли последним способом оплаты банковская карта.
+  <td colspan="2" style="text-align:right"> **last_orders**<br> <font color="#939da3">string, *optional*</font> | | Количество заказов за последние 6 мес.
+  <td colspan="2" style="text-align:right"> **same_address**<br> <font color="#939da3">bool, *optional*</font> | | Совпадает ли текущий адрес доставки с предыдущим адресом доставки.
 
 ### Response Parameters
 
@@ -416,12 +423,12 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
   },
   "additional_data":
   {
-    "previous_url": "https://www.revo.ru",
+    "previous_url": "https://revo.ru/where-to-buy",
     "channel": "mobile",
-    "returning_customer": "yes",
-    "bank_card": "yes",
+    "returning_customer": true,
+    "bank_card": true,
     "last_orders": "3",
-    "same_address": "no"
+    "same_address": true
   }
 }
 ```
@@ -453,7 +460,7 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
  <td colspan="2" style="text-align:right"> **brand**<br> <font color="#939da3">string, *optional*</font> | | Бренд товара.
  <td colspan="2" style="text-align:right"> **category**<br> <font color="#939da3">string, *optional*</font> | | Категория товара.
  |**skip_result_page**<br> <font color="#939da3">bool, *optional*</font> |<td colspan="2"> Флаг, который определяет будет ли отображена страница с результатом оформления в iFrame. По умолчанию - `false`.<br>`true` - по успешному завершению оформления сразу происходит редирект по `redirect_url`.<br>`false` - по успешному завершению оформления будет отображено окно с результатом.
- |**delivery_info**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе.
+ |**delivery_info**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе, которую клиент вводит на сайте партнёра (не в форме Рево).
  <td colspan="2" style="text-align:right"> **first_name**<br> <font color="#939da3">string, *optional*</font> | | Имя клиента.
  <td colspan="2" style="text-align:right"> **surname**<br> <font color="#939da3">sring, *optional*</font> | | Фамилия клиента.
  <td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">string, *optional*</font> | | Отчество клиента.
@@ -462,6 +469,12 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
  <td colspan="2" style="text-align:right"> **phone**<br> <font color="#939da3">sring, *optional*</font> | |  Номер телефона клиента 10 цифр (без кода страны).
  <td colspan="2" style="text-align:right"> **email**<br> <font color="#939da3">string, *optional*</font> | | Email клиента.
  |**additional_data**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект для передачи дополнительной информации о клиенте.
+ <td colspan="2" style="text-align:right"> **previous_url**<br> <font color="#939da3">string, *optional*</font> | | Адрес, откуда клиент зашёл на сайт партнёра.
+ <td colspan="2" style="text-align:right"> **channel**<br> <font color="#939da3">string, *optional*</font> | | В каком канале открыта форма. Возможные значения: `mobile`, `app`, `desktop`.
+ <td colspan="2" style="text-align:right"> **returning_customer**<br> <font color="#939da3">bool, *optional*</font> | | Является ли клиент повторным для партнёра.
+ <td colspan="2" style="text-align:right"> **bank_card**<br> <font color="#939da3">bool, *optional*</font> | | Является ли последним способом оплаты банковская карта.
+ <td colspan="2" style="text-align:right"> **last_orders**<br> <font color="#939da3">string, *optional*</font> | | Количество заказов за последние 6 мес.
+ <td colspan="2" style="text-align:right"> **same_address**<br> <font color="#939da3">bool, *optional*</font> | | Совпадает ли текущий адрес доставки с предыдущим адресом доставки.
 
 ### Response Parameters
 
