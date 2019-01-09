@@ -306,10 +306,10 @@
                     <a href="#afed7bf690" class="toc-h2 toc-link" data-title="">Тестовые Параметры</a>
                   </li>
                   <li>
-                    <a href="#b7617b8769" class="toc-h2 toc-link" data-title="">Кейсы для тестирования</a>
+                    <a href="#16d7f57449" class="toc-h2 toc-link" data-title="">Инструкции для тестирования</a>
                   </li>
                   <li>
-                    <a href="#16d7f57449" class="toc-h2 toc-link" data-title="">Инструкции для тестирования</a>
+                    <a href="#b7617b8769" class="toc-h2 toc-link" data-title="">Кейсы для тестирования</a>
                   </li>
                   <li>
                     <a href="#ad57058c12" class="toc-h2 toc-link" data-title="">Особенности</a>
@@ -1989,6 +1989,16 @@
 <td style="text-align: left">Заявка с указанным <code>order_id</code> не найден.</td>
 </tr>
 <tr>
+<td style="text-align: right"><strong>30</strong></td>
+<td style="text-align: left">Wrong order <code>amount</code> format</td>
+<td style="text-align: left">Значение <code>amount</code> указано в неверном формате (необходимо указать десятичные знаки).</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>31</strong></td>
+<td style="text-align: left">Wrong order <code>prepayment amount</code> format</td>
+<td style="text-align: left">Значение <code>prepayment_amount</code> указано в неверном формате (необходимо указать десятичные знаки).</td>
+</tr>
+<tr>
 <td style="text-align: right"><strong>32</strong></td>
 <td style="text-align: left">Order amount is different from the amount specified before</td>
 <td style="text-align: left">Указанная при финализации сумма заказа отличается от суммы, на которую совершен заказ. Финализация не осуществлена.</td>
@@ -2213,30 +2223,6 @@
 <aside class="notice">
 Данные параметры предназначены только для demo сервиса.
 </aside>
-<h2 id='b7617b8769'>Кейсы для тестирования</h2>
-<table><thead>
-<tr>
-<th style="text-align: left">Шаги</th>
-<th style="text-align: left">Ожидаемый результат</th>
-<th style="text-align: left">Статус по заявке</th>
-</tr>
-</thead><tbody>
-<tr>
-<td style="text-align: left"><strong>1. Кейс checkout &gt; frame &gt; finish успешное оформление</strong></td>
-<td style="text-align: left"></td>
-<td style="text-align: left"></td>
-</tr>
-<tr>
-<td style="text-align: left">Отправить запрос с помощью метода <a href="#checkout">checkout</a></td>
-<td style="text-align: left">Получить ссылку на вызов iframe</td>
-<td style="text-align: left">status: Pending; decision: null</td>
-</tr>
-<tr>
-<td style="text-align: left">Вызов iframe_url</td>
-<td style="text-align: left">Отображение <a href="#ee363a7d6e">iframe формы</a> с вводом персональных данных</td>
-<td style="text-align: left">status: Pending; decision: null</td>
-</tr>
-</tbody></table>
 <h2 id='16d7f57449'>Инструкции для тестирования</h2><h3 id='41a57c96e5'>Подробное описание вызова формы для регистрации клиента.</h3>
 <blockquote>
 <p>Пример формирования signature на ruby:</p>
@@ -2348,6 +2334,107 @@
 <code>{&quot;order_id&quot;:&quot;FACTPRECHR00005384&quot;,&quot;amount&quot;:4999.0,&quot;check_number&quot;:&quot;sdfhk&quot;}</code></p>
 
 <p>Приложение фискального документа с key = check.</p>
+<h2 id='b7617b8769'>Кейсы для тестирования</h2>
+<aside class="warning">
+Раздел в разработке.
+</aside>
+<h3 id='1'>1. Новый клиент проходит форму регистрации и получает одобрение</h3>
+<table><thead>
+<tr>
+<th style="text-align: left">Шаги</th>
+<th style="text-align: left">Ожидаемый результат</th>
+<th style="text-align: left">Статус по заявке</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: left">Отправить запрос с помощью метода <a href="#registration">auth</a></td>
+<td style="text-align: left">Получить ссылку на вызов iframe</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Вызов iframe_url</td>
+<td style="text-align: left">Отображение <a href="#ee363a7d6e">iframe формы</a> с вводом персональных данных</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Ввод несуществующих в базе данных и нажатие кнопки «Оформить»</td>
+<td style="text-align: left">Переход на этап подтверждения СМС-кодом</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Нажатие на кнопку «Подтвердить»</td>
+<td style="text-align: left">Отображение экрана результата с информацией об одобренном лимите</td>
+<td style="text-align: left">status: xxx; decision: approved</td>
+</tr>
+</tbody></table>
+<h3 id='2'>2. Новый клиент проходит форму регистрации и получает отказ</h3>
+<table><thead>
+<tr>
+<th style="text-align: left">Шаги</th>
+<th style="text-align: left">Ожидаемый результат</th>
+<th style="text-align: left">Статус по заявке</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: left">Отправить запрос с помощью метода <a href="#registration">auth</a></td>
+<td style="text-align: left">Получить ссылку на вызов iframe</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Вызов iframe_url</td>
+<td style="text-align: left">Отображение <a href="#ee363a7d6e">iframe формы</a> с вводом персональных данных</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Ввод несуществующих в базе данных и нажатие кнопки «Оформить»</td>
+<td style="text-align: left">Переход на этап подтверждения СМС-кодом</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Нажатие на кнопку «Подтвердить»</td>
+<td style="text-align: left">Отображение экрана результата с информацией о недоступности услуги оплаты частями</td>
+<td style="text-align: left">status: xxx; decision: rejected</td>
+</tr>
+</tbody></table>
+<h3 id='3'>3. Новый клиент в момент прохождения формы регистрации меняет номер на несуществующий в базе и получает решение</h3>
+<table><thead>
+<tr>
+<th style="text-align: left">Шаги</th>
+<th style="text-align: left">Ожидаемый результат</th>
+<th style="text-align: left">Статус по заявке</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: left">Отправить запрос с помощью метода <a href="#registration">auth</a></td>
+<td style="text-align: left">Получить ссылку на вызов iframe</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Вызов iframe_url</td>
+<td style="text-align: left">Отображение <a href="#ee363a7d6e">iframe формы</a> с вводом персональных данных</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Ввод несуществующих в базе данных и нажатие кнопки «Оформить»</td>
+<td style="text-align: left">Переход на этап подтверждения СМС-кодом</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Нажатие кнопки изменения номера на экране подтверждения СМС-кодом</td>
+<td style="text-align: left">Переход на этап ввода номера телефона</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Ввод несуществующего в базе номера и нажатие кнопки «Отправить SMS»</td>
+<td style="text-align: left">Переход на этап подтвержения СМС-кодом</td>
+<td style="text-align: left">status: Pending; decision: null</td>
+</tr>
+<tr>
+<td style="text-align: left">Ввод кода подтверждения</td>
+<td style="text-align: left">Отображение экрана результата с информацией о решении</td>
+<td style="text-align: left"></td>
+</tr>
+</tbody></table>
 <h2 id='ad57058c12'>Особенности</h2>
 <blockquote>
 <p>Кейс 1</p>
