@@ -32,12 +32,12 @@ API Factoring реализовано на протоколе HTTPS на осно
 
 ```javascript
 BASE_URL = "https://r.revo.ru"
-BASE_URL = "https://demo.revoup.ru"
+BASE_URL = "https://backend.demo.revoup.ru"
 ```
 
 1. Для взаимодействия с сервисами Рево используются 2 базовых адреса:
  * https://r.revo.ru - адрес `production` сервиса.
- * https://demo.revoup.ru - адрес `demo` сервиса.
+ * https://backend.demo.revoup.ru - адрес `demo` сервиса.
 2. `BASE_URL` - переменная обозначающая базовый адрес.
 
 <aside class="notice">
@@ -1060,7 +1060,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID&signature=SIGNATURE
 
 Тестирование и отладка
 
-Тестирование и отладка интеграции производятся на demo сервере (https://demo.revoup.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.
+Тестирование и отладка интеграции производятся на demo сервере (https://backend.demo.revoup.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.
 
 Все коды подтверждения и пин-коды `8888`.
 
@@ -1256,7 +1256,7 @@ puts data
 Данные для отправки запроса в REST CLIENT:
 
 Используется POST URL:
-`https://demo.revoup.ru/factoring/v1/limit/auth?store_id=72&signature=347e8cff27d30b5200c8b32def4365ebbf4270d0`
+`https://backend.demo.revoup.ru/factoring/v1/limit/auth?store_id=72&signature=347e8cff27d30b5200c8b32def4365ebbf4270d0`
 
 Тело JSON:
 `{"callback_url":"https://shop.ru/revo/decision","redirect_url":"https://shop.ru/revo/redirect","primary_phone":"9268180621","primary_email":"ivan@gmail.com","current_order":{"order_id":"R001233"}}`
@@ -1304,7 +1304,7 @@ signature = Digest::SHA1.hexdigest(data + secret_key)
 Данные для отправки запроса в REST CLIENT:
 
 Используется POST URL:
-`https://demo.revoup.ru/factoring/v1/precheck/finish?store_id=72&signature=70189f8a4f413fcb01c8933cae50f4341fe8fdee`
+`https://backend.demo.revoup.ru/factoring/v1/precheck/finish?store_id=72&signature=70189f8a4f413fcb01c8933cae50f4341fe8fdee`
 
 Тело JSON с key = body:
 `{"order_id":"FACTPRECHR00005384","amount":4999.0,"check_number":"sdfhk"}`
