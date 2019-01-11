@@ -337,14 +337,14 @@
 <li><a href="#db947828e5">Руководство по тестированию</a>.</li>
 </ul>
 <h1 id='93900fccba'>Авторизация</h1><h2 id='url'>Базовые URL адреса</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://r.revo.ru"</span>
-<span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://demo.revoup.ru"</span>
+<span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://backend.demo.revoup.ru"</span>
 </code></pre>
 <ol>
 <li>Для взаимодействия с сервисами Рево используются 2 базовых адреса:
 
 <ul>
 <li>https://r.revo.ru - адрес <code>production</code> сервиса.</li>
-<li>https://demo.revoup.ru - адрес <code>demo</code> сервиса.</li>
+<li>https://backend.demo.revoup.ru - адрес <code>demo</code> сервиса.</li>
 </ul></li>
 <li><code>BASE_URL</code> - переменная обозначающая базовый адрес.</li>
 </ol>
@@ -2097,7 +2097,7 @@
 
 <p>Тестирование и отладка</p>
 
-<p>Тестирование и отладка интеграции производятся на demo сервере (https://demo.revoup.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.</p>
+<p>Тестирование и отладка интеграции производятся на demo сервере (https://backend.demo.revoup.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.</p>
 
 <p>Все коды подтверждения и пин-коды <code>8888</code>.</p>
 
@@ -2279,7 +2279,7 @@
 <p>Данные для отправки запроса в REST CLIENT:</p>
 
 <p>Используется POST URL:
-<code>https://demo.revoup.ru/factoring/v1/limit/auth?store_id=72&amp;signature=347e8cff27d30b5200c8b32def4365ebbf4270d0</code></p>
+<code>https://backend.demo.revoup.ru/factoring/v1/limit/auth?store_id=72&amp;signature=347e8cff27d30b5200c8b32def4365ebbf4270d0</code></p>
 
 <p>Тело JSON:
 <code>{&quot;callback_url&quot;:&quot;https://shop.ru/revo/decision&quot;,&quot;redirect_url&quot;:&quot;https://shop.ru/revo/redirect&quot;,&quot;primary_phone&quot;:&quot;9268180621&quot;,&quot;primary_email&quot;:&quot;ivan@gmail.com&quot;,&quot;current_order&quot;:{&quot;order_id&quot;:&quot;R001233&quot;}}</code></p>
@@ -2328,7 +2328,7 @@
 <p>Данные для отправки запроса в REST CLIENT:</p>
 
 <p>Используется POST URL:
-<code>https://demo.revoup.ru/factoring/v1/precheck/finish?store_id=72&amp;signature=70189f8a4f413fcb01c8933cae50f4341fe8fdee</code></p>
+<code>https://backend.demo.revoup.ru/factoring/v1/precheck/finish?store_id=72&amp;signature=70189f8a4f413fcb01c8933cae50f4341fe8fdee</code></p>
 
 <p>Тело JSON с key = body:
 <code>{&quot;order_id&quot;:&quot;FACTPRECHR00005384&quot;,&quot;amount&quot;:4999.0,&quot;check_number&quot;:&quot;sdfhk&quot;}</code></p>
