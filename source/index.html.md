@@ -237,7 +237,7 @@ POST BASE_URL/factoring/v1/limit/auth?store_id=STORE_ID&signature=SIGNATURE
 -:|:-
 **order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
 **decision**<br> <font color="#939da3">string</font> | Решение по выдаче рассрочки. При положительном решении - значение `approved` (заявка ожидает финализации). При отрицательном решении - `declined`.
-**amount**<br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
+**amount**<br> <font color="#939da3">float</font> | Сумма в рублях.
 **mobile_phone**<br> <font color="#939da3">string</font> | Номер телефона клиента 10 цифр (без кода страны).
 **email**<br> <font color="#939da3">string</font> | Email клиента.
 
@@ -344,7 +344,7 @@ POST BASE_URL/api/external/v1/client/limit?store_id=STORE_ID&signature=SIGNATURE
  |**message**<br> <font color="#939da3">string</font> | <td colspan="2"> Короткое текстовое описание ответа.
  |**client**<br> <font color="#939da3">object</font> | <td colspan="2"> Объект, содержащий информацию о клиенте.
  <td colspan="2" style="text-align:right">**mobile_phone**<br> <font color="#939da3">string</font> | | Номер телефона клиента 10 цифр (без кода страны).
- <td colspan="2" style="text-align:right">**limit_amount**<br> <font color="#939da3">string</font> | | Лимит средств, доступных клиенту, в рублях с копейками.
+ <td colspan="2" style="text-align:right">**limit_amount**<br> <font color="#939da3">string</font> | | Лимит средств, доступных клиенту, в рублях.
  <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Статус пользователя. Возможные значения:<br>`active` - пользователю доступна услуга оплаты частями на сумму `limit_amount`;<br>`inactive` - пользователю не доступна услуга оплаты частями;<br>`new` - новый пользователь, которому доступна услуга оплаты частями на сумму `limit_amount`.
 
 ## Checkout
@@ -441,8 +441,8 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
 <td colspan="2" style="text-align:right"> **order_id**<br> <font color="#939da3">string</font> | | Уникальный номер заказа. Не более 255 символов. Например, можно использовать нумерацию заказов в системе партнёра.
 <td colspan="2" style="text-align:right"> **valid_till**<br> <font color="#939da3">String, *optional*</font> | | Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после  "+" указывается часовой пояс относительно GMT. По умолчанию - 24 часа.
  <td colspan="2" style="text-align:right"> **term**<br> <font color="#939da3">integer, *optional*</font> | | Срок рассрочки в месяцах.
- <td colspan="2" style="text-align:right"> **amount**<br> <font color="#939da3">float</font> | | Сумма заказа в рублях с копейками.
- <td colspan="2" style="text-align:right"> **prepayment_amount**<br> <font color="#939da3">float, *optional*</font> | | Сумма уже внесённой клиентом предоплаты в рублях с копейками.
+ <td colspan="2" style="text-align:right"> **amount**<br> <font color="#939da3">float</font> | | Сумма заказа в рублях.
+ <td colspan="2" style="text-align:right"> **prepayment_amount**<br> <font color="#939da3">float, *optional*</font> | | Сумма уже внесённой клиентом предоплаты в рублях.
  |**primary_phone**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Номер телефона клиента 10 цифр (без кода страны).
  |**primary_email**<br> <font color="#939da3">string, *optional*</font> |<td colspan="2"> Email клиента.
  |**person**<br> <font color="#939da3">object, *optional*</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
@@ -545,8 +545,8 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
 -:|-:|:-|:-
  |**order_id**<br> <font color="#939da3">string</font> |<td colspan="2"> Уникальный номер заказа. Не более 255 символов.
  |**decision**<br> <font color="#939da3">string</font> |<td colspan="2"> Решение по выдаче рассрочки. При положительном решении - значение `approved`. При отрицательном решении - `declined`.
- |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма к оплате частями в рублях с копейками.
- |**prepayment_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Сумма предоплаты в рублях с копейками.
+ |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма к оплате частями в рублях.
+ |**prepayment_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Сумма предоплаты в рублях.
  |**total_amount**<br> <font color="#939da3">float, *optional*</font> |<td colspan="2"> Полная сумма заказа, с учётом предоплаты.
  |**term**<br> <font color="#939da3">integer</font> |<td colspan="2"> Срок рассрочки в месяцах.
  |**client**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о клиенте.
@@ -558,8 +558,8 @@ POST BASE_URL/factoring/v1/precheck/auth?store_id=STORE_ID&signature=SIGNATURE
 <td colspan="2" style="text-align:right"> **patronymic**<br> <font color="#939da3">string, *optional*</font> | | Отчество клиента.
  |**schedule**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
 <td colspan="2" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
-<td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
- |**monthly_overpayment**<br> <font color="#939da3">float</font> |<td colspan="2"> Величина ежемесячной переплаты в рублях с копейками.
+<td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма платежа в рублях.
+ |**monthly_overpayment**<br> <font color="#939da3">float</font> |<td colspan="2"> Величина ежемесячной переплаты в рублях.
 
 <aside class="success">
 При `decision` равном `declined` значение `amount` будет нулевое, а в `schedule` будет пустой массив.
@@ -585,7 +585,7 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID&signature=SIGNATURE
 
  | |
 -:|:-
-**amount**<br> <font color="#939da3">float</font> | Сумма к оплате частями в рублях с копейками.
+**amount**<br> <font color="#939da3">float</font> | Сумма к оплате частями в рублях.
 
 ### Response Parameters
 
@@ -655,11 +655,11 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID&signature=SIGNATURE
  | **payment_schedule**<br> <font color="#939da3">object</font> | | <td colspan="3"> Массив объектов, содержащий информацию о предварительных графиках платежей.
  <td colspan="2" style="text-align:right">**total**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Полная сумма рассрочки с учётом переплаты.
  <td colspan="2" style="text-align:right">**monthly_payment**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Приблизительная величина ежемесячного платежа с учётом переплаты.
- <td colspan="2" style="text-align:right">**monthly_overpayment**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Величина ежемесячной переплаты в рублях с копейками.
+ <td colspan="2" style="text-align:right">**monthly_overpayment**<br> <font color="#939da3">float</font> | | <td colspan="2" style="text-align:left"> Величина ежемесячной переплаты в рублях.
  <td colspan="2" style="text-align:right">**term**<br> <font color="#939da3">int</font> | | <td colspan="2" style="text-align:left"> Срок рассрочки в месяцах.
  <td colspan="2" style="text-align:right">**payment_dates**<br> <font color="#939da3">object</font> | | <td colspan="2" style="text-align:left"> Объект, содержащий информацию о графике платежей.
  <td colspan="3" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | | Дата платежа в формате `dd.mm.yyyy`.
- <td colspan="3" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | | Сумма платежа в рублях с копейками.
+ <td colspan="3" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | | Сумма платежа в рублях.
 
 ## Status
 
@@ -802,7 +802,7 @@ POST BASE_URL/factoring/v1/schedule?store_id=STORE_ID&signature=SIGNATURE
   <td colspan="2" style="text-align:right">**expired**<br> <font color="#939da3">bool</font> | | Флаг, отображающий статус актуальности заказа (холдирования средств). Для актуальных заказов - `false`. Становится `true` при наступлении срока `valid_till`. |
   <td colspan="2" style="text-align:right">**status**<br> <font color="#939da3">string</font> | | Информация по статусу заказа. Возможные значения:<br> `pending`, `hold`, `finished`, `canceled`, `declined`, `refunded`. |
   <td colspan="2" style="text-align:right">**decision**<br> <font color="#939da3">string</font> | | Информация по статусу лимита. Если лимит одобрен - `approved`. Если в лимите отказано - `declined`.|
-  <td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма, оформленная клиентом для оплаты частями, в рублях с копейками. |
+  <td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма, оформленная клиентом для оплаты частями, в рублях. |
   <td colspan="2" style="text-align:right">**term**<br> <font color="#939da3">integer</font> | | Срок рассрочки в месяцах. |
 
 ### Status and Decision values
@@ -850,7 +850,7 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID&signature=SIGNATURE
  | | | |
 -:|-:|:-|:-
  |**order_id**<br> <font color="#939da3">string</font> |<td colspan="2"> Уникальный номер заказа. Не более 255 символов.
- |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма в рублях с копейками.
+ |**amount**<br> <font color="#939da3">float</font> |<td colspan="2"> Сумма в рублях.
  |**valid_till**<br> <font color="#939da3">String, *optional*</font> |<td colspan="2"> Срок, в течении которого заказ считается актуальным (срок холдирования средств). По истечении срока заказ отменяется. Формат: `dd.mm.yyyy hh:mm:ss+hh:mm`, где после  "+" указывается часовой пояс относительно GMT. По умолчанию - 24 часа.
  |**cart_items**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий массив с информацией о заказе.
 <td colspan="2" style="text-align:right"> **sku**<br> <font color="#939da3">string, *optional*</font> | | Складская учётная единица (stock keeping unit).
@@ -890,7 +890,7 @@ POST BASE_URL/factoring/v1/precheck/change?store_id=STORE_ID&signature=SIGNATURE
  |**message**<br> <font color="#939da3">string</font> |<td colspan="2"> Короткое текстовое описание ответа.
  |**schedule**<br> <font color="#939da3">object</font> |<td colspan="2"> Объект, содержащий информацию о графике платежей.
 <td colspan="2" style="text-align:right">**date**<br> <font color="#939da3">string</font> | | Дата платежа в формате `dd.mm.yyyy`.
-<td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма платежа в рублях с копейками.
+<td colspan="2" style="text-align:right">**amount**<br> <font color="#939da3">float</font> | | Сумма платежа в рублях.
 
 ## Cancel
 
@@ -957,7 +957,7 @@ POST BASE_URL/factoring/v1/precheck/finish?store_id=STORE_ID&signature=SIGNATURE
  | |
 -:|:-
 **order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**amount**<br> <font color="#939da3">float</font> | Сумма в рублях с копейками.
+**amount**<br> <font color="#939da3">float</font> | Сумма в рублях.
 **check_number**<br> <font color="#939da3">string</font> | Номер фискального документа в системе партнёра (например, номер чека).
 
 ### Response Parameters
@@ -998,7 +998,7 @@ POST BASE_URL/factoring/v1/return?store_id=STORE_ID&signature=SIGNATURE
  | |
 -:|:-
 **order_id**<br> <font color="#939da3">string</font> | Уникальный номер заказа. Не более 255 символов.
-**amount**<br> <font color="#939da3">float</font> | Сумма возврата в рублях с копейками. Возврат может быть как полным, так и частичным.
+**amount**<br> <font color="#939da3">float</font> | Сумма возврата в рублях. Возврат может быть как полным, так и частичным.
 
 ### Response Parameters
 
