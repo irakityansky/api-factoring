@@ -332,15 +332,15 @@
 
 <ul>
 <li>Описание авторизации, <a href="#api">методов API</a> и <a href="#cb76858662"> кодов ошибок</a>.</li>
-<li><a href="#iframe-revo">Описание iFrame Рево</a>.</li>
-<li><a href="#5a291e242a">Представление сервиса Рево на сайте</a>.</li>
+<li><a href="#iframe-revo">Описание iFrame Мокка</a>.</li>
+<li><a href="#5a291e242a">Представление сервиса Мокка на сайте</a>.</li>
 <li><a href="#db947828e5">Руководство по тестированию</a>.</li>
 </ul>
 <h1 id='93900fccba'>Авторизация</h1><h2 id='url'>Базовые URL адреса</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://r.revo.ru"</span>
 <span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">"https://backend.demo.revoup.ru"</span>
 </code></pre>
 <ol>
-<li>Для взаимодействия с сервисами Рево используются 2 базовых адреса:
+<li>Для взаимодействия с сервисами Мокка используются 2 базовых адреса:
 
 <ul>
 <li>https://r.revo.ru - адрес <code>production</code> сервиса.</li>
@@ -360,7 +360,7 @@
 <span class="nx">STORE_ID</span> <span class="o">=</span> <span class="mi">123</span>
 </code></pre>
 <ol>
-<li>На стороне Рево формируются уникальный идентификатор магазина и секретный ключ, которые передаются партнеру:
+<li>На стороне Мокка формируются уникальный идентификатор магазина и секретный ключ, которые передаются партнеру:
 
 <ul>
 <li><code>store_id</code> - уникальный идентификатор магазина. Для одного партнера может быть сформировано несколько уникальных идентификаторов.</li>
@@ -433,16 +433,16 @@
 <p><a href="Diagram.png" target="new"><img src="Diagram.png"></a></p>
 </blockquote>
 
-<p>Расчёт доступной клиенту для оплаты частями суммы производится с помощью метода <a href="#registration">Registration</a>, который возвращает ссылку на iFrame Рево. Клиент проходит процедуру регистрации в iFrame Рево, после чего в callback передаётся информация о результате: одобрение или отказ в лимите (доступной для оплаты частями сумме).</p>
+<p>Расчёт доступной клиенту для оплаты частями суммы производится с помощью метода <a href="#registration">Registration</a>, который возвращает ссылку на iFrame Мокка. Клиент проходит процедуру регистрации в iFrame Мокка, после чего в callback передаётся информация о результате: одобрение или отказ в лимите (доступной для оплаты частями сумме).</p>
 
-<p>Оформление покупки совершается аналогичным образом с помощью метода <a href="#registration">Checkout</a>, который возвращает ссылку на iFrame Рево, но уже с большим числом шагов. После регистрации (или авторизации) клиента, появляется шаг с выбором графика платежей. После оформления клиентом заказа денежные средства блокируются на счете клиента, заявка переводится в статус <code>hold</code>, решение по клиенту и сумма также возвращается в callback.</p>
+<p>Оформление покупки совершается аналогичным образом с помощью метода <a href="#registration">Checkout</a>, который возвращает ссылку на iFrame Мокка, но уже с большим числом шагов. После регистрации (или авторизации) клиента, появляется шаг с выбором графика платежей. После оформления клиентом заказа денежные средства блокируются на счете клиента, заявка переводится в статус <code>hold</code>, решение по клиенту и сумма также возвращается в callback.</p>
 
 <p>Для окончательного оформления и подтверждения заявки необходимо ее финализировать с помощью метода <a href="#finish">Finish</a>. Принципиальная схема процесса представлена на диаграмме справа.</p>
 <h1 id='api'>Методы API</h1><h2 id='registration'>Registration</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">limit</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
 <p>Метод возвращает ссылку на iFrame для получения лимита. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url2">json ответ</a> с результатом решения по лимиту клиента.</p>
 
-<p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>) - см. подробнее <a href="#iframe-revo">Описание iFrame REVO</a>.</p>
+<p>В зависимости от информации, которая есть о пользователе в системе Мокка, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>) - см. подробнее <a href="#iframe-revo">Описание iFrame REVO</a>.</p>
 
 <aside class="success">
 Если клиент уже заполнял личные данные на сайте партнёра, их следует передать в запросе для автозаполнения соответствующих полей формы.
@@ -488,12 +488,12 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>callback_url</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left"><td colspan="2"> URL для ответа от Рево по решению для клиента.</td>
+<td style="text-align: left"><td colspan="2"> URL для ответа от Мокка по решению для клиента.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>redirect_url</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left"><td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Рево &quot;Вернуться в интернет магазин&quot;.</td>
+<td style="text-align: left"><td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Мокка &quot;Вернуться в интернет магазин&quot;.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
@@ -659,7 +659,7 @@
 <ul>
 <li>BASE_URL можно посмотреть в разделе Авторизация &gt; <a href="#url">Базовые URL адреса</a></li>
 <li>В разделе Представление на сайте &gt; <a href="#iframe">Вызов iframe</a> можно посмотреть, как вызывать форму в pop-up</li>
-<li>В UID указывается идентификатор партнера, который предоставляет Рево</li>
+<li>В UID указывается идентификатор партнера, который предоставляет Мокка</li>
 </ul>
 <h2 id='limit'>Limit</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">external</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="n">limit?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
@@ -782,15 +782,15 @@
 </tbody></table>
 <h2 id='checkout'>Checkout</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">auth?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url">json ответ</a> с результатом оформления. В случае успешного оформления, средства в размере <code>amount</code> холдируются на счёте клиента в системе Рево.</p>
+<p>Метод возвращает ссылку на iFrame для оформления заказа клиента. По завершению формы на адрес указанный в <code>callback_url</code> отправляется <a href="#callback_url">json ответ</a> с результатом оформления. В случае успешного оформления, средства в размере <code>amount</code> холдируются на счёте клиента в системе Мокка.</p>
 
-<p>В зависимости от информации, которая есть о пользователе в системе Рево, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>) - см. <a href="#iframe-revo">Описание iFrame REVO</a>.</p>
+<p>В зависимости от информации, которая есть о пользователе в системе Мокка, форма будет иметь различное число шагов (для этого нужно передавать <code>primary_phone</code>) - см. <a href="#iframe-revo">Описание iFrame REVO</a>.</p>
 
 <p>Для бизнес-моделей, где клиенту необходимо осуществлять предоплату, метод поддерживает 2 способа предоплаты:</p>
 
 <ul>
 <li><p>Если предоплата осуществлена до вызова iFrame, то информацию о ней необходимо передавать в <code>prepayment_amount</code>.</p></li>
-<li><p>Если предоплата должна быть осуществлена после вызова iFrame, то производится соответствующая настройка на стороне Рево. При этом следует параметр <code>skip_result_page</code> выставлять как <code>true</code> и передавать в <code>redirect_url</code> адрес страницы предоплаты, на которую будет перенаправлен клиент по завершению оформления в iFrame.</p></li>
+<li><p>Если предоплата должна быть осуществлена после вызова iFrame, то производится соответствующая настройка на стороне Мокка. При этом следует параметр <code>skip_result_page</code> выставлять как <code>true</code> и передавать в <code>redirect_url</code> адрес страницы предоплаты, на которую будет перенаправлен клиент по завершению оформления в iFrame.</p></li>
 </ul>
 
 <aside class="success">
@@ -810,8 +810,8 @@
     <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R001233"</span><span class="p">,</span>
     <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"21.07.2018 12:08:01+03:00"</span><span class="p">,</span>
     <span class="s">"term"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">59499.00</span><span class="p">,</span>
-    <span class="s">"prepayment_amount"</span><span class="p">:</span> <span class="mf">1000.00</span>
+    <span class="s">"amount"</span><span class="p">:</span> <span class="mf">"59499.00"</span><span class="p">,</span>
+    <span class="s">"prepayment_amount"</span><span class="p">:</span> <span class="mf">"1000.00"</span>
   <span class="p">},</span>
   <span class="s">"person"</span><span class="p">:</span>
   <span class="p">{</span>
@@ -871,12 +871,12 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>callback_url</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left"><td colspan="2"> URL для ответа от Рево по решению для клиента.</td>
+<td style="text-align: left"><td colspan="2"> URL для ответа от Мокка по решению для клиента.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>redirect_url</strong><br> <font color="#939da3">string</font></td>
-<td style="text-align: left"><td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Рево &quot;Вернуться в интернет магазин&quot;.</td>
+<td style="text-align: left"><td colspan="2"> URL для редиректа после нажатия на кнопку/ссылку в форме Мокка &quot;Вернуться в интернет магазин&quot;.</td>
 </tr>
 <tr>
 <td style="text-align: right"></td>
@@ -899,12 +899,12 @@
 <td style="text-align: left">Срок рассрочки в месяцах.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>amount</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>amount</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Сумма заказа в рублях.</td>
 </tr>
 <tr>
-<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>prepayment_amount</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>prepayment_amount</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Сумма уже внесённой клиентом предоплаты в рублях.</td>
 </tr>
@@ -996,7 +996,7 @@
 <tr>
 <td style="text-align: right"></td>
 <td style="text-align: right"><strong>delivery_info</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
-<td style="text-align: left"><td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе, которую клиент вводит на сайте партнёра (не в форме Рево).</td>
+<td style="text-align: left"><td colspan="2"> Объект для передачи массива с дополнительной информацией о заказе, которую клиент вводит на сайте партнёра (не в форме Мокка).</td>
 </tr>
 <tr>
 <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>first_name</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
@@ -1471,7 +1471,7 @@
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Пример ответа, когда произошел отказ по политикам Рево</p>
+<p>Пример ответа, когда произошел отказ по политикам Мокка</p>
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"status"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
@@ -1640,7 +1640,7 @@
 <tr>
 <td style="text-align: left"><code>declined</code></td>
 <td style="text-align: left"><code>declined</code></td>
-<td style="text-align: left">В лимите отказано по политикам Рево.</td>
+<td style="text-align: left">В лимите отказано по политикам Мокка.</td>
 </tr>
 </tbody></table>
 <h2 id='change'>Change</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">change?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
@@ -1652,8 +1652,8 @@
 </blockquote>
 <pre class="highlight jsonnet tab-jsonnet"><code><span class="p">{</span>
   <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
-  <span class="s">"amount"</span><span class="p">:</span> <span class="mf">59999.00</span><span class="p">,</span>
-  <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"29.07.2018 12:08:01+03:00"</span>
+  <span class="s">"amount"</span><span class="p">:</span> <span class="mf">"59999.00"</span><span class="p">,</span>
+  <span class="s">"valid_till"</span><span class="p">:</span> <span class="s">"29.07.2018 12:08:01+03:00"</span><span class="p">,</span>
   <span class="s">"cart_items"</span><span class="p">:</span>
   <span class="p">[{</span>
     <span class="s">"sku"</span><span class="p">:</span> <span class="s">"1231"</span><span class="p">,</span>
@@ -1679,7 +1679,7 @@
 </tr>
 <tr>
 <td style="text-align: right"></td>
-<td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">float</font></td>
+<td style="text-align: right"><strong>amount</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left"><td colspan="2"> Сумма в рублях.</td>
 <td style="text-align: left"></td>
 </tr>
@@ -1835,7 +1835,7 @@
 </tbody></table>
 <h2 id='finish'>Finish</h2><pre class="highlight ruby tab-ruby"><code><span class="no">POST</span> <span class="no">BASE_URL</span><span class="o">/</span><span class="n">factoring</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">precheck</span><span class="o">/</span><span class="n">finish?store_id</span><span class="o">=</span><span class="no">STORE_ID</span><span class="o">&amp;</span><span class="n">signature</span><span class="o">=</span><span class="no">SIGNATURE</span>
 </code></pre>
-<p>Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Рево. Запрос должен быть отправлен c типом содержимого <code>multipart/form-data</code>. В запросе должны быть указаны два ключа. Первый ключ с названием <code>body</code>, в котором должно быть указано тело json запроса. Второй ключ с названием <code>check</code>, где прикладывается файл(фискальный документ). <code>Signature</code> формируется по основному принципу, без второго ключа.</p>
+<p>Метод для финализации заказа путём передачи договора купли-продажи на обслуживание в Мокка. Запрос должен быть отправлен c типом содержимого <code>multipart/form-data</code>. В запросе должны быть указаны два ключа. Первый ключ с названием <code>body</code>, в котором должно быть указано тело json запроса. Второй ключ с названием <code>check</code>, где прикладывается файл(фискальный документ). <code>Signature</code> формируется по основному принципу, без второго ключа.</p>
 
 <aside class="notice">
 При попытке финализации заявки с истекшим сроком `valid_till`, будет вызван метод `cancel`.
@@ -1848,6 +1848,7 @@
   <span class="s">"order_id"</span><span class="p">:</span> <span class="s">"R107356"</span><span class="p">,</span>
   <span class="s">"amount"</span><span class="p">:</span> <span class="mf">6700.00</span><span class="p">,</span>
   <span class="s">"check_number"</span><span class="p">:</span> <span class="s">"ZDDS3123F"</span>
+  <span class="s">"check_link"</span><span class="p">:</span> <span class="s">"https://consumer.1-ofd.ru/example_link"</span>
 <span class="p">}</span>
 </code></pre>
 <table><thead>
@@ -1867,6 +1868,10 @@
 <tr>
 <td style="text-align: right"><strong>check_number</strong><br> <font color="#939da3">string</font></td>
 <td style="text-align: left">Номер фискального документа в системе партнёра (например, номер чека).</td>
+</tr>
+<tr>
+<td style="text-align: right"><strong>check_link</strong><br> <font color="#939da3">string</font></td>
+<td style="text-align: left">Ссылка на чек на платформе ОФД</td>
 </tr>
 </tbody></table>
 <h3 id='response-parameters-8'>Response Parameters</h3>
@@ -2106,12 +2111,12 @@
 
 <p>Тестирование и отладка интеграции производятся на demo сервере (https://backend.demo.revoup.ru). При заполнении номера телефона в анкете рекомендуется использовать несуществующий префикс оператора 888, чтобы sms сообщения не отправлялись реальным людям. На production сервере использовать такой префикс нельзя.</p>
 
-<p>Все коды подтверждения и пин-коды <code>8888</code>.</p>
+<p>Все коды подтверждения и пин-коды <code>1111</code>.</p>
 
 <ul>
 <li><p>Для получения отказ при использовании <a href="#Registration"><code>Registration</code></a> необходимо указать телефон, начинающийся с 88821.</p></li>
 <li><p>Для получения одобрения при использовании <a href="#Registration"><code>Registration</code></a> необходимо указать телефон, начинающийся с 888, кроме 88821.</p></li>
-<li><p>Для тестирования на production сервере код задаётся в настройках магазина партнёра. Например, это может быть 7777, вместо 8888.</p></li>
+<li><p>Для тестирования на production сервере код задаётся в настройках магазина партнёра. Например, это может быть 7777, вместо 1111.</p></li>
 <li><p>В анкете идет проверка по ФИО + дате рождения или номеру паспорта на совпадение с существующим клиентом, поэтому при тестировании необходимо вводить различные данные в эти поля.</p></li>
 </ul>
 <h1 id='iframe-revo'>Описание iFrame REVO</h1><h2 id='c5a67eacd9'>Регистрация клиента</h2>
@@ -2125,7 +2130,7 @@
 4.1 После ввода корректного смс кода происходит отображение окна с результатом &quot;Оформление прошло успешно&quot; и информацией о доступном лимите.<br>
 4.2 Либо отображение окна с результатом &quot;К сожалению, &#39;Оплата частями&#39; Вам недоступна&quot;.<br></p>
 
-<p>При вызове iframe Рево на первом экране (1) отображены поля для ввода персональных данных:</p>
+<p>При вызове iframe Мокка на первом экране (1) отображены поля для ввода персональных данных:</p>
 
 <ul>
 <li>Фамилия</li>
@@ -2158,8 +2163,8 @@
 <ol>
 <li>Нажатие кнопки Войти на первой странице формы. <br>
 2.1 Ввод мобильного номера и Нажатие кнопки &quot;Отправить СМС&quot;. <br>
-2.2 Если мобильный номер не существует в базе Рево, клиент переходит на окно с информационным сообщением &quot;С указанным номером телефона мы Вас не нашли&quot;. Нажатие на кнопку &quot;Оформить за 1 минуту&quot; приводит к переход на первый шаг формы. <br>
-3.1 Если мобильный номер существует в базе Рево, клиент переходит на экран Подтверждение мобильного номера кодом из смс-сообщения. <br>
+2.2 Если мобильный номер не существует в базе Мокка, клиент переходит на окно с информационным сообщением &quot;С указанным номером телефона мы Вас не нашли&quot;. Нажатие на кнопку &quot;Оформить за 1 минуту&quot; приводит к переход на первый шаг формы. <br>
+3.1 Если мобильный номер существует в базе Мокка, клиент переходит на экран Подтверждение мобильного номера кодом из смс-сообщения. <br>
 3.2 Если клиент допустил ошибку при вводе телефона, то возможен переход на шаг с вводом номера телефона. <br>
 4.1 После ввода корректного смс кода происходит отображение окна результата с информацией &quot;Оформление прошло успешно&quot; и информацией о доступном лимите. <br>
 4.2 Либо отображение окна результата с информацией &quot;К сожалению, &#39;Оплата частями&#39; Вам недоступна&quot;. <br></li>
@@ -2193,15 +2198,15 @@
 4.4 Либо отображение окна результата с информацией &quot;К сожалению, &#39;Оплата частями&#39; Вам недоступна&quot;. <br></li>
 </ol>
 <h1 id='5a291e242a'>Представление на сайте</h1>
-<p>Рекомендации по представлению услуги Оплата частями на партёнрском сайте представлены в <a href="REVO Presentation.pdf" target="new">презентации</a>. Ниже приведены инструкции по реализации отдельных элементов Рево из презентации.</p>
+<p>Рекомендации по представлению услуги Оплата частями на партёнрском сайте представлены в <a href="REVO Presentation.pdf" target="new">презентации</a>. Ниже приведены инструкции по реализации отдельных элементов Мокка из презентации.</p>
 <h2 id='iframe'>Вызов iFrame</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">iframe_url</span><span class="p">,</span> <span class="nx">target_selector</span><span class="p">);</span>
 </code></pre>
-<p>По нажатию на кнопки &quot;Оформить за 1 минуту&quot;, &quot;?&quot; справа от надписи &quot;или 150 Р/мес&quot; и &quot;Оплата&quot; при выбранном способе &quot;Оплата частями&quot; необходимо вызвать iFrame Рево для регистрации и оформления заказа, соответственно. Для этого нужно получить с помощью метода <a href="#Registration"><code>Registration</code></a> или <a href="#Checkout"><code>Checkout</code></a> ссылку на iFrame и передать её в js метод плагина REVO.</p>
+<p>По нажатию на кнопки &quot;Оформить за 1 минуту&quot;, &quot;?&quot; справа от надписи &quot;или 150 Р/мес&quot; и &quot;Оплата&quot; при выбранном способе &quot;Оплата частями&quot; необходимо вызвать iFrame Мокка для регистрации и оформления заказа, соответственно. Для этого нужно получить с помощью метода <a href="#Registration"><code>Registration</code></a> или <a href="#Checkout"><code>Checkout</code></a> ссылку на iFrame и передать её в js метод плагина REVO.</p>
 
 <p><code>iframe_url</code> – адрес открываемого iFrame, обязательный параметр.
 <code>target_selector</code> – селектор элемента, внутрь которого должен быть вставлен iFrame.</p>
 
-<p>Далее работает предоставленный Рево плагин js (реализован в виде модуля REVO), который вставляет <code>&lt;iframe src= iframe_url /&gt;</code> и производит манипуляции с этим iFrame.</p>
+<p>Далее работает предоставленный Мокка плагин js (реализован в виде модуля REVO), который вставляет <code>&lt;iframe src= iframe_url /&gt;</code> и производит манипуляции с этим iFrame.</p>
 
 <p>Плагин доступен по адресу: <code>https://{BASE_URI}/javascripts/iframe/v2/revoiframe.js</code> и его можно добавить на страницу интернет магазина.</p>
 <pre class="highlight html tab-html"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://{BASE_URI}/javascripts/iframe/v2/revoiframe.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
@@ -2212,7 +2217,7 @@
 <span class="nx">REVO</span><span class="p">.</span><span class="nx">Form</span><span class="p">.</span><span class="nx">onResult</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'result'</span><span class="p">);</span> <span class="p">});</span>
 </code></pre>
 <aside class="success">
-При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой страницы производится на стороне Рево.
+При необходимости отобразить iFrame на отдельной странице следует напрямую открывать `iframe_url`. Настройка фона этой страницы производится на стороне Мокка.
 </aside>
 <h2 id='818f499a59'>Отображение доступного лимита</h2>
 <p>Если клиент уже прошёл регистрацию и получил лимит, то доступные ему для Оплаты частями средства можно отображать с помощью метода <a href="#limit">Limit</a>.</p>
@@ -2225,7 +2230,7 @@
 
 <p><code>88822ХХХХХ</code> - одобрены только займ</p>
 
-<p>Код для подтверждения номера телефона - <code>8888</code></p>
+<p>Код для подтверждения номера телефона - <code>1111</code></p>
 
 <aside class="notice">
 Данные параметры предназначены только для demo сервиса.
@@ -2250,7 +2255,7 @@
 
  <span class="n">secret_key</span> <span class="o">=</span> <span class="s2">"9fff8c602b08b00323567be0001480f6"</span>
 
- <span class="n">signature</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">SHA1</span><span class="p">.</span><span class="nf">hexdigest</span><span class="p">(</span><span class="n">secret_key</span> <span class="o">+</span> <span class="n">data</span><span class="p">)</span>
+ <span class="n">signature</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">SHA1</span><span class="p">.</span><span class="nf">hexdigest</span><span class="p">(</span><span class="n">data</span> <span class="o">+</span> <span class="n">secret_key</span><span class="p">)</span>
  <span class="o">=&gt;</span> <span class="s2">"347e8cff27d30b5200c8b32def4365ebbf4270d0"</span>
 
 <span class="nb">puts</span> <span class="n">data</span>
@@ -2452,7 +2457,7 @@
 <p>Кейс 1:</p>
 
 <ul>
-<li>Ввод в анкету существующего в базе Рево ФИО + Дата рождения или Паспортные данные + Номер телефона, который не существует в базе Рево.</li>
+<li>Ввод в анкету существующего в базе Мокка ФИО + Дата рождения или Паспортные данные + Номер телефона, который не существует в базе Мокка.</li>
 </ul>
 
 <p>Что происходит:</p>
