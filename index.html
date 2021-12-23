@@ -858,6 +858,47 @@
     <span class="s">"bank_card"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="s">"last_orders"</span><span class="p">:</span> <span class="s">"3"</span><span class="p">,</span>
     <span class="s">"same_address"</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="s">"client"</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="s">"phone"</span><span class="p">:</span> <span class="s">"7909999999"</span><span class="p">,</span>
+        <span class="s">"email"</span><span class="p">:</span> <span class="s">"revo@revo.ru"</span><span class="p">,</span>
+        <span class="s">"client_id"</span><span class="p">:</span> <span class="s">"Daniel"</span><span class="p">,</span>
+        <span class="s">"registration_date"</span><span class="p">:</span> <span class="s">"11.11.2021"</span><span class="p">,</span>
+        <span class="s">"data_change_date"</span><span class="p">:</span> <span class="s">"11.11.2021"</span><span class="p">,</span>
+        <span class="s">"purchases_volume"</span><span class="p">:</span> <span class="s">3</span><span class="p">,</span>
+        <span class="s">"purchases_sum"</span><span class="p">:</span> <span class="s">12999.0</span><span class="p">,</span>
+        <span class="s">"last_purchase_date"</span><span class="p">:</span> <span class="s">"11.11.2021"</span><span class="p">,</span>
+        <span class="s">"first_purchase_date"</span><span class="p">:</span> <span class="s">"11.11.2021"</span><span class="p">,</span>
+        <span class="s">"birthdate"</span><span class="p">:</span> <span class="s">"11.11.2021"</span><span class="p">,</span>
+        <span class="s">"gender"</span><span class="p">:</span> <span class="s">"w"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="s">"order"</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="s">"country"</span><span class="p">:</span> <span class="s">"RU"</span><span class="p">,</span>
+        <span class="s">"currency"</span><span class="p">:</span> <span class="s">"rub"</span><span class="p">,</span>
+        <span class="s">"order_price"</span><span class="p">:</span> <span class="s">10000</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="s">"delivery"</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="s">"delivery_kind"</span><span class="p">:</span> <span class="s">"store pick-up"</span><span class="p">,</span>
+        <span class="s">"receiver_name"</span><span class="p">:</span> <span class="s">"Даниил Иванов"</span><span class="p">,</span>
+        <span class="s">"delivery_address"</span><span class="p">:</span> <span class="s">"Варшавское шоссе, 9, 114115, Москва, Россия"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="s">"purchase"</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s">"product_name"</span><span class="p">:</span> <span class="s">"Смартфон Honor x39"</span><span class="p">,</span>
+                <span class="s">"number"</span><span class="p">:</span> <span class="s">1</span><span class="p">,</span>
+                <span class="s">"product_price"</span><span class="p">:</span> <span class="s">11500.0</span><span class="p">,</span>
+                <span class="s">"category"</span><span class="p">:</span> <span class="s">"physical"</span><span class="p">,</span>
+                <span class="s">"breadcrumbs"</span><span class="p">:</span> <span class="s">"Electronics Store > Computers & Tablets > Smartphones"</span><span class="p">,</span>
+                <span class="s">"discount"</span><span class="p">:</span> <span class="s">"0%"</span><span class="p">,</span>
+                <span class="s">"global_product_ID"</span><span class="p">:</span> <span class="s">"XH39485858RU"</span><span class="p">,</span>
+                <span class="s">"vendor_product_ID"</span><span class="p">:</span> <span class="s">"XH39485858RU-0108"</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -1067,6 +1108,151 @@
 <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>same_address</strong><br> <font color="#939da3">bool, <em>optional</em></font></td>
 <td style="text-align: right"></td>
 <td style="text-align: left">Совпадает ли текущий адрес доставки с предыдущим адресом доставки.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>client</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Объект для ввода дополнительной информации о клиенте.</td>
+</tr>
+<tr>
+<td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>phone</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+<td style="text-align: right"></td>
+<td style="text-align: left">Номер телефона клиента.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>email</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Email клиента.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>client_id</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Имя или идентификатор клиента.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>registration_date</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Дата регистрации клиента в формате дд.мм.гггг.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>data_change_date</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Дата последнего изменения данных клиента в формате дд.мм.гггг.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>purchases_value</strong><br> <font color="#939da3">integer, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Число успешных покупок.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>purchases_sum</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Общая сумма успешных покупок за всё время.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>last_purchase_date</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Дата последней покупки клиента в формате дд.мм.гггг.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>first_purchase_date</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Дата первой покупки клиента в формате дд.мм.гггг.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>birthdate</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Дата рождения клиента в формате дд.мм.гггг.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>gender</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Пол клиента. Возможные значения: <code>m</code>, <code>w</code>.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>order</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Объект для ввода дополнительной информации о заказе.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>country</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Страна покупки.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>currency</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Валюта покупки.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>order_price</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Стоимость покупки.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>delivery</strong><br> <font color="#939da3">object, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Объект для ввода дополнительной информации о доставке.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>delivery_kind</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Способ доставки. Возможные значения: <code>store pick-up</code>, <code>pick-up point</code>, <code>registered box</code>, <code>unregistered box</code> <code>courier</code> <code>shipping company</code></td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>receiver_name</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Имя и фамилия получателя.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>delivery_address</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Адрес доставки.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="2" style="text-align:right"> <strong>purchase</strong><br> <font color="#939da3">array, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Массив объектов для ввода дополнительной информации о корзине.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>product_name</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Наименование позиции.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>number</strong><br> <font color="#939da3">integer, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Количество.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>product_price</strong><br> <font color="#939da3">float, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Стоимость SKU.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>category</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Категория товара. Возможные значения: <code>physical</code>, <code>digital</code>, <code>gift_card</code>, <code>discount</code> <code>shipping_fee</code></td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>breadcrumbs</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Путь категории.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>discount</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Размер скидки в %.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>global_product_id</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Глобальный идентификатор продукта.</td>
+</tr>
+<tr>
+    <td style="text-align: right"><td colspan="3" style="text-align:right"> <strong>vendor_product_id</strong><br> <font color="#939da3">string, <em>optional</em></font></td>
+    <td style="text-align: right"></td>
+    <td style="text-align: left">Идентификатор продукта вендора.</td>
 </tr>
 </tbody></table>
 <h3 id='response-parameters-3'>Response Parameters</h3>
